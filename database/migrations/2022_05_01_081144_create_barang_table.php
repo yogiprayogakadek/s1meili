@@ -17,8 +17,10 @@ return new class extends Migration
             $table->id('id_barang');
             $table->string('nama_barang');
             $table->string('kode_barang');
-            $table->text('spesifikasi');
-            $table->text('keterangan');
+            $table->text('merek');
+            // $table->year('tahun');
+            // $table->integer('jumlah_barang_rusak');
+            // $table->integer('total_barang');
             $table->timestamps();
         });
     }

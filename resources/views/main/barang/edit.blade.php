@@ -10,8 +10,8 @@
         </div>
         <div class="card-body">
             <form id="formEdit">
+                <input type="text" value="{{$data->id_barang}}" name="id" hidden>
                 <div class="form-group">
-                    <input type="text" value="{{$data->id_barang}}" name="id" hidden>
                     <label for="kode">Kode Barang</label>
                     <input type="text" class="form-control" name="kode" id="kode" placeholder="masukkan kode barang" value="{{$data->kode_barang}}">
                     <div class="invalid-feedback error-kode"></div>
@@ -22,15 +22,25 @@
                     <div class="invalid-feedback error-nama"></div>
                 </div>
                 <div class="form-group">
-                    <label for="spesifikasi">Spesifikasi Barang</label>
-                    <textarea class="form-control" name="spesifikasi" id="spesifikasi" rows="5">{{$data->spesifikasi}}</textarea>
-                    <div class="invalid-feedback error-spesifikasi"></div>
+                    <label for="merek">Merek Barang</label>
+                    <input type="text" class="form-control" name="merek" id="merek" placeholder="masukkan merek barang" value="{{$data->merek}}">
+                    <div class="invalid-feedback error-merek"></div>
+                </div>
+                {{-- <div class="form-group">
+                    <label for="tahun">Tahun</label>
+                    <input type="text" class="form-control" name="tahun" id="tahun" placeholder="masukkan tahun" value="{{$data->tahun}}">
+                    <div class="invalid-feedback error-tahun"></div>
+                </div> --}}
+                {{-- <div class="form-group">
+                    <label for="jumlah-rusak">Jumlah Rusak</label>
+                    <input type="text" class="form-control" name="jumlah_rusak" id="jumlah-rusak" placeholder="masukkan jumlah rusak" value="{{$data->jumlah_barang_rusak}}">
+                    <div class="invalid-feedback error-jumlah-rusak"></div>
                 </div>
                 <div class="form-group">
-                    <label for="keterangan">Keterangan Barang</label>
-                    <textarea class="form-control" name="keterangan" id="keterangan" rows="5">{{$data->keterangan}}</textarea>
-                    <div class="invalid-feedback error-keterangan"></div>
-                </div>
+                    <label for="total">Total Barang</label>
+                    <input type="text" class="form-control" name="total" id="total" placeholder="masukkan total barang" value="{{$data->total_barang}}">
+                    <div class="invalid-feedback error-total"></div>
+                </div> --}}
                 <div class="form-group pull-right">
                     <button class="btn btn-success btn-update" type="button">
                         <i class="fa fa-save"></i> Simpan

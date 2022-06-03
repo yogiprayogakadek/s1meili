@@ -51,8 +51,10 @@ class BarangController extends Controller
             Barang::create([
                 'nama_barang' => $request->nama,
                 'kode_barang' => $request->kode,
-                'spesifikasi' => $request->spesifikasi,
-                'keterangan' => $request->keterangan,
+                'merek' => $request->merek,
+                // 'tahun' => $request->tahun,
+                // 'jumlah_barang_rusak' => $request->jumlah_rusak,
+                // 'total_barang' => $request->total,
             ]);
 
             return response()->json([
@@ -86,8 +88,10 @@ class BarangController extends Controller
             $barang->update([
                 'nama_barang' => $request->nama,
                 'kode_barang' => $request->kode,
-                'spesifikasi' => $request->spesifikasi,
-                'keterangan' => $request->keterangan,
+                'merek' => $request->merek,
+                // 'tahun' => $request->tahun,
+                // 'jumlah_barang_rusak' => $request->jumlah_rusak,
+                // 'total_barang' => $request->total,
             ]);
 
             return response()->json([

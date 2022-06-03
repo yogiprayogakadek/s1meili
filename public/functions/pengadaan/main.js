@@ -1,7 +1,7 @@
 function getData() {
     $.ajax({
         type: "get",
-        url: "/barang/render",
+        url: "/pengadaan/render",
         dataType: "json",
         success: function (response) {
             $(".render").html(response.data);
@@ -15,7 +15,7 @@ function getData() {
 function tambah() {
     $.ajax({
         type: "get",
-        url: "/barang/create",
+        url: "/pengadaan/create",
         dataType: "json",
         success: function (response) {
             $(".render").html(response.data);
@@ -26,16 +26,80 @@ function tambah() {
     });
 }
 
+// convert to rupiah
+var rupiah = $("#biaya");
+function convertToRupiah(number, prefix) {
+    var number_string = number.replace(/[^,\d]/g, "").toString(),
+        split = number_string.split(","),
+        remaining = split[0].length % 3,
+        rupiah = split[0].substr(0, remaining),
+        thousand = split[0].substr(remaining).match(/\d{3}/gi);
+
+    if (thousand) {
+        separator = remaining ? "." : "";
+        rupiah += separator + thousand.join(".");
+    }
+
+    rupiah = split[1] != undefined ? rupiah + "," + split[1] : rupiah;
+    return prefix == undefined ? rupiah : rupiah ? "Rp. " + rupiah : "";
+}
 
 $(document).ready(function () {
     getData();
+    var i = 0;
 
     $('body').on('click', '.btn-add', function () {
         tambah();
     });
 
     $('body').on('click', '.btn-data', function () {
+        i = 0;
         getData();
+    });
+
+    $("body").on("keyup", '#biaya', function (e) {
+        $("#biaya").val(convertToRupiah($(this).val(), "Rp. "))
+    });
+
+    $('body').on('click', '.btn-add-item', function(){
+        i++;
+
+        var html = '<div class="card">' +
+            '<div class="card-header">' +
+                '<h5 class="card-title">Item Barang</h5>' +
+                '<div class="card-options">' +
+                    '<button class="btn btn-danger btn-delete-item"><i class="fa fa-trash"></i> Hapus</button>' +
+                '</div>' +
+            '</div>' +
+            '<div class="card-body">' +
+                '<div class="form-group">' +
+                    '<label>Kode Barang</label>' +
+                    '<input type="text" class="form-control kode'+i+'" name="kode['+i+']" id="kode'+i+'" placeholder="masukkan kode barang">' +
+                    '<div class="invalid-feedback error-kode'+i+'"></div>' +
+                '</div>' +
+                '<div class="form-group">' +
+                    '<label>Nama Barang</label>' +
+                    '<input type="text" class="form-control nama'+i+'" name="nama['+i+']" id="nama'+i+'" placeholder="masukkan nama barang">' +
+                    '<div class="invalid-feedback error-nama'+i+'"></div>' +
+                '</div>' +
+                '<div class="form-group">' +
+                    '<label>Merek Barang</label>' +
+                    '<input type="text" class="form-control merek'+i+'" name="merek['+i+']" id="merek'+i+'" placeholder="masukkan merek barang">' +
+                    '<div class="invalid-feedback error-merek'+i+'"></div>' +
+                '</div>' +
+                '<div class="form-group">' +
+                    '<label>Jumlah Barang</label>' +
+                    '<input type="number" class="form-control jumlah'+i+'" name="jumlah['+i+']" id="jumlah'+i+'" placeholder="masukkan jumlah barang">' +
+                    '<div class="invalid-feedback error-jumlah'+i+'"></div>' +
+                '</div>' +
+            '</div>' +
+        '</div>';
+
+        $('#item-barang').append(html);
+    })
+
+    $('body').on('click', '.btn-delete-item', function(){
+        $(this).closest('.card').remove();
     });
 
     // on save button
@@ -45,11 +109,13 @@ $(document).ready(function () {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
+        // $('.invalid-feedback').html('');
+        // $('body').find('.is-invalid').removeClass('is-invalid');
         let form = $('#formAdd')[0]
         let data = new FormData(form)
         $.ajax({
             type: "POST",
-            url: "/barang/store",
+            url: "/pengadaan/store",
             data: data,
             processData: false,
             contentType: false,
@@ -73,57 +139,31 @@ $(document).ready(function () {
                 );
             },
             error: function (error) {
+                let formName = []
+                let errorName = []
+                $.each($('#formAdd').serializeArray(), function (i, field) {
+                    // formName.push((field.name.replace(/\[\d+\]/g, '')).replace('.', ''))
+                    formName.push(field.name.replace(/\[|\]/g, ''))
+                });
+                // console.log(formName)
                 if (error.status == 422) {
                     if (error.responseJSON.errors) {
-                        if (error.responseJSON.errors.nama) {
-                            $('#nama').addClass('is-invalid')
-                            $('#nama').trigger('focus')
-                            $('.error-nama').html(error.responseJSON.errors.nama)
-                        } else {
-                            $('#nama').removeClass('is-invalid')
-                            $('.error-nama').html('')
-                        }
-                        if (error.responseJSON.errors.kode) {
-                            $('#kode').addClass('is-invalid')
-                            $('#kode').trigger('focus')
-                            $('.error-kode').html(error.responseJSON.errors.kode)
-                        } else {
-                            $('#kode').removeClass('is-invalid')
-                            $('.error-kode').html('')
-                        }
-                        if (error.responseJSON.errors.merek) {
-                            $('#merek').addClass('is-invalid')
-                            $('#merek').trigger('focus')
-                            $('.error-merek').html(error.responseJSON.errors.merek)
-                        } else {
-                            $('#merek').removeClass('is-invalid')
-                            $('.error-merek').html('')
-                        }
-                        if (error.responseJSON.errors.tahun) {
-                            $('#tahun').addClass('is-invalid')
-                            $('#tahun').trigger('focus')
-                            $('.error-tahun').html(error.responseJSON.errors.tahun)
-                        } else {
-                            $('#tahun').removeClass('is-invalid')
-                            $('.error-tahun').html('')
-                        }
-                        if (error.responseJSON.errors.total) {
-                            $('#total').addClass('is-invalid')
-                            $('#total').trigger('focus')
-                            $('.error-total').html(error.responseJSON.errors.total)
-                        } else {
-                            $('#total').removeClass('is-invalid')
-                            $('.error-total').html('')
-                        }
-                        if (error.responseJSON.errors.jumlah_rusak) {
-                            $('#jumlah-rusak').addClass('is-invalid')
-                            $('#jumlah-rusak').trigger('focus')
-                            $('.error-jumlah-rusak').html(error.responseJSON.errors.jumlah_rusak)
-                        } else {
-                            $('#jumlah-rusak').removeClass('is-invalid')
-                            $('.error-jumlah-rusak').html('')
-                        }
+                        $.each(error.responseJSON.errors, function (key, value) {
+                            errorName.push(key.replace('.', ''))
+                            if($('.'+key.replace('.', '')).val() == '') {
+                                $('.'+key.replace('.', '')).addClass('is-invalid');
+                                $('.error-'+key.replace('.', '')).html(value);
+                            }
+                        });
+                        $.each(formName, function (i, field) {
+                            // if(!errorName.includes(field)) {
+                            //     $('.'+field).removeClass('is-invalid');
+                            //     $('.error-'+field).html('');
+                            // }
+                            $.inArray(field, errorName) == -1 ? $('.'+field).removeClass('is-invalid') : $('.'+field).addClass('is-invalid');
+                        });
                     }
+                    // console.log(errorName);
                 }
             }
         });
@@ -133,7 +173,7 @@ $(document).ready(function () {
         let id = $(this).data('id')
         $.ajax({
             type: "get",
-            url: "/barang/edit/" + id,
+            url: "/pengadaan/edit/" + id,
             dataType: "json",
             success: function (response) {
                 $(".render").html(response.data);
@@ -155,7 +195,7 @@ $(document).ready(function () {
         let data = new FormData(form)
         $.ajax({
             type: "POST",
-            url: "/barang/update",
+            url: "/pengadaan/update",
             data: data,
             processData: false,
             contentType: false,
@@ -249,7 +289,7 @@ $(document).ready(function () {
             if (result.value) {
                 $.ajax({
                     type: "get",
-                    url: "/barang/delete/" + id,
+                    url: "/pengadaan/delete/" + id,
                     dataType: "json",
                     success: function (response) {
                         $(".render").html(response.data);
@@ -288,7 +328,7 @@ $(document).ready(function () {
                 };
                 $.ajax({
                     type: "GET",
-                    url: "/barang/print/",
+                    url: "/pengadaan/print/",
                     dataType: "json",
                     success: function (response) {
                         document.title= 'Laporan - ' + new Date().toJSON().slice(0,10).replace(/-/g,'/')

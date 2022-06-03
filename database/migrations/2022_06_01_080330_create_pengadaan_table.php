@@ -18,10 +18,10 @@ return new class extends Migration
             $table->foreignId('id_user')->references('id_user')->on('users')->onDelete('cascade');
             $table->date('tanggal_pengadaan');
             $table->date('tanggal_penerimaan');
-            $table->boolean('status_pengadaan')->default(false);
-            $table->text('nomor_laporan');
+            $table->string('nomor_laporan', 50);
             $table->integer('biaya_pengadaan');
-            $table->boolean('status')->default(false);
+            $table->string('nota', 100)->nullable();
+            $table->boolean('status_pengadaan')->default(false);
             $table->timestamps();
         });
     }

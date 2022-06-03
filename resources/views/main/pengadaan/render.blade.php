@@ -16,12 +16,13 @@
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>Kode Barang</th>
-                        <th>Nama Barang</th>
-                        <th>Merek Barang</th>
-                        {{-- <th>Tahun</th>
-                        <th>Jumlah Barang Rusak</th>
-                        <th>Total Barang</th> --}}
+                        <th>User</th>
+                        <th>Tanggal Pengadaan</th>
+                        <th>Tanggal Penerimaan</th>
+                        <th>Nomor Laporan</th>
+                        <th>Biaya Pengadaan</th>
+                        <th>Nota</th>
+                        <th>Status Pengadaan</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -29,17 +30,20 @@
                     @foreach ($data as $data)
                     <tr>
                         <td>{{$loop->iteration}}</td>
-                        <td>{{$data->kode_barang}}</td>
-                        <td>{{$data->nama_barang}}</td>
-                        <td>{{$data->merek}}</td>
-                        {{-- <td>{{$data->tahun}}</td>
-                        <td>{{$data->jumlah_barang_rusak}}</td>
-                        <td>{{$data->total_barang}}</td> --}}
+                        <td>{{$data->user->nama}}</td>
+                        <td>{{$data->tanggal_pengadaan}}</td>
+                        <td>{{$data->tanggal_penerimaan}}</td>
+                        <td>{{$data->biaya_pengadaan}}</td>
+                        <td>{{$data->nota}}</td>
+                        <td>{{$data->status_pengadaan}}</td>
                         <td>
-                            <button class="btn btn-primary btn-edit" data-id="{{$data->id_barang}}">
+                            <button class="btn btn-primary btn-item" data-id="{{$data->id_pengadaan}}">
+                                <i class="fa fa-eye"></i> Item Pengadaan
+                            </button>
+                            <button class="btn btn-primary btn-edit" data-id="{{$data->id_pengadaan}}">
                                 <i class="fa fa-edit"></i> Edit
                             </button>
-                            <button class="btn btn-danger btn-delete" data-id="{{$data->id_barang}}">
+                            <button class="btn btn-danger btn-delete" data-id="{{$data->id_pengadaan}}">
                                 <i class="fa fa-trash"></i> Hapus
                             </button>
                         </td>

@@ -26,8 +26,10 @@ class BarangRequest extends FormRequest
         return [
             'nama' => 'required',
             'kode' => 'required',
-            'spesifikasi' => 'required',
-            'keterangan' => 'required',
+            'merek' => 'required',
+            // 'tahun' => 'required|numeric',
+            // 'jumlah_rusak' => 'required|numeric',
+            // 'total' => 'required|numeric',
         ];
     }
 
@@ -36,6 +38,7 @@ class BarangRequest extends FormRequest
         return [
             'required' => ':attribute tidak boleh kosong',
             'unique' => ':attribute sudah tersedia',
+            'numeric' => ':attribute harus berupa angka',
         ];
     }
 
@@ -44,8 +47,10 @@ class BarangRequest extends FormRequest
         return [
             'nama' => 'Nama barang',
             'kode' => 'Kode barang',
-            'spesifikasi' => 'Spesifikasi barang',
-            'keterangan' => 'Keterangan barang',
+            'merek' => 'Merek barang',
+            // 'tahun' => 'Tahun barang',
+            // 'jumlah_rusak' => 'Jumlah barang rusak',
+            // 'total' => 'Total barang',
         ];
     }
 }

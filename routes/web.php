@@ -17,15 +17,26 @@ Route::get('/', function () {
     return view('templates.master');
 })->name('main')->middleware('auth');
 Route::prefix('/')->namespace('Main')->middleware('auth')->group(function(){
-    Route::prefix('/barang')->group(function(){
-        Route::get('/', 'BarangController@index')->name('barang.index');
-        Route::get('/create', 'BarangController@create')->name('barang.create');
-        Route::get('/edit/{id}', 'BarangController@edit')->name('barang.edit');
-        Route::get('/render', 'BarangController@render')->name('barang.render');
-        Route::post('/store', 'BarangController@store')->name('barang.store');
-        Route::post('/update', 'BarangController@update')->name('barang.update');
-        Route::get('/delete/{id}', 'BarangController@delete')->name('barang.delete');
-        Route::get('/print/{id}', 'BarangController@print')->name('barang.print');
+    Route::prefix('/barang')->name('barang.')->group(function(){
+        Route::get('/', 'BarangController@index')->name('index');
+        Route::get('/create', 'BarangController@create')->name('create');
+        Route::get('/edit/{id}', 'BarangController@edit')->name('edit');
+        Route::get('/render', 'BarangController@render')->name('render');
+        Route::post('/store', 'BarangController@store')->name('store');
+        Route::post('/update', 'BarangController@update')->name('update');
+        Route::get('/delete/{id}', 'BarangController@delete')->name('delete');
+        Route::get('/print/{id}', 'BarangController@print')->name('print');
+    });
+
+    Route::prefix('/pengadaan')->name('pengadaan.')->group(function(){
+        Route::get('/', 'PengadaanController@index')->name('index');
+        Route::get('/create', 'PengadaanController@create')->name('create');
+        Route::get('/edit/{id}', 'PengadaanController@edit')->name('edit');
+        Route::get('/render', 'PengadaanController@render')->name('render');
+        Route::post('/store', 'PengadaanController@store')->name('store');
+        Route::post('/update', 'PengadaanController@update')->name('update');
+        Route::get('/delete/{id}', 'PengadaanController@delete')->name('delete');
+        Route::get('/print/{id}', 'PengadaanController@print')->name('print');
     });
 });
 
