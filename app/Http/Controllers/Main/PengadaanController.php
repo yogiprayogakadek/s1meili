@@ -7,8 +7,10 @@ use App\Http\Requests\PengadaanRequest;
 use App\Models\Barang;
 use App\Models\ItemPengadaan;
 use App\Models\Pengadaan;
+use App\Models\PengadaanHistori;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class PengadaanController extends Controller
 {
@@ -19,7 +21,7 @@ class PengadaanController extends Controller
 
     public function render()
     {
-        $data = Pengadaan::with('barang', 'user')->get();
+        $data = Pengadaan::with('user')->get();
 
         $view = [
             'data' => view('main.pengadaan.render', compact('data'))->render()
@@ -30,7 +32,7 @@ class PengadaanController extends Controller
     
     public function print()
     {
-        $data = Pengadaan::with('barang', 'user')->get();
+        $data = Pengadaan::with('user')->get();
 
         $view = [
             'data' => view('main.pengadaan.print', compact('data'))->render()
@@ -54,13 +56,14 @@ class PengadaanController extends Controller
     public function store(PengadaanRequest $request)
     {
         try {
-            DB::transaction(function () use ($request) {
+            $response = [];
+            DB::transaction(function () use ($request, &$response) {
                 $dataPengadaan = [
-                    'id_user' => auth()->user()->id,
+                    'id_user' => auth()->user()->id_user,
                     'tanggal_pengadaan' => $request->tanggal_pengadaan,
                     'tanggal_penerimaan' => $request->tanggal_penerimaan,
                     'nomor_laporan' => $request->nomor_laporan,
-                    'biaya_pengadaan' => preg_replace('/[^0-9]/', '', $request->biaya_pengadaan),
+                    'biaya_pengadaan' => preg_replace('/[^0-9]/', '', $request->biaya),
                 ];
 
                 if($request->hasFile('nota')) {
@@ -68,45 +71,61 @@ class PengadaanController extends Controller
                     $extension = $request->file('nota')->getClientOriginalExtension();
     
                     $filenametostore = $request->nomor_laporan. '-'. time() .'.'.$extension;
-                    $save_path = 'assets/uploads/pengadaan/';
+                    $save_path = 'assets/uploads/pengadaan/nota/';
     
                     if(!file_exists($save_path)) {
                         mkdir($save_path, 666, true);
                     }
     
-                    $dataPengadaan[] = [
-                        'nota' => $save_path . $filenametostore,
-                    ];
+                    $dataPengadaan['nota'] = $save_path . $filenametostore;
     
                     $request->file('nota')->move($save_path, $filenametostore);
                 }
+                $cekPengadaan = Pengadaan::where('nomor_laporan', $request->nomor_laporan)->first();
+                if($cekPengadaan) {
+                    $response['status'] = 'error';
+                    $response['message'] = 'Nomor Laporan sudah ada';
+                    $response['title'] = 'Gagal Menambahkan Pengadaan';
+                } 
+                else {
+                    $pengadaan = Pengadaan::create($dataPengadaan);
 
-                for($i = 0; $i < count($request->nama); $i++) {
-                    $dataBarang[] = [
-                        'id_barang' => $request->id_barang[$i],
-                        'nama_barang' => $request->nama[$i],
-                        'merek' => $request->merek[$i],
-                        'kode_barang' => $request->kode[$i],
-                    ];
+                    for($i = 0; $i < count($request->nama); $i++) {
+                        $cek = Barang::where('nama_barang', $request->nama[$i])->first();
+                        $dataBarang[] = [
+                            'nama_barang' => $request->nama[$i],
+                            'merek' => $request->merek[$i],
+                            'kode_barang' => randomString(),
+                            // 'kode_barang' => $request->kode[$i],
+                        ];
 
-                    $dataPengadaanBarang[] = [
-                        'id_pengadaan' => Pengadaan::create($dataPengadaan)->id_pengadaan,
-                        'id_barang' => $request->id_barang[$i],
-                        'jumlah_barang' => $request->jumlah[$i],
-                        // 'merek' => $request->merek[$i],
-                        // 'kode' => $request->kode[$i],
-                    ];
-
-                    ItemPengadaan::create($dataPengadaanBarang);
+                        if(!$cek) {
+                            $barang = Barang::create($dataBarang[$i]);
+                            ItemPengadaan::create([
+                                'id_pengadaan' => $pengadaan->id_pengadaan,
+                                'id_barang' => $barang->id_barang,
+                                'jumlah_barang' => $request->jumlah[$i],
+                            ]);
+                        } else {
+                            ItemPengadaan::create([
+                                'id_pengadaan' => $pengadaan->id_pengadaan,
+                                'id_barang' => $cek->id_barang,
+                                'jumlah_barang' => $request->jumlah[$i],
+                            ]);
+                        }
+                    }
                 }
-    
-                // Pengadaan::create($data);
             });
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Data berhasil tersimpan',
-                'title' => 'Berhasil'
-            ]);
+            // dd(count($response));
+            if(count($response) > 0) {
+                return response()->json($response);
+            } else {
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Berhasil Menambahkan Pengadaan',
+                    'title' => 'Berhasil'
+                ]);
+            }
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
@@ -127,7 +146,7 @@ class PengadaanController extends Controller
         return response()->json($view);
     }
 
-    public function update(BarangRequest $request, Barang $kategori)
+    public function update(PengadaanRequest $request, Barang $kategori)
     {
         try {
             $barang = Barang::find($request->id);
@@ -157,7 +176,7 @@ class PengadaanController extends Controller
     public function delete($id)
     {
         try {
-            Barang::find($id)->delete();
+            Pengadaan::find($id)->delete();
 
             return response()->json([
                 'status' => 'success',

@@ -34,7 +34,7 @@ class PengadaanRequest extends FormRequest
             $rules['nama.' . $i] = 'required';
             $rules['jumlah.' . $i] = 'required';
             $rules['merek.' . $i] = 'required';
-            $rules['kode.' .$i] = 'required';
+            // $rules['kode.' .$i] = 'required';
         }
 
         // foreach($this->request->get('nama') as $key => $value) {
@@ -69,7 +69,7 @@ class PengadaanRequest extends FormRequest
             $attr['nama.' . $i] = 'Nama Barang';
             $attr['jumlah.' . $i] = 'Jumlah Barang';
             $attr['merek.' . $i] = 'Merek Barang';
-            $attr['kode.' . $i] = 'Kode Barang';
+            // $attr['kode.' . $i] = 'Kode Barang';
         }
 
         // foreach($this->request->get('nama') as $key => $value) {

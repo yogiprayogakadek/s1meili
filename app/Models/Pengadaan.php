@@ -17,4 +17,14 @@ class Pengadaan extends Model
     {
         return $this->hasMany(ItemPengadaan::class, 'id_pengadaan');
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'id_user');
+    }
+    
+    public function pengadaan_histori()
+    {
+        return $this->hasMany(PengadaanHistori::class, 'id_pengadaan');
+    }
 }

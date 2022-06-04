@@ -12,7 +12,7 @@
             </div>
         </div>
         <div class="card-body">
-            <table class="table table-bordered text-nowrap border-bottom dataTable no-footer" role="grid" id="tableData">
+            <table class="table table-bordered text-nowrap border-bottom dataTable no-footer table-responsive" role="grid" id="tableData">
                 <thead>
                     <tr>
                         <th>No</th>
@@ -33,14 +33,15 @@
                         <td>{{$data->user->nama}}</td>
                         <td>{{$data->tanggal_pengadaan}}</td>
                         <td>{{$data->tanggal_penerimaan}}</td>
-                        <td>{{$data->biaya_pengadaan}}</td>
-                        <td>{{$data->nota}}</td>
+                        <td>{{$data->nomor_laporan}}</td>
+                        <td>{{convertToRupiah($data->biaya_pengadaan)}}</td>
+                        <td>{!!$data->nota == null ? '-' : '<a href="'.asset($data->nota).'" target="_blank">Lihat Nota</a>'!!}</td>
                         <td>{{$data->status_pengadaan}}</td>
                         <td>
                             <button class="btn btn-primary btn-item" data-id="{{$data->id_pengadaan}}">
                                 <i class="fa fa-eye"></i> Item Pengadaan
                             </button>
-                            <button class="btn btn-primary btn-edit" data-id="{{$data->id_pengadaan}}">
+                            <button class="btn btn-success btn-edit" data-id="{{$data->id_pengadaan}}">
                                 <i class="fa fa-edit"></i> Edit
                             </button>
                             <button class="btn btn-danger btn-delete" data-id="{{$data->id_pengadaan}}">

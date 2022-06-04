@@ -72,11 +72,11 @@ $(document).ready(function () {
                 '</div>' +
             '</div>' +
             '<div class="card-body">' +
-                '<div class="form-group">' +
-                    '<label>Kode Barang</label>' +
-                    '<input type="text" class="form-control kode'+i+'" name="kode['+i+']" id="kode'+i+'" placeholder="masukkan kode barang">' +
-                    '<div class="invalid-feedback error-kode'+i+'"></div>' +
-                '</div>' +
+                // '<div class="form-group">' +
+                //     '<label>Kode Barang</label>' +
+                //     '<input type="text" class="form-control kode'+i+'" name="kode['+i+']" id="kode'+i+'" placeholder="masukkan kode barang">' +
+                //     '<div class="invalid-feedback error-kode'+i+'"></div>' +
+                // '</div>' +
                 '<div class="form-group">' +
                     '<label>Nama Barang</label>' +
                     '<input type="text" class="form-control nama'+i+'" name="nama['+i+']" id="nama'+i+'" placeholder="masukkan nama barang">' +

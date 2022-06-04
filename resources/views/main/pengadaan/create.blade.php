@@ -33,7 +33,7 @@
                 </div>
                 <div class="form-group">
                     <label for="nota">Nota</label>
-                    <input type="text" class="form-control nota" name="nota" id="nota" placeholder="masukkan nota">
+                    <input type="file" class="form-control nota" name="nota" id="nota" placeholder="masukkan nota">
                     <span class="text-muted text-small">*kosongkan bila belum ada nota</span>
                     <div class="invalid-feedback error-nota"></div>
                 </div>
@@ -45,11 +45,11 @@
         <div class="card">
             <div class="card-header">Item Barang</div>
             <div class="card-body">
-                <div class="form-group">
+                {{-- <div class="form-group">
                     <label for="kode">Kode Barang</label>
                     <input type="text" class="form-control kode0" name="kode[0]" id="kode0" placeholder="masukkan kode barang">
                     <div class="invalid-feedback error-kode0"></div>
-                </div>
+                </div> --}}
                 <div class="form-group">
                     <label for="nama">Nama Barang</label>
                     <input type="text" class="form-control nama0" name="nama[0]" id="nama0" placeholder="masukkan nama barang">
