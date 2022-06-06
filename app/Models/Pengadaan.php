@@ -25,6 +25,6 @@ class Pengadaan extends Model
     
     public function pengadaan_histori()
     {
-        return $this->hasMany(PengadaanHistori::class, 'id_pengadaan');
+        return $this->hasOne(PengadaanHistori::class, 'id_pengadaan');
     }
 }

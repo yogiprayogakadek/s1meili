@@ -29,6 +29,10 @@
                                         href="{{route('pengadaan.index')}}"><i class="side-menu__icon fe fe-home"></i><span
                                             class="side-menu__label">Pengadaan</span>
                                     </a>
+                                    <a class="side-menu__item has-link {{Request::is('pengadaan-histori') ? 'active' : '' }}" data-bs-toggle="slide"
+                                        href="{{route('pengadaan-histori.index')}}"><i class="side-menu__icon fe fe-home"></i><span
+                                            class="side-menu__label">Pengadaan Histori</span>
+                                    </a>
                                     {{-- @elseif (Auth::user()->jabatan->nama == 'Petugas HRD')
                                     <a class="side-menu__item has-link {{Request::is('petugas/dashboard') ? 'active' : '' }}" data-bs-toggle="slide"
                                         href="{{route('petugas.dashboard.index')}}"><i class="side-menu__icon fe fe-home"></i><span

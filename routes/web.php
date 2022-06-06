@@ -38,6 +38,13 @@ Route::prefix('/')->namespace('Main')->middleware('auth')->group(function(){
         Route::get('/delete/{id}', 'PengadaanController@delete')->name('delete');
         Route::get('/print/{id}', 'PengadaanController@print')->name('print');
     });
+
+    Route::prefix('/pengadaan-histori')->name('pengadaan-histori.')->group(function(){
+        Route::get('/', 'PengadaanHistoriController@index')->name('index');
+        Route::get('/render', 'PengadaanHistoriController@render')->name('render');
+        Route::post('/validasi', 'PengadaanHistoriController@validasi')->name('validasi');
+        Route::get('/detail-validasi/{id_pengadaan}', 'PengadaanHistoriController@detailValidasi')->name('detail-validasi');
+    });
 });
 
 Auth::routes();

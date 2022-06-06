@@ -90,6 +90,11 @@ class PengadaanController extends Controller
                 else {
                     $pengadaan = Pengadaan::create($dataPengadaan);
 
+                    // insert ke tabel pengadaan_histori
+                    PengadaanHistori::create([
+                        'id_pengadaan' => $pengadaan->id_pengadaan,
+                    ]);
+
                     for($i = 0; $i < count($request->nama); $i++) {
                         $cek = Barang::where('nama_barang', $request->nama[$i])->first();
                         $dataBarang[] = [

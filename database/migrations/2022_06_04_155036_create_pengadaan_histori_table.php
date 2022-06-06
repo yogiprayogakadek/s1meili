@@ -16,10 +16,10 @@ return new class extends Migration
         Schema::create('pengadaan_histori', function (Blueprint $table) {
             $table->id('id_pengadaan_histori');
             $table->foreignId('id_pengadaan')->references('id_pengadaan')->on('pengadaan')->onDelete('cascade');
-            $table->boolean('approve_kepala_sekolah')->default(0);
-            $table->boolean('approve_wakil_sarpras')->default(0);
-            $table->date('tanggal_approve_kepala_sekolah');
-            $table->date('tanggal_approve_wakil_sarpras');
+            $table->enum('approve_kepala_sekolah', ['Ditolak', 'Diproses', 'Diterima'])->nullable();
+            $table->enum('approve_wakil_sarpras', ['Ditolak', 'Diproses', 'Diterima'])->nullable();
+            $table->date('tanggal_approve_kepala_sekolah')->nullable();
+            $table->date('tanggal_approve_wakil_sarpras')->nullable();
             $table->text('keterangan')->nullable();
             $table->timestamps();
         });
