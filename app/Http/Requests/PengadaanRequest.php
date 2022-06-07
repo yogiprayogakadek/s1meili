@@ -28,12 +28,15 @@ class PengadaanRequest extends FormRequest
             'tanggal_penerimaan' => 'required',
             'nomor_laporan' => 'required',
             'biaya' => 'required',
+            'keterangan' => 'required',
         ];
 
         for($i = 0; $i < count($this->input('nama')); $i++) {
             $rules['nama.' . $i] = 'required';
             $rules['jumlah.' . $i] = 'required';
             $rules['merek.' . $i] = 'required';
+            $rules['spesifikasi.' . $i] = 'required';
+            $rules['harga.' . $i] = 'required';
             // $rules['kode.' .$i] = 'required';
         }
 
@@ -63,12 +66,15 @@ class PengadaanRequest extends FormRequest
             'tanggal_penerimaan' => 'Tanggal Penerimaan',
             'nomor_laporan' => 'Nomor Laporan',
             'biaya_pengadaan' => 'Biaya Pengadaan',
+            'keterangan' => 'Keterangan',
         ];
 
         for($i = 0; $i < count($this->input('nama')); $i++) {
             $attr['nama.' . $i] = 'Nama Barang';
             $attr['jumlah.' . $i] = 'Jumlah Barang';
             $attr['merek.' . $i] = 'Merek Barang';
+            $attr['spesifikasi.' . $i] = 'Spesifikasi Barang';
+            $attr['harga.' . $i] = 'Harga Satuan';
             // $attr['kode.' . $i] = 'Kode Barang';
         }
 

@@ -64,6 +64,7 @@ class PengadaanController extends Controller
                     'tanggal_penerimaan' => $request->tanggal_penerimaan,
                     'nomor_laporan' => $request->nomor_laporan,
                     'biaya_pengadaan' => preg_replace('/[^0-9]/', '', $request->biaya),
+                    'keterangan' => $request->keterangan,
                 ];
 
                 if($request->hasFile('nota')) {
@@ -101,6 +102,7 @@ class PengadaanController extends Controller
                             'nama_barang' => $request->nama[$i],
                             'merek' => $request->merek[$i],
                             'kode_barang' => randomString(),
+                            'spesifikasi' => $request->spesifikasi[$i],
                             // 'kode_barang' => $request->kode[$i],
                         ];
 
@@ -109,19 +111,20 @@ class PengadaanController extends Controller
                             ItemPengadaan::create([
                                 'id_pengadaan' => $pengadaan->id_pengadaan,
                                 'id_barang' => $barang->id_barang,
+                                'harga_satuan' => preg_replace('/[^0-9]/', '', $request->harga[$i]),
                                 'jumlah_barang' => $request->jumlah[$i],
                             ]);
                         } else {
                             ItemPengadaan::create([
                                 'id_pengadaan' => $pengadaan->id_pengadaan,
                                 'id_barang' => $cek->id_barang,
+                                'harga_satuan' => preg_replace('/[^0-9]/', '', $request->harga[$i]),
                                 'jumlah_barang' => $request->jumlah[$i],
                             ]);
                         }
                     }
                 }
             });
-            // dd(count($response));
             if(count($response) > 0) {
                 return response()->json($response);
             } else {
@@ -143,26 +146,99 @@ class PengadaanController extends Controller
 
     public function edit($id)
     {
-        $data = Barang::find($id);
+        $data = Pengadaan::with('item_pengadaan.barang')->find($id);
         $view = [
-            'data' => view('main.barang.edit', compact('data'))->render()
+            'data' => view('main.pengadaan.edit', compact('data'))->render()
         ];
 
         return response()->json($view);
     }
 
-    public function update(PengadaanRequest $request, Barang $kategori)
+    public function update(PengadaanRequest $request)
     {
         try {
-            $barang = Barang::find($request->id);
-            $barang->update([
-                'nama_barang' => $request->nama,
-                'kode_barang' => $request->kode,
-                'merek' => $request->merek,
-                'tahun' => $request->tahun,
-                'jumlah_barang_rusak' => $request->jumlah_rusak,
-                'total_barang' => $request->total,
-            ]);
+            $pengadaan = Pengadaan::find($request->id_pengadaan);
+            DB::transaction(function () use ($request, &$response, $pengadaan) {
+                $dataPengadaan = [
+                    'id_user' => auth()->user()->id_user,
+                    'tanggal_pengadaan' => $request->tanggal_pengadaan,
+                    'tanggal_penerimaan' => $request->tanggal_penerimaan,
+                    'nomor_laporan' => $request->nomor_laporan,
+                    'biaya_pengadaan' => preg_replace('/[^0-9]/', '', $request->biaya),
+                    'keterangan' => $request->keterangan,
+                ];
+
+                if($request->hasFile('nota')) {
+                    
+                    $filenamewithextension = $request->file('nota')->getClientOriginalName();
+                    $extension = $request->file('nota')->getClientOriginalExtension();
+    
+                    $filenametostore = $request->nomor_laporan. '-'. time() .'.'.$extension;
+                    $save_path = 'assets/uploads/pengadaan/nota/';
+    
+                    if(!file_exists($save_path)) {
+                        mkdir($save_path, 666, true);
+                    }
+    
+                    $dataPengadaan['nota'] = $save_path . $filenametostore;
+                    if($pengadaan->nota != null) {
+                        unlink($pengadaan->nota);
+                    }
+                    $request->file('nota')->move($save_path, $filenametostore);
+                }
+
+                $pengadaan->update($dataPengadaan);
+                if($pengadaan->status_pengadaan == 'Diterima') {
+                    // dd('masuk');
+                    $item_pengadaan = ItemPengadaan::where('id_pengadaan', $pengadaan->id_pengadaan)->get();
+                    foreach($item_pengadaan as $item) {
+                        $barang = Barang::find($item->id_barang);
+                        if($barang) {
+                            $barang->update([
+                                'total_barang' => $barang->total_barang - $item->jumlah_barang,
+                            ]);
+                        }
+                    }
+                }
+
+                // Delete Item Pengadaan
+                ItemPengadaan::where('id_pengadaan', $pengadaan->id_pengadaan)->delete();
+
+                // insert ke tabel item_pengadaan
+                for($i = 0; $i < count($request->nama); $i++) {
+                    $cek = Barang::where('nama_barang', $request->nama[$i])->first();
+                    $dataBarang[] = [
+                        'nama_barang' => $request->nama[$i],
+                        'merek' => $request->merek[$i],
+                        'kode_barang' => randomString(),
+                        'spesifikasi' => $request->spesifikasi[$i],
+                    ];
+
+                    if(!$cek) {
+                        if($pengadaan->status_pengadaan == 'Diterima') {
+                            $dataBarang[$i]['total_barang'] = $request->jumlah[$i];
+                        }
+                        $barang = Barang::create($dataBarang[$i]);
+                        ItemPengadaan::create([
+                            'id_pengadaan' => $pengadaan->id_pengadaan,
+                            'id_barang' => $barang->id_barang,
+                            'harga_satuan' => preg_replace('/[^0-9]/', '', $request->harga[$i]),
+                            'jumlah_barang' => $request->jumlah[$i],
+                        ]);
+                    } else {
+                        $barang = Barang::where('id_barang', $cek->id_barang)->first();
+                        $barang->update([
+                            'total_barang' => $barang->total_barang + $request->jumlah[$i],
+                        ]);
+                        ItemPengadaan::create([
+                            'id_pengadaan' => $pengadaan->id_pengadaan,
+                            'id_barang' => $cek->id_barang,
+                            'harga_satuan' => preg_replace('/[^0-9]/', '', $request->harga[$i]),
+                            'jumlah_barang' => $request->jumlah[$i],
+                        ]);
+                    }
+                }
+            });
 
             return response()->json([
                 'status' => 'success',

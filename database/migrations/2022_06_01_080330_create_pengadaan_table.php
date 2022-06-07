@@ -20,8 +20,8 @@ return new class extends Migration
             $table->date('tanggal_penerimaan');
             $table->string('nomor_laporan', 50);
             $table->integer('biaya_pengadaan');
+            $table->text('keterangan');
             $table->string('nota', 100)->nullable();
-            // $table->boolean('status_pengadaan')->default(2);
             $table->enum('status_pengadaan', ['Ditolak', 'Diproses', 'Diterima'])->default('Diproses');
             $table->timestamps();
         });

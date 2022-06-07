@@ -99,30 +99,38 @@ $(document).ready(function () {
                             $('#merek').removeClass('is-invalid')
                             $('.error-merek').html('')
                         }
-                        if (error.responseJSON.errors.tahun) {
-                            $('#tahun').addClass('is-invalid')
-                            $('#tahun').trigger('focus')
-                            $('.error-tahun').html(error.responseJSON.errors.tahun)
+                        if (error.responseJSON.errors.spesifikasi) {
+                            $('#spesifikasi').addClass('is-invalid')
+                            $('#spesifikasi').trigger('focus')
+                            $('.error-spesifikasi').html(error.responseJSON.errors.spesifikasi)
                         } else {
-                            $('#tahun').removeClass('is-invalid')
-                            $('.error-tahun').html('')
+                            $('#spesifikasi').removeClass('is-invalid')
+                            $('.error-spesifikasi').html('')
                         }
-                        if (error.responseJSON.errors.total) {
-                            $('#total').addClass('is-invalid')
-                            $('#total').trigger('focus')
-                            $('.error-total').html(error.responseJSON.errors.total)
-                        } else {
-                            $('#total').removeClass('is-invalid')
-                            $('.error-total').html('')
-                        }
-                        if (error.responseJSON.errors.jumlah_rusak) {
-                            $('#jumlah-rusak').addClass('is-invalid')
-                            $('#jumlah-rusak').trigger('focus')
-                            $('.error-jumlah-rusak').html(error.responseJSON.errors.jumlah_rusak)
-                        } else {
-                            $('#jumlah-rusak').removeClass('is-invalid')
-                            $('.error-jumlah-rusak').html('')
-                        }
+                        // if (error.responseJSON.errors.tahun) {
+                        //     $('#tahun').addClass('is-invalid')
+                        //     $('#tahun').trigger('focus')
+                        //     $('.error-tahun').html(error.responseJSON.errors.tahun)
+                        // } else {
+                        //     $('#tahun').removeClass('is-invalid')
+                        //     $('.error-tahun').html('')
+                        // }
+                        // if (error.responseJSON.errors.total) {
+                        //     $('#total').addClass('is-invalid')
+                        //     $('#total').trigger('focus')
+                        //     $('.error-total').html(error.responseJSON.errors.total)
+                        // } else {
+                        //     $('#total').removeClass('is-invalid')
+                        //     $('.error-total').html('')
+                        // }
+                        // if (error.responseJSON.errors.jumlah_rusak) {
+                        //     $('#jumlah-rusak').addClass('is-invalid')
+                        //     $('#jumlah-rusak').trigger('focus')
+                        //     $('.error-jumlah-rusak').html(error.responseJSON.errors.jumlah_rusak)
+                        // } else {
+                        //     $('#jumlah-rusak').removeClass('is-invalid')
+                        //     $('.error-jumlah-rusak').html('')
+                        // }
                     }
                 }
             }
@@ -205,30 +213,38 @@ $(document).ready(function () {
                             $('#merek').removeClass('is-invalid')
                             $('.error-merek').html('')
                         }
-                        if (error.responseJSON.errors.tahun) {
-                            $('#tahun').addClass('is-invalid')
-                            $('#tahun').trigger('focus')
-                            $('.error-tahun').html(error.responseJSON.errors.tahun)
+                        if (error.responseJSON.errors.spesifikasi) {
+                            $('#spesifikasi').addClass('is-invalid')
+                            $('#spesifikasi').trigger('focus')
+                            $('.error-spesifikasi').html(error.responseJSON.errors.spesifikasi)
                         } else {
-                            $('#tahun').removeClass('is-invalid')
-                            $('.error-tahun').html('')
+                            $('#spesifikasi').removeClass('is-invalid')
+                            $('.error-spesifikasi').html('')
                         }
-                        if (error.responseJSON.errors.total) {
-                            $('#total').addClass('is-invalid')
-                            $('#total').trigger('focus')
-                            $('.error-total').html(error.responseJSON.errors.total)
-                        } else {
-                            $('#total').removeClass('is-invalid')
-                            $('.error-total').html('')
-                        }
-                        if (error.responseJSON.errors.jumlah_rusak) {
-                            $('#jumlah-rusak').addClass('is-invalid')
-                            $('#jumlah-rusak').trigger('focus')
-                            $('.error-jumlah-rusak').html(error.responseJSON.errors.jumlah_rusak)
-                        } else {
-                            $('#jumlah-rusak').removeClass('is-invalid')
-                            $('.error-jumlah-rusak').html('')
-                        }
+                        // if (error.responseJSON.errors.tahun) {
+                        //     $('#tahun').addClass('is-invalid')
+                        //     $('#tahun').trigger('focus')
+                        //     $('.error-tahun').html(error.responseJSON.errors.tahun)
+                        // } else {
+                        //     $('#tahun').removeClass('is-invalid')
+                        //     $('.error-tahun').html('')
+                        // }
+                        // if (error.responseJSON.errors.total) {
+                        //     $('#total').addClass('is-invalid')
+                        //     $('#total').trigger('focus')
+                        //     $('.error-total').html(error.responseJSON.errors.total)
+                        // } else {
+                        //     $('#total').removeClass('is-invalid')
+                        //     $('.error-total').html('')
+                        // }
+                        // if (error.responseJSON.errors.jumlah_rusak) {
+                        //     $('#jumlah-rusak').addClass('is-invalid')
+                        //     $('#jumlah-rusak').trigger('focus')
+                        //     $('.error-jumlah-rusak').html(error.responseJSON.errors.jumlah_rusak)
+                        // } else {
+                        //     $('#jumlah-rusak').removeClass('is-invalid')
+                        //     $('.error-jumlah-rusak').html('')
+                        // }
                     }
                 }
             }

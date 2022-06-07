@@ -19,9 +19,9 @@
                         <th>Kode Barang</th>
                         <th>Nama Barang</th>
                         <th>Merek Barang</th>
-                        {{-- <th>Tahun</th>
+                        <th>Spesifikasi</th>
                         <th>Jumlah Barang Rusak</th>
-                        <th>Total Barang</th> --}}
+                        <th>Total Barang</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -32,9 +32,9 @@
                         <td>{{$data->kode_barang}}</td>
                         <td>{{$data->nama_barang}}</td>
                         <td>{{$data->merek}}</td>
-                        {{-- <td>{{$data->tahun}}</td>
+                        <td>{{$data->spesifikasi}}</td>
                         <td>{{$data->jumlah_barang_rusak}}</td>
-                        <td>{{$data->total_barang}}</td> --}}
+                        <td>{{$data->total_barang}}</td>
                         <td>
                             <button class="btn btn-primary btn-edit" data-id="{{$data->id_barang}}">
                                 <i class="fa fa-edit"></i> Edit

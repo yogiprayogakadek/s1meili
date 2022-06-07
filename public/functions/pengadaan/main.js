@@ -61,6 +61,11 @@ $(document).ready(function () {
         $("#biaya").val(convertToRupiah($(this).val(), "Rp. "))
     });
 
+    $("body").on("keyup", '.harga-satuan', function (e) {
+        var id_harga = $(this).data("harga");
+        $("#"+ id_harga).val(convertToRupiah($(this).val(), "Rp. "))
+    });
+
     $('body').on('click', '.btn-add-item', function(){
         i++;
 
@@ -88,9 +93,19 @@ $(document).ready(function () {
                     '<div class="invalid-feedback error-merek'+i+'"></div>' +
                 '</div>' +
                 '<div class="form-group">' +
+                    '<label>Spesifikasi Barang</label>' +
+                    '<textarea class="form-control spesifikasi'+i+'" name="spesifikasi['+i+']" id="spesifikasi'+i+'" placeholder="masukkan spesifikasi barang"></textarea>' +
+                    '<div class="invalid-feedback error-spesifikasi'+i+'"></div>' +
+                '</div>' +
+                '<div class="form-group">' +
                     '<label>Jumlah Barang</label>' +
                     '<input type="number" class="form-control jumlah'+i+'" name="jumlah['+i+']" id="jumlah'+i+'" placeholder="masukkan jumlah barang">' +
                     '<div class="invalid-feedback error-jumlah'+i+'"></div>' +
+                '</div>' +
+                '<div class="form-group">' +
+                    '<label>Harga Satuan</label>' +
+                    '<input type="text" class="form-control harga-satuan harga'+i+'" name="harga['+i+']" id="harga'+i+'" data-harga="harga'+i+'" placeholder="masukkan harga satuan">' +
+                    '<div class="invalid-feedback error-harga'+i+'"></div>' +
                 '</div>' +
             '</div>' +
         '</div>';
@@ -219,57 +234,31 @@ $(document).ready(function () {
                 );
             },
             error: function (error) {
+                let formName = []
+                let errorName = []
+                $.each($('#formEdit').serializeArray(), function (i, field) {
+                    // formName.push((field.name.replace(/\[\d+\]/g, '')).replace('.', ''))
+                    formName.push(field.name.replace(/\[|\]/g, ''))
+                });
+                // console.log(formName)
                 if (error.status == 422) {
                     if (error.responseJSON.errors) {
-                        if (error.responseJSON.errors.nama) {
-                            $('#nama').addClass('is-invalid')
-                            $('#nama').trigger('focus')
-                            $('.error-nama').html(error.responseJSON.errors.nama)
-                        } else {
-                            $('#nama').removeClass('is-invalid')
-                            $('.error-nama').html('')
-                        }
-                        if (error.responseJSON.errors.kode) {
-                            $('#kode').addClass('is-invalid')
-                            $('#kode').trigger('focus')
-                            $('.error-kode').html(error.responseJSON.errors.kode)
-                        } else {
-                            $('#kode').removeClass('is-invalid')
-                            $('.error-kode').html('')
-                        }
-                        if (error.responseJSON.errors.merek) {
-                            $('#merek').addClass('is-invalid')
-                            $('#merek').trigger('focus')
-                            $('.error-merek').html(error.responseJSON.errors.merek)
-                        } else {
-                            $('#merek').removeClass('is-invalid')
-                            $('.error-merek').html('')
-                        }
-                        if (error.responseJSON.errors.tahun) {
-                            $('#tahun').addClass('is-invalid')
-                            $('#tahun').trigger('focus')
-                            $('.error-tahun').html(error.responseJSON.errors.tahun)
-                        } else {
-                            $('#tahun').removeClass('is-invalid')
-                            $('.error-tahun').html('')
-                        }
-                        if (error.responseJSON.errors.total) {
-                            $('#total').addClass('is-invalid')
-                            $('#total').trigger('focus')
-                            $('.error-total').html(error.responseJSON.errors.total)
-                        } else {
-                            $('#total').removeClass('is-invalid')
-                            $('.error-total').html('')
-                        }
-                        if (error.responseJSON.errors.jumlah_rusak) {
-                            $('#jumlah-rusak').addClass('is-invalid')
-                            $('#jumlah-rusak').trigger('focus')
-                            $('.error-jumlah-rusak').html(error.responseJSON.errors.jumlah_rusak)
-                        } else {
-                            $('#jumlah-rusak').removeClass('is-invalid')
-                            $('.error-jumlah-rusak').html('')
-                        }
+                        $.each(error.responseJSON.errors, function (key, value) {
+                            errorName.push(key.replace('.', ''))
+                            if($('.'+key.replace('.', '')).val() == '') {
+                                $('.'+key.replace('.', '')).addClass('is-invalid');
+                                $('.error-'+key.replace('.', '')).html(value);
+                            }
+                        });
+                        $.each(formName, function (i, field) {
+                            // if(!errorName.includes(field)) {
+                            //     $('.'+field).removeClass('is-invalid');
+                            //     $('.error-'+field).html('');
+                            // }
+                            $.inArray(field, errorName) == -1 ? $('.'+field).removeClass('is-invalid') : $('.'+field).addClass('is-invalid');
+                        });
                     }
+                    // console.log(errorName);
                 }
             }
         });

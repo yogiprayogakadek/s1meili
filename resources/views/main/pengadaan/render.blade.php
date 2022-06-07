@@ -22,6 +22,7 @@
                         <th>Nomor Laporan</th>
                         <th>Biaya Pengadaan</th>
                         <th>Nota</th>
+                        <th>Keterangan</th>
                         <th>Status Pengadaan</th>
                         <th>Aksi</th>
                     </tr>
@@ -36,6 +37,7 @@
                         <td>{{$data->nomor_laporan}}</td>
                         <td>{{convertToRupiah($data->biaya_pengadaan)}}</td>
                         <td>{!!$data->nota == null ? '-' : '<a href="'.asset($data->nota).'" target="_blank">Lihat Nota</a>'!!}</td>
+                        <td>{{$data->keterangan}}</td>
                         <td>{{$data->status_pengadaan}}</td>
                         <td>
                             <button class="btn btn-primary btn-item" data-id="{{$data->id_pengadaan}}">

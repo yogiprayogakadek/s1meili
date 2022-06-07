@@ -30,6 +30,7 @@ class BarangRequest extends FormRequest
             // 'tahun' => 'required|numeric',
             // 'jumlah_rusak' => 'required|numeric',
             // 'total' => 'required|numeric',
+            'spesifikasi' => 'required',
         ];
     }
 
@@ -51,6 +52,7 @@ class BarangRequest extends FormRequest
             // 'tahun' => 'Tahun barang',
             // 'jumlah_rusak' => 'Jumlah barang rusak',
             // 'total' => 'Total barang',
+            'spesifikasi' => 'Spesifikasi barang',
         ];
     }
 }

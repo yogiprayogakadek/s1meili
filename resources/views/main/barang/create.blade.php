@@ -25,6 +25,12 @@
                     <input type="text" class="form-control" name="merek" id="merek" placeholder="masukkan merek barang">
                     <div class="invalid-feedback error-merek"></div>
                 </div>
+                <div class="form-group">
+                    <label for="spesifikasi">Spesifikasi Barang</label>
+                    <textarea class="form-control" name="spesifikasi" id="spesifikasi" placeholder="masukkan spesifikasi barang"></textarea>
+                    <div class="invalid-feedback error-spesifikasi"></div>
+                </div>
+                
                 {{-- <div class="form-group">
                     <label for="tahun">Tahun</label>
                     <input type="text" class="form-control" name="tahun" id="tahun" placeholder="masukkan tahun">

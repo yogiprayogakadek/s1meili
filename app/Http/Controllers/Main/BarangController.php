@@ -52,6 +52,7 @@ class BarangController extends Controller
                 'nama_barang' => $request->nama,
                 'kode_barang' => $request->kode,
                 'merek' => $request->merek,
+                'spesifikasi' => $request->spesifikasi,
                 // 'tahun' => $request->tahun,
                 // 'jumlah_barang_rusak' => $request->jumlah_rusak,
                 // 'total_barang' => $request->total,
@@ -92,6 +93,7 @@ class BarangController extends Controller
                 // 'tahun' => $request->tahun,
                 // 'jumlah_barang_rusak' => $request->jumlah_rusak,
                 // 'total_barang' => $request->total,
+                'spesifikasi' => $request->spesifikasi,
             ]);
 
             return response()->json([
