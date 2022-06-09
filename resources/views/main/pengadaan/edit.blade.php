@@ -10,6 +10,22 @@
                 </div>
             </div>
             <div class="card-body">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label for="pemohon">Nama Pemohon</label>
+                            <input type="text" class="form-control pemohon" name="pemohon" id="pemohon" placeholder="masukkan nama pemohon" value="{{$data->pemohon}}">
+                            <div class="invalid-feedback error-pemohon"></div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label for="jabatan_pemohon">Jabatan Pemohon</label>
+                            <input type="text" class="form-control jabatan_pemohon" name="jabatan_pemohon" id="jabatan_pemohon" placeholder="masukkan jabatan pemohon" value="{{$data->jabatan_pemohon}}">
+                            <div class="invalid-feedback error-jabatan_pemohon"></div>
+                        </div>
+                    </div>
+                </div>
                 <div class="form-group">
                     <input type="hidden" value="{{$data->id_pengadaan}}" name="id_pengadaan">
                     <label for="nomor-laporan">Nomor Laporan</label>
@@ -19,12 +35,12 @@
                 <div class="form-group">
                     <label for="tanggal-pengadaan">Tanggal Pengadaan</label>
                     <input type="date" class="form-control tanggal_pengadaan" name="tanggal_pengadaan" id="tanggal-pengadaan" placeholder="masukkan tanggal pengadaan barang" value="{{$data->tanggal_pengadaan}}">
-                    <div class="invalid-feedback error-tanggal-pengadaan"></div>
+                    <div class="invalid-feedback error-tanggal_pengadaan"></div>
                 </div>
                 <div class="form-group">
                     <label for="tanggal-penerimaan">Tanggal Penerimaan</label>
                     <input type="date" class="form-control tanggal_penerimaan" name="tanggal_penerimaan" id="tanggal-penerimaan" placeholder="masukkan tanggal penerimaan barang" value="{{$data->tanggal_penerimaan}}">
-                    <div class="invalid-feedback error-tanggal-penerimaan"></div>
+                    <div class="invalid-feedback error-tanggal_penerimaan"></div>
                 </div>
                 <div class="form-group">
                     <label for="biaya">Biaya</label>

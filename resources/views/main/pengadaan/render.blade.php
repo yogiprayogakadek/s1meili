@@ -12,17 +12,18 @@
             </div>
         </div>
         <div class="card-body">
-            <table class="table table-bordered text-nowrap border-bottom dataTable no-footer table-responsive" role="grid" id="tableData">
+            <table class="table table-bordered text-nowrap border-bottom dataTable no-footer" role="grid" id="tableData">
                 <thead>
                     <tr>
-                        <th>No</th>
+                        <th></th>
+                        {{-- <th>No</th> --}}
                         <th>User</th>
                         <th>Tanggal Pengadaan</th>
                         <th>Tanggal Penerimaan</th>
                         <th>Nomor Laporan</th>
                         <th>Biaya Pengadaan</th>
                         <th>Nota</th>
-                        <th>Keterangan</th>
+                        {{-- <th>Keterangan</th> --}}
                         <th>Status Pengadaan</th>
                         <th>Aksi</th>
                     </tr>
@@ -30,19 +31,22 @@
                 <tbody>
                     @foreach ($data as $data)
                     <tr>
-                        <td>{{$loop->iteration}}</td>
+                        <td data-keterangan="{{$data->keterangan}}" data-pemohon="{{$data->pemohon}}" data-jabatan="{{$data->jabatan_pemohon}}" data-id="{{$data->id_pengadaan}}">
+                            <i class="fa fa-plus-circle"></i>
+                        </td>
+                        {{-- <td>{{$loop->iteration}}</td> --}}
                         <td>{{$data->user->nama}}</td>
                         <td>{{$data->tanggal_pengadaan}}</td>
                         <td>{{$data->tanggal_penerimaan}}</td>
                         <td>{{$data->nomor_laporan}}</td>
                         <td>{{convertToRupiah($data->biaya_pengadaan)}}</td>
                         <td>{!!$data->nota == null ? '-' : '<a href="'.asset($data->nota).'" target="_blank">Lihat Nota</a>'!!}</td>
-                        <td>{{$data->keterangan}}</td>
+                        {{-- <td>{{$data->keterangan}}</td> --}}
                         <td>{{$data->status_pengadaan}}</td>
                         <td>
-                            <button class="btn btn-primary btn-item" data-id="{{$data->id_pengadaan}}">
+                            {{-- <button class="btn btn-primary btn-item" data-id="{{$data->id_pengadaan}}">
                                 <i class="fa fa-eye"></i> Item Pengadaan
-                            </button>
+                            </button> --}}
                             <button class="btn btn-success btn-edit" data-id="{{$data->id_pengadaan}}">
                                 <i class="fa fa-edit"></i> Edit
                             </button>

@@ -29,6 +29,8 @@ class PengadaanRequest extends FormRequest
             'nomor_laporan' => 'required',
             'biaya' => 'required',
             'keterangan' => 'required',
+            'pemohon' => 'required',
+            'jabatan_pemohon' => 'required',
         ];
 
         for($i = 0; $i < count($this->input('nama')); $i++) {
@@ -67,6 +69,8 @@ class PengadaanRequest extends FormRequest
             'nomor_laporan' => 'Nomor Laporan',
             'biaya_pengadaan' => 'Biaya Pengadaan',
             'keterangan' => 'Keterangan',
+            'pemohon' => 'Pemohon',
+            'jabatan_pemohon' => 'Jabatan',
         ];
 
         for($i = 0; $i < count($this->input('nama')); $i++) {

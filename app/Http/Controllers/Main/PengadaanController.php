@@ -65,6 +65,8 @@ class PengadaanController extends Controller
                     'nomor_laporan' => $request->nomor_laporan,
                     'biaya_pengadaan' => preg_replace('/[^0-9]/', '', $request->biaya),
                     'keterangan' => $request->keterangan,
+                    'pemohon' => $request->pemohon,
+                    'jabatan_pemohon' => $request->jabatan_pemohon,
                 ];
 
                 if($request->hasFile('nota')) {
@@ -166,6 +168,8 @@ class PengadaanController extends Controller
                     'nomor_laporan' => $request->nomor_laporan,
                     'biaya_pengadaan' => preg_replace('/[^0-9]/', '', $request->biaya),
                     'keterangan' => $request->keterangan,
+                    'pemohon' => $request->pemohon,
+                    'jabatan_pemohon' => $request->jabatan_pemohon,
                 ];
 
                 if($request->hasFile('nota')) {
@@ -252,6 +256,23 @@ class PengadaanController extends Controller
                 'title' => 'Gagal'
             ]);
         }
+    }
+
+    public function itemPengadaan($id_pengadaan) {
+        $itemPengadaan = ItemPengadaan::with('barang')->where('id_pengadaan', $id_pengadaan)->get();
+        $data = [];
+        foreach($itemPengadaan as $key => $item) {
+            $data[] = [
+                'no' => $key + 1,
+                'nama_barang' => $item->barang->nama_barang,
+                'harga_satuan' => convertToRupiah($item->harga_satuan),
+                'jumlah_barang' => $item->jumlah_barang,
+                'total' => convertToRupiah($item->harga_satuan * $item->jumlah_barang)
+            ];
+        }
+
+        // dd($html);
+        return response()->json($data);
     }
 
     public function delete($id)

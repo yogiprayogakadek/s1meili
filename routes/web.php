@@ -36,6 +36,7 @@ Route::prefix('/')->namespace('Main')->middleware('auth')->group(function(){
         Route::post('/store', 'PengadaanController@store')->name('store');
         Route::post('/update', 'PengadaanController@update')->name('update');
         Route::get('/delete/{id}', 'PengadaanController@delete')->name('delete');
+        Route::get('/item-pengadaan/{id_pengadaan}', 'PengadaanController@itemPengadaan')->name('item-pengadaan');
         Route::get('/print/{id}', 'PengadaanController@print')->name('print');
     });
 

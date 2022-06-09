@@ -15,7 +15,9 @@ return new class extends Migration
     {
         Schema::create('pengadaan', function (Blueprint $table) {
             $table->id('id_pengadaan');
-            $table->foreignId('id_user')->references('id_user')->on('users')->onDelete('cascade');
+            $table->foreignId('id_user')->references('id_user')->on('users')->onDelete('cascade')->comment('user yang memasukkan data');
+            $table->string('pemohon', 100);
+            $table->string('jabatan_pemohon', 100);
             $table->date('tanggal_pengadaan');
             $table->date('tanggal_penerimaan');
             $table->string('nomor_laporan', 50);

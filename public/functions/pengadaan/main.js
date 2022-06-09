@@ -327,4 +327,75 @@ $(document).ready(function () {
             }
         })
     });
+
+    $('body').on('click', '#tableData td:first-child', function () {
+        var id_pengadaan = $(this).data('id')
+        var table = $('#tableData').DataTable();
+        var tr = $(this).closest('tr');
+        var row = table.row( tr );
+        var keterangan = $(this).data('keterangan');
+        var pemohon = $(this).data('pemohon');
+        var jabatan_pemohon = $(this).data('jabatan');
+        if (row.child.isShown()) {
+            // This row is already open - close it.
+            row.child.hide();
+            tr.removeClass('shown');
+        } else {
+            // Open row.
+
+            var row_div = '<div class="row">' +
+                '<div class="col-md-2">' +
+                    'Nama Pemohon' +
+                '</div>' +
+                '<div class="col-md-10">' +
+                    pemohon +
+                '</div>' +
+                '<div class="col-md-2 mt-2">' +
+                    'Jabatan Pemohon' +
+                '</div>' +
+                '<div class="col-md-10 mt-2">' +
+                    jabatan_pemohon +
+                '</div>' +
+                '<div class="col-md-2 mt-2">' +
+                    'Keterangan' +
+                '</div>' +
+                '<div class="col-md-10 mt-2">' +
+                    keterangan +
+                '</div>' +
+
+                '<div class="col-md-12 mt-2 text-center">' +
+                    '<h4><strong>Detail Item Pengadaan</strong></h4>' +
+                '</div>' +
+                
+                '<table class="table table-stripped table-hover mt-2" id="tableItem">' +
+                    '<thead>' +
+                    '<tr>' +
+                        '<th>No</th>' +
+                        '<th>Nama Barang</th>' +
+                        '<th>Harga Satuan Barang</th>' +
+                        '<th>Jumlah Barang</th>' +
+                        '<th>Total Harga</th>' +
+                    '</tr>' +
+                    '</thead>' +
+                    '<tbody id="item'+id_pengadaan+'">' +
+                    '</tbody>' +
+                '</table>';
+            '</div>';
+            $.get('/pengadaan/item-pengadaan/'+id_pengadaan, function(data) {
+                $.each(data, function(i, item) {
+                    var tr_row = '<tr>' +
+                        '<td>' + (i+1) + '</td>' +
+                        '<td>' + item.nama_barang + '</td>' +
+                        '<td>' + item.harga_satuan + '</td>' +
+                        '<td>' + item.jumlah_barang + '</td>' +
+                        '<td>' + item.total + '</td>' +
+                    '</tr>';
+                    $('#item'+id_pengadaan).append(tr_row);
+                });
+                // $('#tableItem tbody').html(data);
+            })
+            row.child(row_div).show();
+            tr.addClass('shown');
+        }
+    });
 });
