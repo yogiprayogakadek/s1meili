@@ -160,7 +160,7 @@ class PengadaanController extends Controller
     {
         try {
             $pengadaan = Pengadaan::find($request->id_pengadaan);
-            DB::transaction(function () use ($request, &$response, $pengadaan) {
+            DB::transaction(function () use ($request, $pengadaan) {
                 $dataPengadaan = [
                     'id_user' => auth()->user()->id_user,
                     'tanggal_pengadaan' => $request->tanggal_pengadaan,

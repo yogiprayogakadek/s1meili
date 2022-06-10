@@ -33,6 +33,10 @@
                                         href="{{route('pengadaan-histori.index')}}"><i class="side-menu__icon fe fe-home"></i><span
                                             class="side-menu__label">Pengadaan Histori</span>
                                     </a>
+                                    <a class="side-menu__item has-link {{Request::is('perbaikan') ? 'active' : '' }}" data-bs-toggle="slide"
+                                        href="{{route('perbaikan.index')}}"><i class="side-menu__icon fe fe-home"></i><span
+                                            class="side-menu__label">Perbaikan Barang</span>
+                                    </a>
                                     {{-- @elseif (Auth::user()->jabatan->nama == 'Petugas HRD')
                                     <a class="side-menu__item has-link {{Request::is('petugas/dashboard') ? 'active' : '' }}" data-bs-toggle="slide"
                                         href="{{route('petugas.dashboard.index')}}"><i class="side-menu__icon fe fe-home"></i><span

@@ -46,6 +46,20 @@ Route::prefix('/')->namespace('Main')->middleware('auth')->group(function(){
         Route::post('/validasi', 'PengadaanHistoriController@validasi')->name('validasi');
         Route::get('/detail-validasi/{id_pengadaan}', 'PengadaanHistoriController@detailValidasi')->name('detail-validasi');
     });
+
+    Route::prefix('/perbaikan')->name('perbaikan.')->group(function(){
+        Route::get('/', 'PerbaikanController@index')->name('index');
+        Route::get('/create', 'PerbaikanController@create')->name('create');
+        Route::get('/edit/{id}', 'PerbaikanController@edit')->name('edit');
+        Route::get('/render', 'PerbaikanController@render')->name('render');
+        Route::post('/store', 'PerbaikanController@store')->name('store');
+        Route::post('/update', 'PerbaikanController@update')->name('update');
+        Route::get('/delete/{id}', 'PerbaikanController@delete')->name('delete');
+        Route::get('/item-perbaikan/{id_perbaikan}', 'PerbaikanController@itemPerbaikan')->name('item-pengadaan');
+        Route::get('/print/{id}', 'PerbaikanController@print')->name('print');
+        Route::post('/validasi', 'PerbaikanController@validasi')->name('validasi');
+        Route::get('/detail-validasi/{id_perbaikan}', 'PerbaikanController@detailValidasi')->name('detail-validasi');
+    });
 });
 
 Auth::routes();
