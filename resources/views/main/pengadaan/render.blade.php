@@ -27,9 +27,9 @@
                         <th>Nota</th>
                         {{-- <th>Keterangan</th> --}}
                         <th>Status Pengadaan</th>
-                        @can('manage_data')
+                        {{-- @can('manage_data') --}}
                         <th>Aksi</th>
-                        @endcan
+                        {{-- @endcan --}}
                     </tr>
                 </thead>
                 <tbody>
