@@ -6,18 +6,16 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\MaintenanceRequest;
 use App\Models\Maintenance;
 use App\Models\MaintenanceHistori;
-use App\Models\Perbaikan;
-use App\Models\PerbaikanHistori;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
-class PerbaikanController extends Controller
+class KerusakanController extends Controller
 {
-    protected $kategori_maintenance = 'Perawatan dan Perbaikan';
+    protected $kategori_maintenance = 'Kerusakan';
     public function index()
     {
-        return view('main.perbaikan.index');
+        return view('main.kerusakan.index');
     }
 
     public function render()
@@ -25,7 +23,7 @@ class PerbaikanController extends Controller
         $data = Maintenance::with('user')->where('kategori_maintenance', $this->kategori_maintenance)->get();
 
         $view = [
-            'data' => view('main.perbaikan.render', compact('data'))->render()
+            'data' => view('main.kerusakan.render', compact('data'))->render()
         ];
 
         return response()->json($view);
@@ -34,7 +32,7 @@ class PerbaikanController extends Controller
     public function create()
     {
         $view = [
-            'data' => view('main.perbaikan.create')->render()
+            'data' => view('main.kerusakan.create')->render()
         ];
 
         return response()->json($view);
@@ -45,25 +43,25 @@ class PerbaikanController extends Controller
         try {
             $response = [];
             DB::transaction(function () use ($request, &$response) {
-                $dataPerbaikan = [
+                $dataKerusakan = [
                     'id_user' => auth()->user()->id_user,
                     'tanggal_maintenance' => $request->tanggal_maintenance,
                     'nomor_laporan' => $request->nomor_laporan,
                     'pemohon' => $request->pemohon,
                     'jabatan_pemohon' => $request->jabatan_pemohon,
-                    'kategori_perbaikan' => $this->kategori_maintenance,
+                    'kategori_maintenance' => $this->kategori_maintenance,
                     'biaya_maintenance' => preg_replace('/[^0-9]/', '', $request->biaya),
                 ];
 
-                $cekPerbaikan = Maintenance::where('nomor_laporan', $request->nomor_laporan)->first();
-                if($cekPerbaikan) {
+                $cekKerusakan = Maintenance::where('nomor_laporan', $request->nomor_laporan)->first();
+                if($cekKerusakan) {
                     $response['status'] = 'error';
                     $response['message'] = 'Nomor Laporan sudah tersedia';
                     $response['title'] = 'Gagal Menambah Data';
                 } else {
-                    $itemPerbaikan = array();
+                    $itemKerusakan = array();
                     for($i = 1; $i <= count($request->nama); $i++) {
-                        $itemPerbaikan[] = [
+                        $itemKerusakan[] = [
                             'id' => $i,
                             'nama_barang' => $request->nama[$i],
                             'spesifikasi_barang' => $request->spesifikasi[$i],
@@ -72,13 +70,13 @@ class PerbaikanController extends Controller
                         ];
                     }
 
-                    $dataPerbaikan['item_maintenance'] = json_encode($itemPerbaikan);
+                    $dataKerusakan['item_maintenance'] = json_encode($itemKerusakan);
 
-                    $perbaikan = Maintenance::create($dataPerbaikan);
+                    $kerusakan = Maintenance::create($dataKerusakan);
 
                     // insert ke tabel perbaikan_history
                     MaintenanceHistori::create([
-                        'id_maintenance' => $perbaikan->id_maintenance,
+                        'id_maintenance' => $kerusakan->id_maintenance,
                     ]);
                 }
             });
@@ -106,7 +104,7 @@ class PerbaikanController extends Controller
     {
         $data = Maintenance::find($id);
         $view = [
-            'data' => view('main.perbaikan.edit')->with([
+            'data' => view('main.kerusakan.edit')->with([
                 'data' => $data,
                 'item_perbaikan' => json_decode($data->item_maintenance, true)
             ])->render()
@@ -118,10 +116,10 @@ class PerbaikanController extends Controller
     public function update(MaintenanceRequest $request)
     {
         try {
-            $perbaikan = Maintenance::find($request->id_maintenance);
+            $kerusakan = Maintenance::find($request->id_maintenance);
             $item_perbaikan = array();
-            DB::transaction(function () use ($request, $perbaikan, &$item_perbaikan) {
-                $dataPerbaikan = [
+            DB::transaction(function () use ($request, $kerusakan, &$item_perbaikan) {
+                $dataKerusakan = [
                     'id_user' => auth()->user()->id_user,
                     'tanggal_maintenance' => $request->tanggal_maintenance,
                     'nomor_laporan' => $request->nomor_laporan,
@@ -139,9 +137,9 @@ class PerbaikanController extends Controller
                         'keterangan' => $request->keterangan[$i],
                     ];
                 }
-                $dataPerbaikan['item_maintenance'] = json_encode($item_perbaikan);
+                $dataKerusakan['item_maintenance'] = json_encode($item_perbaikan);
 
-                $perbaikan->update($dataPerbaikan);
+                $kerusakan->update($dataKerusakan);
             });
 
             return response()->json([
@@ -162,8 +160,8 @@ class PerbaikanController extends Controller
     public function delete($id)
     {
         try {
-            $perbaikan = Maintenance::find($id);
-            $perbaikan->delete();
+            $kerusakan = Maintenance::find($id);
+            $kerusakan->delete();
 
             return response()->json([
                 'status' => 'success',
@@ -180,10 +178,10 @@ class PerbaikanController extends Controller
         }
     }
 
-    public function itemPerbaikan($id)
+    public function itemKerusakan($id)
     {
-        $perbaikan = Maintenance::find($id);
-        $item_perbaikan = json_decode($perbaikan->item_maintenance, true);
+        $kerusakan = Maintenance::find($id);
+        $item_perbaikan = json_decode($kerusakan->item_maintenance, true);
 
         $data = [];
         foreach($item_perbaikan as $key => $item) {
@@ -203,7 +201,7 @@ class PerbaikanController extends Controller
     {
         try {
             // DB::transaction(function () use ($request) {
-                $perbaikan = Maintenance::where('id_maintenance', $request->id_maintenance)->first();
+                $kerusakan = Maintenance::where('id_maintenance', $request->id_maintenance)->first();
                 $jabatan = Auth::user()->role->nama;
                 $dataTerakhir = MaintenanceHistori::where('id_maintenance', $request->id_maintenance)->first();
                 $data = [
@@ -221,57 +219,57 @@ class PerbaikanController extends Controller
                     $data['approve_wakil_sarpras'] = $request->status;
                     $data['tanggal_approve_wakil_sarpras'] = date('Y-m-d H:i:s');
                 }
-                // $PerbaikanHistori = MaintenanceHistori::where('id_maintenance', $request->id_maintenance)->first();
+                // $kerusakanHistori = MaintenanceHistori::where('id_maintenance', $request->id_maintenance)->first();
                 if($dataTerakhir) {
                     MaintenanceHistori::where('id_maintenance', $request->id_maintenance)->update($data);
-                    $PerbaikanHistori = MaintenanceHistori::where('id_maintenance', $request->id_maintenance)->first();
-                    if($PerbaikanHistori->approve_kepala_sekolah == 'Diterima' && $PerbaikanHistori->approve_wakil_sarpras == 'Diterima') {
-                        $updatePerbaikan = Maintenance::where('id_maintenance', $request->id_maintenance)->update([
+                    $kerusakanHistori = MaintenanceHistori::where('id_maintenance', $request->id_maintenance)->first();
+                    if($kerusakanHistori->approve_kepala_sekolah == 'Diterima' && $kerusakanHistori->approve_wakil_sarpras == 'Diterima') {
+                        $updateKerusakan = Maintenance::where('id_maintenance', $request->id_maintenance)->update([
                             'status_maintenance' => 'Diterima'
                         ]);
 
-                        $PerbaikanHistori->update([
+                        $kerusakanHistori->update([
                             'keterangan' => null
                         ]);
-                    } else if($PerbaikanHistori->approve_kepala_sekolah == 'Ditolak' && $PerbaikanHistori->approve_wakil_sarpras == 'Diterima') {
-                        $updatePerbaikan = Maintenance::where('id_maintenance', $request->id_maintenance)->update([
+                    } else if($kerusakanHistori->approve_kepala_sekolah == 'Ditolak' && $kerusakanHistori->approve_wakil_sarpras == 'Diterima') {
+                        $updateKerusakan = Maintenance::where('id_maintenance', $request->id_maintenance)->update([
                             'status_maintenance' => 'Ditolak'
                         ]);
-                    } else if($PerbaikanHistori->approve_kepala_sekolah == 'Diterima' && $PerbaikanHistori->approve_wakil_sarpras == 'Ditolak') {
-                        $updatePerbaikan = Maintenance::where('id_maintenance', $request->id_maintenance)->update([
+                    } else if($kerusakanHistori->approve_kepala_sekolah == 'Diterima' && $kerusakanHistori->approve_wakil_sarpras == 'Ditolak') {
+                        $updateKerusakan = Maintenance::where('id_maintenance', $request->id_maintenance)->update([
                             'status_maintenance' => 'Ditolak'
                         ]);
-                    } else if($PerbaikanHistori->approve_kepala_sekolah == 'Ditolak' && $PerbaikanHistori->approve_wakil_sarpras == 'Ditolak') {
-                        $updatePerbaikan = Maintenance::where('id_maintenance', $request->id_maintenance)->update([
+                    } else if($kerusakanHistori->approve_kepala_sekolah == 'Ditolak' && $kerusakanHistori->approve_wakil_sarpras == 'Ditolak') {
+                        $updateKerusakan = Maintenance::where('id_maintenance', $request->id_maintenance)->update([
                             'status_maintenance' => 'Ditolak'
                         ]);
-                    } else if($PerbaikanHistori->approve_kepala_sekolah == 'Diproses' && $PerbaikanHistori->approve_wakil_sarpras == 'Diterima') {
-                        $updatePerbaikan = Maintenance::where('id_maintenance', $request->id_maintenance)->update([
+                    } else if($kerusakanHistori->approve_kepala_sekolah == 'Diproses' && $kerusakanHistori->approve_wakil_sarpras == 'Diterima') {
+                        $updateKerusakan = Maintenance::where('id_maintenance', $request->id_maintenance)->update([
                             'status_maintenance' => 'Diproses'
                         ]);
-                        $PerbaikanHistori->update([
+                        $kerusakanHistori->update([
                             'keterangan' => null
                         ]);
-                    } else if($PerbaikanHistori->approve_kepala_sekolah == 'Diproses' && $PerbaikanHistori->approve_wakil_sarpras == 'Ditolak') {
-                        $updatePerbaikan = Maintenance::where('id_maintenance', $request->id_maintenance)->update([
+                    } else if($kerusakanHistori->approve_kepala_sekolah == 'Diproses' && $kerusakanHistori->approve_wakil_sarpras == 'Ditolak') {
+                        $updateKerusakan = Maintenance::where('id_maintenance', $request->id_maintenance)->update([
                             'status_maintenance' => 'Ditolak'
                         ]);
-                    } else if($PerbaikanHistori->approve_kepala_sekolah == 'Diterima' && $PerbaikanHistori->approve_wakil_sarpras == 'Diproses') {
-                        $updatePerbaikan = Maintenance::where('id_maintenance', $request->id_maintenance)->update([
+                    } else if($kerusakanHistori->approve_kepala_sekolah == 'Diterima' && $kerusakanHistori->approve_wakil_sarpras == 'Diproses') {
+                        $updateKerusakan = Maintenance::where('id_maintenance', $request->id_maintenance)->update([
                             'status_maintenance' => 'Diproses'
                         ]);
-                        $PerbaikanHistori->update([
+                        $kerusakanHistori->update([
                             'keterangan' => null
                         ]);
-                    } else if($PerbaikanHistori->approve_kepala_sekolah == 'Ditolak' && $PerbaikanHistori->approve_wakil_sarpras == 'Diproses') {
-                        $updatePerbaikan = Maintenance::where('id_maintenance', $request->id_maintenance)->update([
+                    } else if($kerusakanHistori->approve_kepala_sekolah == 'Ditolak' && $kerusakanHistori->approve_wakil_sarpras == 'Diproses') {
+                        $updateKerusakan = Maintenance::where('id_maintenance', $request->id_maintenance)->update([
                             'status_maintenance' => 'Ditolak'
                         ]);
-                    } else if($PerbaikanHistori->approve_kepala_sekolah == 'Diproses' && $PerbaikanHistori->approve_wakil_sarpras == 'Diproses') {
-                        $updatePerbaikan = Maintenance::where('id_maintenance', $request->id_maintenance)->update([
+                    } else if($kerusakanHistori->approve_kepala_sekolah == 'Diproses' && $kerusakanHistori->approve_wakil_sarpras == 'Diproses') {
+                        $updateKerusakan = Maintenance::where('id_maintenance', $request->id_maintenance)->update([
                             'status_maintenance' => 'Diproses'
                         ]);
-                        $PerbaikanHistori->update([
+                        $kerusakanHistori->update([
                             'keterangan' => null
                         ]);
                     }
@@ -315,7 +313,7 @@ class PerbaikanController extends Controller
                 $extension = $request->file('nota')->getClientOriginalExtension();
 
                 $filenametostore = $request->nomor_laporan. '-'. time() .'.'.$extension;
-                $save_path = 'assets/uploads/perbaikan/nota/';
+                $save_path = 'assets/uploads/kerusakan/nota/';
 
                 if(!file_exists($save_path)) {
                     mkdir($save_path, 666, true);

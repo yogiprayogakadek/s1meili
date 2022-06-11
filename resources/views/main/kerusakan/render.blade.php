@@ -1,7 +1,7 @@
 <div class="col-12">
     <div class="card">
         <div class="card-header">
-            <div class="card-title">Data Barang</div>
+            <div class="card-title">Data Kerusakan Barang</div>
             <div class="card-options">
                 @can('manage_data')
                 <button class="btn btn-primary btn-add">
@@ -18,15 +18,12 @@
                 <thead>
                     <tr>
                         <th></th>
-                        {{-- <th>No</th> --}}
                         <th>User</th>
-                        <th>Tanggal Pengadaan</th>
-                        <th>Tanggal Penerimaan</th>
+                        <th>Tanggal Perbaikan</th>
                         <th>Nomor Laporan</th>
-                        <th>Biaya Pengadaan</th>
+                        <th>Biaya</th>
+                        <th>Status Perbaikan</th>
                         <th>Nota</th>
-                        {{-- <th>Keterangan</th> --}}
-                        <th>Status Pengadaan</th>
                         @can('manage_data')
                         <th>Aksi</th>
                         @endcan
@@ -35,46 +32,44 @@
                 <tbody>
                     @foreach ($data as $data)
                     <tr>
-                        <td data-keterangan="{{$data->keterangan}}" data-pemohon="{{$data->pemohon}}" data-jabatan="{{$data->jabatan_pemohon}}" data-id="{{$data->id_pengadaan}}">
+                        <td data-keterangan="{{$data->keterangan_perbaikan}}" data-pemohon="{{$data->pemohon}}" data-jabatan="{{$data->jabatan_pemohon}}" data-id="{{$data->id_maintenance}}">
                             <i class="fa fa-plus-circle"></i>
                         </td>
-                        {{-- <td>{{$loop->iteration}}</td> --}}
                         <td>{{$data->user->nama}}</td>
-                        <td>{{$data->tanggal_pengadaan}}</td>
-                        <td>{{$data->tanggal_penerimaan}}</td>
+                        <td>{{$data->tanggal_maintenance}}</td>
                         <td>{{$data->nomor_laporan}}</td>
-                        <td>{{convertToRupiah($data->biaya_pengadaan)}}</td>
+                        <td>{{convertToRupiah($data->biaya_maintenance)}}</td>
+                        {{-- <td>{{$data->status_perbaikan}}</td> --}}
+                        <td>{!!$data->maintenance_histori == null ? $data->status_maintenance : '<button class="btn btn-primary btn-detail-validasi" data-id="'.$data->id_maintenance.'"><i class="fa fa-eye"></i> Lihat Status</button>' !!}</td>
                         <td>
                             @cannot('bendahara')
                             {!!$data->nota == null ? '-' : '<a href="'.asset($data->nota).'" target="_blank">Lihat Nota</a>'!!}
                             @endcannot
                             @can('bendahara')
                                 @if ($data->nota == null)
-                                <button class="btn btn-info btn-nota" data-id="{{$data->id_pengadaan}}">
+                                <button class="btn btn-info btn-nota" data-id="{{$data->id_maintenance}}">
                                     <i class="fa fa-upload"></i> Unggah Data
                                 </button>
                                 @else
-                                <button class="btn btn-success btn-detail-nota" data-id="{{$data->id_pengadaan}}" data-nota="{{$data->nota}}">
+                                <button class="btn btn-success btn-detail-nota" data-id="{{$data->id_maintenance}}" data-nota="{{$data->nota}}">
                                     <i class="fa fa-eye"></i> Detail Data
                                 </button>
                                 @endif
                             @endcan
                         </td>
-                        {{-- <td>{{$data->keterangan}}</td> --}}
-                        <td>{!!$data->pengadaan_histori == null ? $data->status_pengadaan : '<button class="btn btn-primary btn-detail-validasi" data-id="'.$data->id_pengadaan.'"><i class="fa fa-eye"></i> Lihat Status</button>' !!}</td>
                         @can('manage_data')
                         <td>
-                            <button class="btn btn-success btn-edit" data-id="{{$data->id_pengadaan}}">
+                            <button class="btn btn-success btn-edit" data-id="{{$data->id_maintenance}}">
                                 <i class="fa fa-edit"></i> Edit
                             </button>
-                            <button class="btn btn-danger btn-delete" data-id="{{$data->id_pengadaan}}">
+                            <button class="btn btn-danger btn-delete" data-id="{{$data->id_maintenance}}">
                                 <i class="fa fa-trash"></i> Hapus
                             </button>
                         </td>
                         @endcan
                         @can('validator')
                         <td>
-                            <button class="btn btn-success btn-validasi" data-id="{{$data->id_pengadaan}}" data-status="{{$data->status_pengadaan}}">
+                            <button class="btn btn-success btn-validasi" data-id="{{$data->id_maintenance}}" data-status="{{$data->status_maintenance}}">
                                 <i class="fa fa-check-circle-o"></i> Validasi
                             </button>
                         </td>
@@ -93,17 +88,17 @@
     <div class="modal-dialog modal-md" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Validasi Data Pengadaan</h5>
+                <h5 class="modal-title">Validasi Data Perbaikan</h5>
                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal" aria-label="Close">
                         <span class="fa fa-times"></span>
                     </button>
             </div>
             <div class="modal-body">
-                <input type="hidden" name="id_pengadaan" id="id_pengadaan">
+                <input type="hidden" name="id_maintenance" id="id_maintenance">
                 <div class="form-group">
-                    <label for="">Status Pengadaan</label>
-                    <select class="form-control" name="status_pengadaan" id="status_pengadaan">
-                        <option value="">Pilih Status Pengadaan</option>
+                    <label for="">Status Kerusakan</label>
+                    <select class="form-control" name="status_kerusakan" id="status_perbaikan">
+                        <option value="">Pilih Status Perbaikan</option>
                         <option value="Diproses">Diproses</option>
                         <option value="Diterima">Diterima</option>
                         <option value="Ditolak">Ditolak</option>
@@ -130,7 +125,7 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Status Data Pengadaan</h5>
+                <h5 class="modal-title">Status Data Kerusakan</h5>
                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal" aria-label="Close">
                         <span class="fa fa-times"></span>
                     </button>

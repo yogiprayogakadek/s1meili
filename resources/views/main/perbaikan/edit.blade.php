@@ -14,7 +14,7 @@
                 <div class="row">
                     <div class="col-6">
                         <div class="form-group">
-                            <input type="hidden" value="{{$data->id_perbaikan}}" name="id_perbaikan">
+                            <input type="hidden" value="{{$data->id_maintenance}}" name="id_maintenance">
                             <label for="pemohon">Nama Pemohon</label>
                             <input type="text" class="form-control pemohon" name="pemohon" id="pemohon" placeholder="masukkan nama pemohon" value="{{$data->pemohon}}">
                             <div class="invalid-feedback error-pemohon"></div>
@@ -35,9 +35,14 @@
                     <div class="invalid-feedback error-nomor_laporan"></div>
                 </div>
                 <div class="form-group">
-                    <label for="tanggal-perbaikan">Tanggal Perbaikan</label>
-                    <input type="date" class="form-control tanggal_perbaikan" name="tanggal_perbaikan" id="tanggal-perbaikan" placeholder="masukkan tanggal perbaikan barang" value="{{$data->tanggal_perbaikan}}">
-                    <div class="invalid-feedback error-tanggal_perbaikan"></div>
+                    <label for="tanggal-maintenance">Tanggal Perbaikan</label>
+                    <input type="date" class="form-control tanggal_maintenance" name="tanggal_maintenance" id="tanggal-maintenance" placeholder="masukkan tanggal perbaikan barang" value="{{$data->tanggal_maintenance}}">
+                    <div class="invalid-feedback error-tanggal_maintenance"></div>
+                </div>
+                <div class="form-group">
+                    <label for="biaya">Biaya</label>
+                    <input type="text" class="form-control biaya" name="biaya" id="biaya" placeholder="masukkan biaya" value="{{convertToRupiah($data->biaya_maintenance)}}">
+                    <div class="invalid-feedback error-biaya"></div>
                 </div>
                 {{-- </form> --}}
             </div>

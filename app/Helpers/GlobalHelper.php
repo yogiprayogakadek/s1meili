@@ -1,5 +1,8 @@
 <?php
 
+use App\Models\Maintenance;
+use App\Models\MaintenanceHistori;
+use App\Models\PengadaanHistori;
 use Illuminate\Http\Request;
 
 function randomString($length = 6) {
@@ -75,4 +78,30 @@ function subtractingDate($date1, $date2)
     $secs = $datetime2 - $datetime1;// == <seconds between the two times>
     $days = $secs / 86400;
     return $days;
+}
+
+function pengadaanNeedApproval()
+{
+    if(auth()->user()->role->nama == 'Kepala Sekolah') {
+        $total = PengadaanHistori::where('approve_kepala_sekolah', '!=', 'Diterima')->count();
+    } else {
+        $total = PengadaanHistori::where('approve_wakil_sarpras', '!=', 'Diterima')->count();
+    }
+
+    return $total;
+}
+
+function maintenanceNeedApproval($kategori)
+{
+    $data = Maintenance::where('kategori_maintenance', $kategori)->first();
+    $total = 0;
+    if ($data) {
+        if(auth()->user()->role->nama == 'Kepala Sekolah') {
+            $total = MaintenanceHistori::where('id_maintenance', $data->id_maintenance)->where('approve_kepala_sekolah', '!=', 'Diterima')->orWhere('approve_kepala_sekolah', null)->count();
+        } else {
+            $total = MaintenanceHistori::where('id_maintenance', $data->id_maintenance)->where('approve_wakil_sarpras', '!=', 'Diterima')->orWhere('approve_wakil_sarpras', null)->count();
+        }
+    } 
+
+    return $total;
 }

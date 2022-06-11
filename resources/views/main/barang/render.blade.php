@@ -3,9 +3,11 @@
         <div class="card-header">
             <div class="card-title">Data Barang</div>
             <div class="card-options">
+                @can('manage_data')
                 <button class="btn btn-primary btn-add">
                     <i class="fa fa-plus"></i> Tambah
                 </button>
+                @endcan
                 <button class="btn btn-success btn-print" style="margin-left: 2px">
                     <i class="fa fa-print"></i> Cetak
                 </button>
@@ -22,7 +24,9 @@
                         <th>Spesifikasi</th>
                         <th>Jumlah Barang Rusak</th>
                         <th>Total Barang</th>
+                        @can('manage_data') 
                         <th>Aksi</th>
+                        @endcan
                     </tr>
                 </thead>
                 <tbody>
@@ -35,6 +39,7 @@
                         <td>{{$data->spesifikasi}}</td>
                         <td>{{$data->jumlah_barang_rusak}}</td>
                         <td>{{$data->total_barang}}</td>
+                        @can('manage_data')     
                         <td>
                             <button class="btn btn-primary btn-edit" data-id="{{$data->id_barang}}">
                                 <i class="fa fa-edit"></i> Edit
@@ -43,6 +48,7 @@
                                 <i class="fa fa-trash"></i> Hapus
                             </button>
                         </td>
+                        @endcan
                     </tr>
                     @endforeach
                 </tbody>

@@ -48,12 +48,12 @@
                     <input type="text" class="form-control biaya" name="biaya" id="biaya" placeholder="masukkan biaya">
                     <div class="invalid-feedback error-biaya"></div>
                 </div>
-                <div class="form-group">
+                {{-- <div class="form-group">
                     <label for="nota">Nota</label>
                     <input type="file" class="form-control nota" name="nota" id="nota" placeholder="masukkan nota">
                     <span class="text-muted text-small">*kosongkan bila belum ada nota</span>
                     <div class="invalid-feedback error-nota"></div>
-                </div>
+                </div> --}}
                 <div class="form-group">
                     <label for="keterangan">Keterangan</label>
                     <textarea class="form-control keterangan" name="keterangan" id="keterangan" placeholder="masukkan keterangan" rows="5"></textarea>

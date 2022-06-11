@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class PerbaikanRequest extends FormRequest
+class MaintenanceRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,13 +24,14 @@ class PerbaikanRequest extends FormRequest
     public function rules()
     {
         $rules = [
-            'tanggal_perbaikan' => 'required',
+            'tanggal_maintenance' => 'required',
             'nomor_laporan' => 'required',
             'pemohon' => 'required',
             'jabatan_pemohon' => 'required',
+            'biaya' => 'required',
         ];
 
-        for($i = 0; $i < count($this->input('nama')); $i++) {
+        for($i = 1; $i <= count($this->input('nama')); $i++) {
             $rules['nama.' . $i] = 'required';
             $rules['spesifikasi.' . $i] = 'required';
             $rules['uraian.' . $i] = 'required';
@@ -52,13 +53,14 @@ class PerbaikanRequest extends FormRequest
     public function attributes()
     {
         $attr = [
-            'tanggal_perbaikan' => 'Tanggal Perbaikan',
+            'tanggal_maintenance' => 'Tanggal Perbaikan',
             'nomor_laporan' => 'Nomor Laporan',
             'pemohon' => 'Pemohon',
             'jabatan_pemohon' => 'Jabatan',
+            'biaya' => 'Biaya',
         ];
 
-        for($i = 0; $i < count($this->input('nama')); $i++) {
+        for($i = 1; $i <= count($this->input('nama')); $i++) {
             $attr['nama.' . $i] = 'Nama Barang';
             $attr['spesifikasi.' . $i] = 'Spesifikasi Barang';
             $attr['uraian.' . $i] = 'Uraian Barang';

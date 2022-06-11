@@ -13,9 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('perbaikan_histori', function (Blueprint $table) {
-            $table->id('id_perbaikan_histori');
-            $table->foreignId('id_perbaikan')->references('id_perbaikan')->on('perbaikan')->onDelete('cascade')->comment('perbaikan yang dikelola');
+        Schema::create('maintenance_histori', function (Blueprint $table) {
+            $table->id('id_maintenance_histori');
+            $table->foreignId('id_maintenance')->references('id_maintenance')->on('maintenances')->onDelete('cascade')->comment('maintenance yang dikelola');
             $table->enum('approve_kepala_sekolah', ['Ditolak', 'Diproses', 'Diterima'])->nullable();
             $table->enum('approve_wakil_sarpras', ['Ditolak', 'Diproses', 'Diterima'])->nullable();
             $table->date('tanggal_approve_kepala_sekolah')->nullable();
@@ -32,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('perbaikan_histori');
+        Schema::dropIfExists('maintenance_histori');
     }
 };

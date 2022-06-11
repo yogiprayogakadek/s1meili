@@ -1,7 +1,7 @@
 function getData() {
     $.ajax({
         type: "get",
-        url: "/perbaikan/render",
+        url: "/kerusakan/render",
         dataType: "json",
         success: function (response) {
             $(".render").html(response.data);
@@ -15,7 +15,7 @@ function getData() {
 function tambah() {
     $.ajax({
         type: "get",
-        url: "/perbaikan/create",
+        url: "/kerusakan/create",
         dataType: "json",
         success: function (response) {
             $(".render").html(response.data);
@@ -44,16 +44,17 @@ function convertToRupiah(number, prefix) {
     return prefix == undefined ? rupiah : rupiah ? "Rp. " + rupiah : "";
 }
 
+
 $(document).ready(function () {
     getData();
     var i = 1;
 
-    $('body').on('click', '.btn-add', function () {
-        tambah();
-    });
-
     $("body").on("keyup", '#biaya', function (e) {
         $("#biaya").val(convertToRupiah($(this).val(), "Rp. "))
+    });
+
+    $('body').on('click', '.btn-add', function () {
+        tambah();
     });
 
     $('body').on('click', '.btn-data', function () {
@@ -113,7 +114,7 @@ $(document).ready(function () {
         let data = new FormData(form)
         $.ajax({
             type: "POST",
-            url: "/perbaikan/store",
+            url: "/kerusakan/store",
             data: data,
             processData: false,
             contentType: false,
@@ -165,7 +166,7 @@ $(document).ready(function () {
         let id = $(this).data('id')
         $.ajax({
             type: "get",
-            url: "/perbaikan/edit/" + id,
+            url: "/kerusakan/edit/" + id,
             dataType: "json",
             success: function (response) {
                 $(".render").html(response.data);
@@ -187,7 +188,7 @@ $(document).ready(function () {
         let data = new FormData(form)
         $.ajax({
             type: "POST",
-            url: "/perbaikan/update",
+            url: "/kerusakan/update",
             data: data,
             processData: false,
             contentType: false,
@@ -249,7 +250,7 @@ $(document).ready(function () {
             if (result.value) {
                 $.ajax({
                     type: "get",
-                    url: "/perbaikan/delete/" + id,
+                    url: "/kerusakan/delete/" + id,
                     dataType: "json",
                     success: function (response) {
                         $(".render").html(response.data);
@@ -288,7 +289,7 @@ $(document).ready(function () {
                 };
                 $.ajax({
                     type: "GET",
-                    url: "/perbaikan/print/",
+                    url: "/kerusakan/print/",
                     dataType: "json",
                     success: function (response) {
                         document.title= 'Laporan - ' + new Date().toJSON().slice(0,10).replace(/-/g,'/')
@@ -337,7 +338,7 @@ $(document).ready(function () {
                         '<th>No</th>' +
                         '<th>Nama Barang</th>' +
                         '<th>Spesifikasi</th>' +
-                        '<th>Uraian Perbaikan</th>' +
+                        '<th>Uraian Kerusakan</th>' +
                         '<th>Keterangan</th>' +
                     '</tr>' +
                     '</thead>' +
@@ -345,7 +346,7 @@ $(document).ready(function () {
                     '</tbody>' +
                 '</table>';
             '</div>';
-            $.get('/perbaikan/item-perbaikan/'+id_maintenance, function(data) {
+            $.get('/kerusakan/item-kerusakan/'+id_maintenance, function(data) {
                 $.each(data, function(i, item) {
                     var tr_row = '<tr>' +
                         '<td>' + (i+1) + '</td>' +
@@ -394,7 +395,7 @@ $(document).ready(function () {
         });
         $.ajax({
             type: "POST",
-            url: "/perbaikan/validasi",
+            url: "/kerusakan/validasi",
             data: data,
             beforeSend: function () {
                 $('.btn-proses-validasi').attr('disable', 'disabled')
@@ -463,7 +464,7 @@ $(document).ready(function () {
         $('#modalStatusValidasi').find('#tableValidasi tfoot').empty()
         $.ajax({
             type: "GET",
-            url: "/perbaikan/detail-validasi/" + id,
+            url: "/kerusakan/detail-validasi/" + id,
             dataType: "json",
             success: function (response) {
                 var keterangan = ''
@@ -558,7 +559,7 @@ $(document).ready(function () {
                 formData.append('nota', file);
                 formData.append('_token', $('meta[name="csrf-token"]').attr('content'));
                 $.ajax({
-                    url: '/perbaikan/unggah-nota',
+                    url: '/kerusakan/unggah-nota',
                     type: 'POST',
                     data: formData,
                     contentType: false,

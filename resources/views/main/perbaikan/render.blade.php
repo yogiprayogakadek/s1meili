@@ -3,9 +3,11 @@
         <div class="card-header">
             <div class="card-title">Data Barang</div>
             <div class="card-options">
+                @can('manage_data')
                 <button class="btn btn-primary btn-add">
                     <i class="fa fa-plus"></i> Tambah
                 </button>
+                @endcan
                 <button class="btn btn-success btn-print" style="margin-left: 2px">
                     <i class="fa fa-print"></i> Cetak
                 </button>
@@ -19,31 +21,59 @@
                         <th>User</th>
                         <th>Tanggal Perbaikan</th>
                         <th>Nomor Laporan</th>
+                        <th>Biaya</th>
                         <th>Status Perbaikan</th>
+                        <th>Nota</th>
+                        @can('manage_data')
                         <th>Aksi</th>
+                        @endcan
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($data as $data)
                     <tr>
-                        <td data-keterangan="{{$data->keterangan_perbaikan}}" data-pemohon="{{$data->pemohon}}" data-jabatan="{{$data->jabatan_pemohon}}" data-id="{{$data->id_perbaikan}}">
+                        <td data-keterangan="{{$data->keterangan_perbaikan}}" data-pemohon="{{$data->pemohon}}" data-jabatan="{{$data->jabatan_pemohon}}" data-id="{{$data->id_maintenance}}">
                             <i class="fa fa-plus-circle"></i>
                         </td>
                         <td>{{$data->user->nama}}</td>
-                        <td>{{$data->tanggal_perbaikan}}</td>
+                        <td>{{$data->tanggal_maintenance}}</td>
                         <td>{{$data->nomor_laporan}}</td>
+                        <td>{{convertToRupiah($data->biaya_maintenance)}}</td>
                         {{-- <td>{{$data->status_perbaikan}}</td> --}}
-                        <td>{!!$data->perbaikan_histori == null ? $data->status_perbaikan : '<button class="btn btn-primary btn-detail-validasi" data-id="'.$data->id_perbaikan.'"><i class="fa fa-eye"></i> Lihat Status</button>' !!}</td>
+                        <td>{!!$data->maintenance_histori == null ? $data->status_maintenance : '<button class="btn btn-primary btn-detail-validasi" data-id="'.$data->id_maintenance.'"><i class="fa fa-eye"></i> Lihat Status</button>' !!}</td>
                         <td>
-                            <button class="btn btn-success btn-edit" data-id="{{$data->id_perbaikan}}">
+                            @cannot('bendahara')
+                            {!!$data->nota == null ? '-' : '<a href="'.asset($data->nota).'" target="_blank">Lihat Nota</a>'!!}
+                            @endcannot
+                            @can('bendahara')
+                                @if ($data->nota == null)
+                                <button class="btn btn-info btn-nota" data-id="{{$data->id_maintenance}}">
+                                    <i class="fa fa-upload"></i> Unggah Data
+                                </button>
+                                @else
+                                <button class="btn btn-success btn-detail-nota" data-id="{{$data->id_maintenance}}" data-nota="{{$data->nota}}">
+                                    <i class="fa fa-eye"></i> Detail Data
+                                </button>
+                                @endif
+                            @endcan
+                        </td>
+                        @can('manage_data')
+                        <td>
+                            <button class="btn btn-success btn-edit" data-id="{{$data->id_maintenance}}">
                                 <i class="fa fa-edit"></i> Edit
                             </button>
-                            <button class="btn btn-danger btn-delete" data-id="{{$data->id_perbaikan}}">
+                            <button class="btn btn-danger btn-delete" data-id="{{$data->id_maintenance}}">
                                 <i class="fa fa-trash"></i> Hapus
                             </button>
-                            <button class="btn btn-success btn-validasi" data-id="{{$data->id_perbaikan}}" data-status="{{$data->status_perbaikan}}">
+                        </td>
+                        @endcan
+                        @can('validator')
+                        <td>
+                            <button class="btn btn-success btn-validasi" data-id="{{$data->id_maintenance}}" data-status="{{$data->status_maintenance}}">
                                 <i class="fa fa-check-circle-o"></i> Validasi
                             </button>
+                        </td>
+                        @endcan
                         </td>
                     </tr>
                     @endforeach
@@ -64,7 +94,7 @@
                     </button>
             </div>
             <div class="modal-body">
-                <input type="hidden" name="id_perbaikan" id="id_perbaikan">
+                <input type="hidden" name="id_maintenance" id="id_maintenance">
                 <div class="form-group">
                     <label for="">Status Perbaikan</label>
                     <select class="form-control" name="status_perbaikan" id="status_perbaikan">
@@ -122,6 +152,27 @@
     </div>
 </div>
 {{-- Modal Status Validasi --}}
+
+{{-- Modal Detail Nota --}}
+<div class="modal fade" id="modalDetailNota" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Detail Nota</h5>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal" aria-label="Close">
+                        <span class="fa fa-times"></span>
+                    </button>
+            </div>
+            <div class="modal-body">
+                <div class="detail-nota"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success btn-nota">Ubah Nota</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Keluar</button>
+            </div>
+        </div>
+    </div>
+</div>
+{{-- Modal Detail Nota --}}
 
 <script>
     $('#tableData').DataTable({
