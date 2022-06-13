@@ -17,6 +17,11 @@ Route::get('/', function () {
     return view('templates.master');
 })->name('main')->middleware('auth');
 Route::prefix('/')->namespace('Main')->middleware('auth')->group(function(){
+    Route::prefix('/dashboard')->name('dashboard.')->group(function(){
+        Route::get('/', 'DashboardController@index')->name('index');
+        Route::post('/chart', 'DashboardController@chart')->name('chart');
+    });
+
     Route::prefix('/barang')->name('barang.')->group(function(){
         Route::get('/', 'BarangController@index')->name('index');
         Route::get('/create', 'BarangController@create')->name('create');

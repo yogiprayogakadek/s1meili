@@ -20,31 +20,30 @@
                     <h3>Main</h3>
                 </li>
                 <li class="slide"> 
-                    {{-- @if (Auth::user()->jabatan->nama == 'Kepala HRD') --}}
+                    <a class="side-menu__item has-link {{Request::is('dashboard') ? 'active' : '' }}" data-bs-toggle="slide"
+                        href="{{route('dashboard.index')}}"><i class="side-menu__icon fe fe-home"></i><span
+                            class="side-menu__label">Dashboard</span>
+                    </a>
                     <a class="side-menu__item has-link {{Request::is('barang') ? 'active' : '' }}" data-bs-toggle="slide"
-                        href="{{route('barang.index')}}"><i class="side-menu__icon fe fe-home"></i><span
-                            class="side-menu__label">Barang</span>
+                        href="{{route('barang.index')}}"><i class="side-menu__icon fe fe-aperture"></i><span
+                            class="side-menu__label">Data Barang</span>
                     </a>
                     <a class="side-menu__item has-link {{Request::is('pengadaan') ? 'active' : '' }}" data-bs-toggle="slide"
-                        href="{{route('pengadaan.index')}}"><i class="side-menu__icon fe fe-home"></i><span
-                            class="side-menu__label">Pengadaan</span>
+                        href="{{route('pengadaan.index')}}"><i class="side-menu__icon fe fe-book"></i><span
+                            class="side-menu__label">Pengadaan Barang</span>
                             @can('validator')
                             <span class="badge bg-pink side-badge">{{pengadaanNeedApproval()}}</span>
                             @endcan
                     </a>
-                    {{-- <a class="side-menu__item has-link {{Request::is('pengadaan-histori') ? 'active' : '' }}" data-bs-toggle="slide"
-                        href="{{route('pengadaan-histori.index')}}"><i class="side-menu__icon fe fe-home"></i><span
-                            class="side-menu__label">Pengadaan Histori</span>
-                    </a> --}}
                     <a class="side-menu__item has-link {{Request::is('perbaikan') ? 'active' : '' }}" data-bs-toggle="slide"
-                        href="{{route('perbaikan.index')}}"><i class="side-menu__icon fe fe-home"></i><span
+                        href="{{route('perbaikan.index')}}"><i class="side-menu__icon fe fe-slack"></i><span
                             class="side-menu__label">Perbaikan Barang</span>
                             @can('validator')
                             <span class="badge bg-pink side-badge">{{maintenanceNeedApproval('Perawatan dan Perbaikan')}}</span>
                             @endcan
                     </a>
                     <a class="side-menu__item has-link {{Request::is('kerusakan') ? 'active' : '' }}" data-bs-toggle="slide"
-                        href="{{route('kerusakan.index')}}"><i class="side-menu__icon fe fe-home"></i><span
+                        href="{{route('kerusakan.index')}}"><i class="side-menu__icon fe fe-settings"></i><span
                             class="side-menu__label">Kerusakan Barang</span>
                             @can('validator')
                             <span class="badge bg-pink side-badge">{{maintenanceNeedApproval('Kerusakan')}}</span>

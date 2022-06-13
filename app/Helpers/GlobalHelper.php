@@ -105,3 +105,59 @@ function maintenanceNeedApproval($kategori)
 
     return $total;
 }
+
+function menu()
+{
+    $menu = [
+        'Barang', 'Pengadaan', 'Perbaikan', 'Kerusakan'
+    ];
+
+    return $menu;
+}
+
+function RouteURL()
+{
+    $url = [
+        0 => 'barang.index', 
+        1 => 'pengadaan.index', 
+        2 => 'perbaikan.index', 
+        3 => 'kerusakan.index'
+    ];
+
+    return $url;
+}
+
+function totalData($model)
+{
+    $a = 'App\Models\\' . $model;
+    if($model == 'Perbaikan'){
+        $total = Maintenance::where('kategori_maintenance', 'Perawatan dan Perbaikan')->count();
+    }
+    elseif($model == 'Kerusakan'){
+        $total = Maintenance::where('kategori_maintenance', 'Kerusakan')->count();
+    }
+    else{
+        $total = $a::count();
+    }
+    return $total;
+}
+
+function bulan()
+{
+    $bulan = [
+        'Januari',
+        'Februari',
+        'Maret',
+        'April',
+        'Mei',
+        'Juni',
+        'Juli',
+        'Agustus',
+        'September',
+        'Oktober',
+        'November',
+        'Desember',
+    ];
+
+    return $bulan;
+}
