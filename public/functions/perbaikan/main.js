@@ -366,10 +366,19 @@ $(document).ready(function () {
     $('body').on('click', '.btn-validasi', function() {
         let status = $(this).data('status')
         let id = $(this).data('id')
-        $('#modalValidasi').modal('show')
-        $('#modalValidasi').find('#id_maintenance').val(id)
-        $('#modalValidasi').find('#status_perbaikan').val(status)
-        $('#modalValidasi').find('#keterangan_grup').prop('hidden', true)
+        let validasi = $(this).data('validasi')
+        if(validasi == '') {
+            Swal.fire({
+                title: 'Info',
+                text: "Data ini belum divalidasi oleh wakil sarpras",
+                icon: 'info',
+            })
+        } else {
+            $('#modalValidasi').modal('show')
+            $('#modalValidasi').find('#id_maintenance').val(id)
+            $('#modalValidasi').find('#status_perbaikan').val(status)
+            $('#modalValidasi').find('#keterangan_grup').prop('hidden', true)
+        }
     })
 
     $('body').on('change', '#status_perbaikan', function() {

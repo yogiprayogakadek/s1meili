@@ -1,7 +1,7 @@
 <div class="col-12">
     <div class="card">
         <div class="card-header">
-            <div class="card-title">Data Barang</div>
+            <div class="card-title">Data Pegawai</div>
             <div class="card-options">
                 @can('manage_data')
                 <button class="btn btn-primary btn-add">
@@ -14,16 +14,19 @@
             </div>
         </div>
         <div class="card-body">
-            <table class="table table-bordered text-nowrap border-bottom dataTable no-footer" role="grid" id="tableData">
+            <table class="table table-bordered text-nowrap border-bottom dataTable no-footer table-responsive" role="grid" id="tableData">
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>Kode Barang</th>
-                        <th>Nama Barang</th>
-                        <th>Merek Barang</th>
-                        <th>Spesifikasi</th>
-                        {{-- <th>Jumlah Barang Rusak</th> --}}
-                        <th>Total Barang</th>
+                        <th>NIP</th>
+                        <th>Nama</th>
+                        <th>Jabatan</th>
+                        <th>Ruangan</th>
+                        <th>TTL</th>
+                        <th>No. Telp</th>
+                        <th>Alamat</th>
+                        <th>Jenis Kelamin</th>
+                        <th>Foto</th>
                         @can('manage_data') 
                         <th>Aksi</th>
                         @endcan
@@ -33,18 +36,21 @@
                     @foreach ($data as $data)
                     <tr>
                         <td>{{$loop->iteration}}</td>
-                        <td>{{$data->kode_barang}}</td>
-                        <td>{{$data->nama_barang}}</td>
-                        <td>{{$data->merek}}</td>
-                        <td>{{$data->spesifikasi}}</td>
-                        {{-- <td>{{$data->jumlah_barang_rusak}}</td> --}}
-                        <td>{{$data->total_barang}}</td>
+                        <td>{{$data->nip}}</td>
+                        <td>{{$data->nama_pegawai}}</td>
+                        <td>{{$data->jabatan}}</td>
+                        <td>{{$data->ruangan}}</td>
+                        <td>{{$data->tempat_lahir}}, {{convertDate($data->tanggal_lahir)}}</td>
+                        <td>{{$data->no_telp}}</td>
+                        <td>{{$data->alamat}}</td>
+                        <td>{{$data->jenis_kelamin}}</td>
+                        <td><img src="{{asset($data->foto)}}" width="100px"></td>
                         @can('manage_data')     
                         <td>
-                            <button class="btn btn-primary btn-edit" data-id="{{$data->id_barang}}">
+                            <button class="btn btn-primary btn-edit" data-id="{{$data->id_pegawai}}">
                                 <i class="fa fa-edit"></i> Edit
                             </button>
-                            <button class="btn btn-danger btn-delete" data-id="{{$data->id_barang}}">
+                            <button class="btn btn-danger btn-delete" data-id="{{$data->id_pegawai}}">
                                 <i class="fa fa-trash"></i> Hapus
                             </button>
                         </td>

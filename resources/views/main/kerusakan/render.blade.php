@@ -69,12 +69,18 @@
                         @endcan
                         @can('validator')
                         <td>
+                            @can('kepala_sekolah')
+                            <button class="btn btn-success btn-validasi" data-id="{{$data->id_maintenance}}" data-status="{{$data->status_maintenance}}" data-validasi="{{$data->maintenance_histori->approve_wakil_sarpras}}">
+                                <i class="fa fa-check-circle-o"></i> Validasi
+                            </button>
+                            @endcan
+                            @can('wakil_sarpras')
                             <button class="btn btn-success btn-validasi" data-id="{{$data->id_maintenance}}" data-status="{{$data->status_maintenance}}">
                                 <i class="fa fa-check-circle-o"></i> Validasi
                             </button>
+                            @endcan
                         </td>
                         @endcan
-                        </td>
                     </tr>
                     @endforeach
                 </tbody>

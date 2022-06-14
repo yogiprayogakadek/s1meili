@@ -21,15 +21,15 @@
                         {{-- <th>No</th> --}}
                         <th>User</th>
                         <th>Tanggal Pengadaan</th>
-                        <th>Tanggal Penerimaan</th>
+                        {{-- <th>Tanggal Penerimaan</th> --}}
                         <th>Nomor Laporan</th>
                         <th>Biaya Pengadaan</th>
                         <th>Nota</th>
                         {{-- <th>Keterangan</th> --}}
                         <th>Status Pengadaan</th>
-                        {{-- @can('manage_data') --}}
+                        @cannot('bendahara')
                         <th>Aksi</th>
-                        {{-- @endcan --}}
+                        @endcannot
                     </tr>
                 </thead>
                 <tbody>
@@ -41,7 +41,7 @@
                         {{-- <td>{{$loop->iteration}}</td> --}}
                         <td>{{$data->user->nama}}</td>
                         <td>{{$data->tanggal_pengadaan}}</td>
-                        <td>{{$data->tanggal_penerimaan}}</td>
+                        {{-- <td>{{$data->tanggal_penerimaan}}</td> --}}
                         <td>{{$data->nomor_laporan}}</td>
                         <td>{{convertToRupiah($data->biaya_pengadaan)}}</td>
                         <td>
@@ -74,12 +74,18 @@
                         @endcan
                         @can('validator')
                         <td>
+                            @can('kepala_sekolah')
+                            <button class="btn btn-success btn-validasi" data-id="{{$data->id_pengadaan}}" data-status="{{$data->status_pengadaan}}" data-validasi="{{$data->pengadaan_histori->approve_wakil_sarpras}}">
+                                <i class="fa fa-check-circle-o"></i> Validasi
+                            </button>
+                            @endcan
+                            @can('wakil_sarpras')
                             <button class="btn btn-success btn-validasi" data-id="{{$data->id_pengadaan}}" data-status="{{$data->status_pengadaan}}">
                                 <i class="fa fa-check-circle-o"></i> Validasi
                             </button>
+                            @endcan
                         </td>
                         @endcan
-                        </td>
                     </tr>
                     @endforeach
                 </tbody>

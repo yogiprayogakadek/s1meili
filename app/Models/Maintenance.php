@@ -20,6 +20,6 @@ class Maintenance extends Model
 
     public function maintenance_histori()
     {
-        return $this->hasMany('App\Models\MaintenanceHistori', 'id_maintenance', 'id_maintenance');
+        return $this->hasOne('App\Models\MaintenanceHistori', 'id_maintenance', 'id_maintenance');
     }
 }

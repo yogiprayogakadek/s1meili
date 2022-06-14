@@ -17,8 +17,9 @@ return new class extends Migration
             $table->id('id_maintenance');
             $table->foreignId('id_user')->references('id_user')->on('users')->onDelete('cascade')->comment('user yang memasukkan data');
             $table->string('nomor_laporan', 50);
-            $table->string('pemohon', 100);
-            $table->string('jabatan_pemohon', 100);
+            // $table->string('pemohon', 100);
+            // $table->string('jabatan_pemohon', 100);
+            $table->foreignId('id_pegawai')->references('id_pegawai')->on('pegawai')->onDelete('cascade')->comment('pegawai yang mengajukan pengadaan');
             $table->date('tanggal_maintenance');
             $table->json('item_maintenance');
             $table->enum('status_maintenance', ['Ditolak', 'Diproses', 'Diterima'])->default('Diproses');

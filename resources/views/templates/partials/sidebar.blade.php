@@ -20,9 +20,13 @@
                     <h3>Main</h3>
                 </li>
                 <li class="slide"> 
-                    <a class="side-menu__item has-link {{Request::is('dashboard') ? 'active' : '' }}" data-bs-toggle="slide"
+                    <a class="side-menu__item has-link {{Request::is('dashboard') ? 'active' : (Request::is('/') ? 'active' : '') }}" data-bs-toggle="slide"
                         href="{{route('dashboard.index')}}"><i class="side-menu__icon fe fe-home"></i><span
                             class="side-menu__label">Dashboard</span>
+                    </a>
+                    <a class="side-menu__item has-link {{Request::is('pegawai') ? 'active' : '' }}" data-bs-toggle="slide"
+                        href="{{route('pegawai.index')}}"><i class="side-menu__icon fe fe-users"></i><span
+                            class="side-menu__label">Data Pegawai</span>
                     </a>
                     <a class="side-menu__item has-link {{Request::is('barang') ? 'active' : '' }}" data-bs-toggle="slide"
                         href="{{route('barang.index')}}"><i class="side-menu__icon fe fe-aperture"></i><span

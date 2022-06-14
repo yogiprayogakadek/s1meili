@@ -38,11 +38,11 @@
                     <input type="date" class="form-control tanggal_pengadaan" name="tanggal_pengadaan" id="tanggal-pengadaan" placeholder="masukkan tanggal pengadaan barang">
                     <div class="invalid-feedback error-tanggal_pengadaan"></div>
                 </div>
-                <div class="form-group">
+                {{-- <div class="form-group">
                     <label for="tanggal-penerimaan">Tanggal Penerimaan</label>
                     <input type="date" class="form-control tanggal_penerimaan" name="tanggal_penerimaan" id="tanggal-penerimaan" placeholder="masukkan tanggal penerimaan barang">
                     <div class="invalid-feedback error-tanggal_penerimaan"></div>
-                </div>
+                </div> --}}
                 <div class="form-group">
                     <label for="biaya">Biaya</label>
                     <input type="text" class="form-control biaya" name="biaya" id="biaya" placeholder="masukkan biaya">

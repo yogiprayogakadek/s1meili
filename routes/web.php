@@ -13,13 +13,22 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('templates.master');
-})->name('main')->middleware('auth');
+Route::get('/', 'Main\DashboardController@index')->name('main')->middleware('auth');
 Route::prefix('/')->namespace('Main')->middleware('auth')->group(function(){
     Route::prefix('/dashboard')->name('dashboard.')->group(function(){
         Route::get('/', 'DashboardController@index')->name('index');
         Route::post('/chart', 'DashboardController@chart')->name('chart');
+    });
+
+    Route::prefix('/pegawai')->name('pegawai.')->group(function(){
+        Route::get('/', 'PegawaiController@index')->name('index');
+        Route::get('/create', 'PegawaiController@create')->name('create');
+        Route::get('/edit/{id}', 'PegawaiController@edit')->name('edit');
+        Route::get('/render', 'PegawaiController@render')->name('render');
+        Route::post('/store', 'PegawaiController@store')->name('store');
+        Route::post('/update', 'PegawaiController@update')->name('update');
+        Route::get('/delete/{id}', 'PegawaiController@delete')->name('delete');
+        Route::get('/print/{id}', 'PegawaiController@print')->name('print');
     });
 
     Route::prefix('/barang')->name('barang.')->group(function(){

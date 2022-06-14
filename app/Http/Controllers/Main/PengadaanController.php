@@ -63,12 +63,12 @@ class PengadaanController extends Controller
                 $dataPengadaan = [
                     'id_user' => auth()->user()->id_user,
                     'tanggal_pengadaan' => $request->tanggal_pengadaan,
-                    'tanggal_penerimaan' => $request->tanggal_penerimaan,
+                    // 'tanggal_penerimaan' => $request->tanggal_penerimaan,
                     'nomor_laporan' => $request->nomor_laporan,
                     'biaya_pengadaan' => preg_replace('/[^0-9]/', '', $request->biaya),
                     'keterangan' => $request->keterangan,
-                    'pemohon' => $request->pemohon,
-                    'jabatan_pemohon' => $request->jabatan_pemohon,
+                    // 'pemohon' => $request->pemohon,
+                    // 'jabatan_pemohon' => $request->jabatan_pemohon,
                 ];
 
                 $cekPengadaan = Pengadaan::where('nomor_laporan', $request->nomor_laporan)->first();
@@ -151,12 +151,12 @@ class PengadaanController extends Controller
                 $dataPengadaan = [
                     'id_user' => auth()->user()->id_user,
                     'tanggal_pengadaan' => $request->tanggal_pengadaan,
-                    'tanggal_penerimaan' => $request->tanggal_penerimaan,
+                    // 'tanggal_penerimaan' => $request->tanggal_penerimaan,
                     'nomor_laporan' => $request->nomor_laporan,
                     'biaya_pengadaan' => preg_replace('/[^0-9]/', '', $request->biaya),
                     'keterangan' => $request->keterangan,
-                    'pemohon' => $request->pemohon,
-                    'jabatan_pemohon' => $request->jabatan_pemohon,
+                    // 'pemohon' => $request->pemohon,
+                    // 'jabatan_pemohon' => $request->jabatan_pemohon,
                 ];
 
                 if($request->hasFile('nota')) {
@@ -321,7 +321,7 @@ class PengadaanController extends Controller
                             $barang = Barang::where('id_barang', $item->id_barang)->first();
                             $barang->update([
                                 'total_barang' => $item->jumlah_barang + $barang->total_barang,
-                                'jumlah_barang_rusak' => $barang->jumlah_barang_rusak
+                                // 'jumlah_barang_rusak' => $barang->jumlah_barang_rusak
                             ]);
                         }
                     } else if($pengadaanHistori->approve_kepala_sekolah == 'Ditolak' && $pengadaanHistori->approve_wakil_sarpras == 'Diterima') {
@@ -376,7 +376,7 @@ class PengadaanController extends Controller
                                 $barang = Barang::where('id_barang', $item->id_barang)->first();
                                 $barang->update([
                                     'total_barang' =>  $barang->total_barang - $item->jumlah_barang,
-                                    'jumlah_barang_rusak' => $barang->jumlah_barang_rusak
+                                    // 'jumlah_barang_rusak' => $barang->jumlah_barang_rusak
                                 ]);
                             }
                         }

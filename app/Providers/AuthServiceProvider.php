@@ -50,7 +50,7 @@ class AuthServiceProvider extends ServiceProvider
         });
 
         Gate::define('manage_data', function ($user) {
-            return $user->role->nama === 'Administrator' || $user->role->nama === 'Staff Administrasi';
+            return $user->role->nama === 'Administrator' || $user->role->nama === 'Staf Administrasi';
         });
     }
 }

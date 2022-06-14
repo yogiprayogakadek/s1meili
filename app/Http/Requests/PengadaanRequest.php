@@ -25,12 +25,12 @@ class PengadaanRequest extends FormRequest
     {
         $rules = [
             'tanggal_pengadaan' => 'required',
-            'tanggal_penerimaan' => 'required',
+            // 'tanggal_penerimaan' => 'required',
             'nomor_laporan' => 'required',
             'biaya' => 'required',
-            'keterangan' => 'required',
-            'pemohon' => 'required',
-            'jabatan_pemohon' => 'required',
+            // 'keterangan' => 'required',
+            // 'pemohon' => 'required',
+            // 'jabatan_pemohon' => 'required',
         ];
 
         for($i = 0; $i < count($this->input('nama')); $i++) {
