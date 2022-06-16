@@ -2,7 +2,7 @@
     <form id="formAdd">
         <div class="card">
             <div class="card-header">
-                <div class="card-title">Data Pengadaan</div>
+                <div class="card-title">Data Perawatan</div>
                 <div class="card-options">
                     <button class="btn btn-info btn-data" type="button">
                         <i class="fa fa-eye"></i> Data
@@ -27,6 +27,7 @@
                         </div>
                     </div>
                 </div> --}}
+
                 <div class="form-group">
                     <label for="pemohon">Nama Pemohon</label>
                     <select name="pemohon" id="pemohon" class="form-control pemohon">

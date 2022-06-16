@@ -38,6 +38,9 @@
                             @can('validator')
                             <span class="badge bg-pink side-badge">{{pengadaanNeedApproval()}}</span>
                             @endcan
+                            @can('staff_administrasi')
+                            <span class="badge bg-pink side-badge">{{pengadaanNeedApproval()}}</span>
+                            @endcan
                     </a>
                     <a class="side-menu__item has-link {{Request::is('perbaikan') ? 'active' : '' }}" data-bs-toggle="slide"
                         href="{{route('perbaikan.index')}}"><i class="side-menu__icon fe fe-slack"></i><span
@@ -51,6 +54,13 @@
                             class="side-menu__label">Kerusakan Barang</span>
                             @can('validator')
                             <span class="badge bg-pink side-badge">{{maintenanceNeedApproval('Kerusakan')}}</span>
+                            @endcan
+                    </a>
+                    <a class="side-menu__item has-link {{Request::is('perawatan') ? 'active' : '' }}" data-bs-toggle="slide"
+                        href="{{route('perawatan.index')}}"><i class="side-menu__icon fe fe-settings"></i><span
+                            class="side-menu__label">Perawatan Barang</span>
+                            @can('validator')
+                            <span class="badge bg-pink side-badge">{{maintenanceNeedApproval('Perawatan')}}</span>
                             @endcan
                     </a>
                 </li>

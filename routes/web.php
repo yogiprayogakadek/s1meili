@@ -55,6 +55,7 @@ Route::prefix('/')->namespace('Main')->middleware('auth')->group(function(){
         Route::post('/validasi', 'PengadaanController@validasi')->name('validasi');
         Route::get('/detail-validasi/{id_pengadaan}', 'PengadaanController@detailValidasi')->name('detail-validasi');
         Route::post('/unggah-nota', 'PengadaanController@unggahNota')->name('unggah-nota');
+        Route::post('/proses-penerimaan', 'PengadaanController@prosesPenerimaan')->name('proses-penerimaan');
     });
 
     Route::prefix('/pengadaan-histori')->name('pengadaan-histori.')->group(function(){
@@ -87,11 +88,26 @@ Route::prefix('/')->namespace('Main')->middleware('auth')->group(function(){
         Route::post('/store', 'KerusakanController@store')->name('store');
         Route::post('/update', 'KerusakanController@update')->name('update');
         Route::get('/delete/{id}', 'KerusakanController@delete')->name('delete');
-        Route::get('/item-kerusakan/{id_maintenance}', 'KerusakanController@itemKerusakan')->name('item-pengadaan');
+        Route::get('/item-kerusakan/{id_maintenance}', 'KerusakanController@itemKerusakan')->name('item-kerusakan');
         Route::get('/print/{id}', 'KerusakanController@print')->name('print');
         Route::post('/validasi', 'KerusakanController@validasi')->name('validasi');
         Route::get('/detail-validasi/{id_maintenance}', 'KerusakanController@detailValidasi')->name('detail-validasi');
         Route::post('/unggah-nota', 'KerusakanController@unggahNota')->name('unggah-nota');
+    });
+
+    Route::prefix('/perawatan')->name('perawatan.')->group(function(){
+        Route::get('/', 'PerawatanController@index')->name('index');
+        Route::get('/create', 'PerawatanController@create')->name('create');
+        Route::get('/edit/{id}', 'PerawatanController@edit')->name('edit');
+        Route::get('/render', 'PerawatanController@render')->name('render');
+        Route::post('/store', 'PerawatanController@store')->name('store');
+        Route::post('/update', 'PerawatanController@update')->name('update');
+        Route::get('/delete/{id}', 'PerawatanController@delete')->name('delete');
+        Route::get('/item-kerusakan/{id_maintenance}', 'PerawatanController@itemKerusakan')->name('item-perawatan');
+        Route::get('/print/{id}', 'PerawatanController@print')->name('print');
+        Route::post('/validasi', 'PerawatanController@validasi')->name('validasi');
+        Route::get('/detail-validasi/{id_maintenance}', 'PerawatanController@detailValidasi')->name('detail-validasi');
+        Route::post('/unggah-nota', 'PerawatanController@unggahNota')->name('unggah-nota');
     });
 });
 

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\MaintenanceRequest;
 use App\Models\Maintenance;
 use App\Models\MaintenanceHistori;
+use App\Models\Pegawai;
 use App\Models\Perbaikan;
 use App\Models\PerbaikanHistori;
 use Illuminate\Http\Request;
@@ -14,7 +15,7 @@ use Illuminate\Support\Facades\DB;
 
 class PerbaikanController extends Controller
 {
-    protected $kategori_maintenance = 'Perawatan dan Perbaikan';
+    protected $kategori_maintenance = 'Perbaikan';
     public function index()
     {
         return view('main.perbaikan.index');
@@ -33,8 +34,11 @@ class PerbaikanController extends Controller
 
     public function create()
     {
+        $pegawai = Pegawai::pluck('nama_pegawai', 'id_pegawai')->prepend('Pilih Pegawai', '');
         $view = [
-            'data' => view('main.perbaikan.create')->render()
+            'data' => view('main.perbaikan.create')->with([
+                'pegawai' => $pegawai
+            ])->render()
         ];
 
         return response()->json($view);
@@ -49,8 +53,9 @@ class PerbaikanController extends Controller
                     'id_user' => auth()->user()->id_user,
                     'tanggal_maintenance' => $request->tanggal_maintenance,
                     'nomor_laporan' => $request->nomor_laporan,
-                    'pemohon' => $request->pemohon,
-                    'jabatan_pemohon' => $request->jabatan_pemohon,
+                    'id_pegawai' => $request->pemohon,
+                    // 'pemohon' => $request->pemohon,
+                    // 'jabatan_pemohon' => $request->jabatan_pemohon,
                     'kategori_perbaikan' => $this->kategori_maintenance,
                     'biaya_maintenance' => preg_replace('/[^0-9]/', '', $request->biaya),
                 ];
@@ -125,8 +130,9 @@ class PerbaikanController extends Controller
                     'id_user' => auth()->user()->id_user,
                     'tanggal_maintenance' => $request->tanggal_maintenance,
                     'nomor_laporan' => $request->nomor_laporan,
-                    'pemohon' => $request->pemohon,
-                    'jabatan_pemohon' => $request->jabatan_pemohon,
+                    'id_pegawai' => $request->pemohon,
+                    // 'pemohon' => $request->pemohon,
+                    // 'jabatan_pemohon' => $request->jabatan_pemohon,
                     'biaya_maintenance' => preg_replace('/[^0-9]/', '', $request->biaya),
                 ];
 

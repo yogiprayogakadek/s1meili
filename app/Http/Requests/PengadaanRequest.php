@@ -29,7 +29,7 @@ class PengadaanRequest extends FormRequest
             'nomor_laporan' => 'required',
             'biaya' => 'required',
             // 'keterangan' => 'required',
-            // 'pemohon' => 'required',
+            'pemohon' => 'required',
             // 'jabatan_pemohon' => 'required',
         ];
 

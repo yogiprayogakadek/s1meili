@@ -26,7 +26,7 @@ class MaintenanceRequest extends FormRequest
         $rules = [
             'tanggal_maintenance' => 'required',
             'nomor_laporan' => 'required',
-            // 'pemohon' => 'required',
+            'pemohon' => 'required',
             // 'jabatan_pemohon' => 'required',
             'biaya' => 'required',
         ];

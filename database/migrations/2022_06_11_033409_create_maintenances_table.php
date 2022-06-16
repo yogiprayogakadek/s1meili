@@ -23,7 +23,7 @@ return new class extends Migration
             $table->date('tanggal_maintenance');
             $table->json('item_maintenance');
             $table->enum('status_maintenance', ['Ditolak', 'Diproses', 'Diterima'])->default('Diproses');
-            $table->enum('kategori_maintenance', ['Perawatan dan Perbaikan', 'Kerusakan']);
+            $table->enum('kategori_maintenance', ['Perawatan', 'Kerusakan', 'Perbaikan']);
             $table->timestamps();
         });
     }

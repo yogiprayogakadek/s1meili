@@ -1,7 +1,7 @@
 function getData() {
     $.ajax({
         type: "get",
-        url: "/pengadaan/render",
+        url: "/perawatan/render",
         dataType: "json",
         success: function (response) {
             $(".render").html(response.data);
@@ -15,7 +15,7 @@ function getData() {
 function tambah() {
     $.ajax({
         type: "get",
-        url: "/pengadaan/create",
+        url: "/perawatan/create",
         dataType: "json",
         success: function (response) {
             $(".render").html(response.data);
@@ -46,24 +46,19 @@ function convertToRupiah(number, prefix) {
 
 $(document).ready(function () {
     getData();
-    var i = 0;
+    var i = 1;
 
     $('body').on('click', '.btn-add', function () {
         tambah();
-    });
-
-    $('body').on('click', '.btn-data', function () {
-        i = 0;
-        getData();
     });
 
     $("body").on("keyup", '#biaya', function (e) {
         $("#biaya").val(convertToRupiah($(this).val(), "Rp. "))
     });
 
-    $("body").on("keyup", '.harga-satuan', function (e) {
-        var id_harga = $(this).data("harga");
-        $("#"+ id_harga).val(convertToRupiah($(this).val(), "Rp. "))
+    $('body').on('click', '.btn-data', function () {
+        i = 1;
+        getData();
     });
 
     $('body').on('click', '.btn-add-item', function(){
@@ -77,20 +72,10 @@ $(document).ready(function () {
                 '</div>' +
             '</div>' +
             '<div class="card-body">' +
-                // '<div class="form-group">' +
-                //     '<label>Kode Barang</label>' +
-                //     '<input type="text" class="form-control kode'+i+'" name="kode['+i+']" id="kode'+i+'" placeholder="masukkan kode barang">' +
-                //     '<div class="invalid-feedback error-kode'+i+'"></div>' +
-                // '</div>' +
                 '<div class="form-group">' +
                     '<label>Nama Barang</label>' +
                     '<input type="text" class="form-control nama'+i+'" name="nama['+i+']" id="nama'+i+'" placeholder="masukkan nama barang">' +
                     '<div class="invalid-feedback error-nama'+i+'"></div>' +
-                '</div>' +
-                '<div class="form-group">' +
-                    '<label>Merek Barang</label>' +
-                    '<input type="text" class="form-control merek'+i+'" name="merek['+i+']" id="merek'+i+'" placeholder="masukkan merek barang">' +
-                    '<div class="invalid-feedback error-merek'+i+'"></div>' +
                 '</div>' +
                 '<div class="form-group">' +
                     '<label>Spesifikasi Barang</label>' +
@@ -98,14 +83,14 @@ $(document).ready(function () {
                     '<div class="invalid-feedback error-spesifikasi'+i+'"></div>' +
                 '</div>' +
                 '<div class="form-group">' +
-                    '<label>Jumlah Barang</label>' +
-                    '<input type="number" class="form-control jumlah'+i+'" name="jumlah['+i+']" id="jumlah'+i+'" placeholder="masukkan jumlah barang">' +
-                    '<div class="invalid-feedback error-jumlah'+i+'"></div>' +
+                    '<label>Uraian Perbaikan Barang</label>' +
+                    '<textarea class="form-control uraian'+i+'" name="uraian['+i+']" id="uraian'+i+'" placeholder="masukkan uraian perbaikan barang"></textarea>' +
+                    '<div class="invalid-feedback error-uraian'+i+'"></div>' +
                 '</div>' +
                 '<div class="form-group">' +
-                    '<label>Harga Satuan</label>' +
-                    '<input type="text" class="form-control harga-satuan harga'+i+'" name="harga['+i+']" id="harga'+i+'" data-harga="harga'+i+'" placeholder="masukkan harga satuan">' +
-                    '<div class="invalid-feedback error-harga'+i+'"></div>' +
+                    '<label>Keterangan Perbaikan</label>' +
+                    '<textarea class="form-control keterangan'+i+'" name="keterangan['+i+']" id="keterangan'+i+'" placeholder="masukkan keterangan perbaikan barang"></textarea>' +
+                    '<div class="invalid-feedback error-keterangan'+i+'"></div>' +
                 '</div>' +
             '</div>' +
         '</div>';
@@ -124,13 +109,11 @@ $(document).ready(function () {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
-        // $('.invalid-feedback').html('');
-        // $('body').find('.is-invalid').removeClass('is-invalid');
         let form = $('#formAdd')[0]
         let data = new FormData(form)
         $.ajax({
             type: "POST",
-            url: "/pengadaan/store",
+            url: "/perawatan/store",
             data: data,
             processData: false,
             contentType: false,
@@ -157,10 +140,8 @@ $(document).ready(function () {
                 let formName = []
                 let errorName = []
                 $.each($('#formAdd').serializeArray(), function (i, field) {
-                    // formName.push((field.name.replace(/\[\d+\]/g, '')).replace('.', ''))
                     formName.push(field.name.replace(/\[|\]/g, ''))
                 });
-                // console.log(formName)
                 if (error.status == 422) {
                     if (error.responseJSON.errors) {
                         $.each(error.responseJSON.errors, function (key, value) {
@@ -171,10 +152,6 @@ $(document).ready(function () {
                             }
                         });
                         $.each(formName, function (i, field) {
-                            // if(!errorName.includes(field)) {
-                            //     $('.'+field).removeClass('is-invalid');
-                            //     $('.error-'+field).html('');
-                            // }
                             $.inArray(field, errorName) == -1 ? $('.'+field).removeClass('is-invalid') : $('.'+field).addClass('is-invalid');
                         });
                     }
@@ -188,7 +165,7 @@ $(document).ready(function () {
         let id = $(this).data('id')
         $.ajax({
             type: "get",
-            url: "/pengadaan/edit/" + id,
+            url: "/perawatan/edit/" + id,
             dataType: "json",
             success: function (response) {
                 $(".render").html(response.data);
@@ -210,7 +187,7 @@ $(document).ready(function () {
         let data = new FormData(form)
         $.ajax({
             type: "POST",
-            url: "/pengadaan/update",
+            url: "/perawatan/update",
             data: data,
             processData: false,
             contentType: false,
@@ -237,7 +214,6 @@ $(document).ready(function () {
                 let formName = []
                 let errorName = []
                 $.each($('#formEdit').serializeArray(), function (i, field) {
-                    // formName.push((field.name.replace(/\[\d+\]/g, '')).replace('.', ''))
                     formName.push(field.name.replace(/\[|\]/g, ''))
                 });
                 // console.log(formName)
@@ -251,14 +227,9 @@ $(document).ready(function () {
                             }
                         });
                         $.each(formName, function (i, field) {
-                            // if(!errorName.includes(field)) {
-                            //     $('.'+field).removeClass('is-invalid');
-                            //     $('.error-'+field).html('');
-                            // }
                             $.inArray(field, errorName) == -1 ? $('.'+field).removeClass('is-invalid') : $('.'+field).addClass('is-invalid');
                         });
                     }
-                    // console.log(errorName);
                 }
             }
         });
@@ -278,7 +249,7 @@ $(document).ready(function () {
             if (result.value) {
                 $.ajax({
                     type: "get",
-                    url: "/pengadaan/delete/" + id,
+                    url: "/perawatan/delete/" + id,
                     dataType: "json",
                     success: function (response) {
                         $(".render").html(response.data);
@@ -317,7 +288,7 @@ $(document).ready(function () {
                 };
                 $.ajax({
                     type: "GET",
-                    url: "/pengadaan/print/",
+                    url: "/perawatan/print/",
                     dataType: "json",
                     success: function (response) {
                         document.title= 'Laporan - ' + new Date().toJSON().slice(0,10).replace(/-/g,'/')
@@ -329,12 +300,10 @@ $(document).ready(function () {
     });
 
     $('body').on('click', '#tableData td:first-child', function () {
-        var id_pengadaan = $(this).data('id')
-        var status = $(this).data('status')
+        var id_maintenance = $(this).data('id')
         var table = $('#tableData').DataTable();
         var tr = $(this).closest('tr');
         var row = table.row( tr );
-        var keterangan = $(this).data('keterangan');
         var pemohon = $(this).data('pemohon');
         var jabatan_pemohon = $(this).data('jabatan');
         if (row.child.isShown()) {
@@ -345,47 +314,21 @@ $(document).ready(function () {
             // Open row.
 
             var row_div = '<div class="row">' +
-                '<div class="col-md-6">' +
-                    '<div class="row">' +
-                        '<div class="col-md-4">' +
-                            'Nama Pemohon' +
-                        '</div>' +
-                        '<div class="col-md-8">: ' +
-                            pemohon +
-                        '</div>' +
-                        '<div class="col-md-4 mt-2">' +
-                            'Jabatan Pemohon' +
-                        '</div>' +
-                        '<div class="col-md-8 mt-2">: ' +
-                            jabatan_pemohon +
-                        '</div>' +
-                        '<div class="col-md-4 mt-2">' +
-                            'Keterangan' +
-                        '</div>' +
-                        '<div class="col-md-8 mt-2">: ' +
-                            (keterangan != '' ? keterangan : '-') +
-                        '</div>' +
-                    '</div>' +
+                '<div class="col-md-2">' +
+                    'Nama Pemohon' +
                 '</div>' +
-                '<div class="col-md-6">' +
-                    '<div class="row">' +
-                        '<div class="col-md-4">' +
-                            'Tanggal Penerimaan' +
-                        '</div>' +
-                        '<div class="col-md-8 tanggal-penerimaan">: ' +
-                            '-' +
-                        '</div>' +
-                        '<div class="col-md-4">' +
-                            'Nama Penerima' +
-                        '</div>' +
-                        '<div class="col-md-8 nama-penerima">: ' +
-                            '-' +
-                        '</div>' +
-                    '</div>' +
+                '<div class="col-md-10">' +
+                    ': ' + pemohon +
+                '</div>' +
+                '<div class="col-md-2 mt-2">' +
+                    'Jabatan Pemohon' +
+                '</div>' +
+                '<div class="col-md-10 mt-2">' +
+                    ': ' + jabatan_pemohon +
                 '</div>' +
 
                 '<div class="col-md-12 mt-2 text-center">' +
-                    '<h4><strong>Detail Item Pengadaan</strong></h4>' +
+                    '<h4><strong>Detail Item Perbaikan</strong></h4>' +
                 '</div>' +
                 
                 '<table class="table table-stripped table-hover mt-2" id="tableItem">' +
@@ -393,96 +336,30 @@ $(document).ready(function () {
                     '<tr>' +
                         '<th>No</th>' +
                         '<th>Nama Barang</th>' +
-                        '<th>Harga Satuan Barang</th>' +
-                        '<th>Jumlah Barang</th>' +
-                        '<th>Total Harga</th>' +
+                        '<th>Spesifikasi</th>' +
+                        '<th>Uraian Perawatan</th>' +
+                        '<th>Keterangan</th>' +
                     '</tr>' +
                     '</thead>' +
-                    '<tbody id="item'+id_pengadaan+'">' +
+                    '<tbody id="item'+id_maintenance+'">' +
                     '</tbody>' +
                 '</table>';
             '</div>';
-            $.get('/pengadaan/item-pengadaan/'+id_pengadaan, function(data) {
-                // console.log(data)
-                $('.nama-penerima').html(": " + data.nama_penerima + " <button type=button class='btn btn-primary btn-sm btn-edit-penerima' data-id='"+id_pengadaan+"' data-status='"+status+"'>Edit</button>");
-                $('.tanggal-penerimaan').html(": " + data.tanggal_penerimaan);
-                data.user_login != 'Staf Administrasi' ? $('.btn-edit-penerima').hide() : $('.btn-edit-penerima').show();
-                $.each(data.data, function(i, item) {
+            $.get('/perawatan/item-perawatan/'+id_maintenance, function(data) {
+                $.each(data, function(i, item) {
                     var tr_row = '<tr>' +
                         '<td>' + (i+1) + '</td>' +
                         '<td>' + item.nama_barang + '</td>' +
-                        '<td>' + item.harga_satuan + '</td>' +
-                        '<td>' + item.jumlah_barang + '</td>' +
-                        '<td>' + item.total + '</td>' +
+                        '<td>' + item.spesifikasi_barang + '</td>' +
+                        '<td>' + item.uraian + '</td>' +
+                        '<td>' + item.keterangan + '</td>' +
                     '</tr>';
-                    $('#item'+id_pengadaan).append(tr_row);
+                    $('#item'+id_maintenance).append(tr_row);
                 });
                 // $('#tableItem tbody').html(data);
             })
             row.child(row_div).show();
             tr.addClass('shown');
-        }
-    });
-
-    $('body').on('click', '.btn-edit-penerima', function(){
-        var id = $(this).data('id');
-        var status = $(this).data('status');
-        $('#modalPenerimaan').find('#id_pengadaan').val(id);
-        if(status != 'Diterima'){
-            Swal.fire({
-                title: 'Peringatan',
-                text: 'Pengadaan ini belum divalidasi, tidak dapat mengubah penerimaan',
-                icon: 'warning',
-            })
-        } else {
-            $('#modalPenerimaan').modal('show');
-        }
-    });
-
-    $('body').on('click', '.btn-proses-penerimaan', function(){
-        var id = $('#id_pengadaan').val();
-        var penerima = $('#id_pegawai').val();
-        var tanggal = $('#tanggal_penerimaan').val();
-        if(penerima == '' || tanggal == ''){
-            $('#modalPenerimaan').modal('hide');
-            Swal.fire({
-                title: 'Peringatan',
-                text: 'Mohon untuk melengkapi data penerimaan',
-                icon: 'warning',
-            })
-        } else {
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-            $.ajax({
-                url: '/pengadaan/proses-penerimaan',
-                type: 'POST',
-                data: {
-                    id_pengadaan: id,
-                    id_pegawai: penerima,
-                    penerima: penerima,
-                    tanggal: tanggal,
-                },
-                success: function(data){
-                    getData()
-                    $('#modalPenerimaan').modal('hide');
-                    Swal.fire({
-                        title: data.title,
-                        text: data.message,
-                        icon: data.status,
-                    });
-                },
-                error: function(data){
-                    $('#modalPenerimaan').modal('hide');
-                    Swal.fire({
-                        title: 'Peringatan',
-                        text: 'Terjadi kesalahan',
-                        icon: 'warning',
-                    });
-                }
-            });
         }
     });
 
@@ -498,16 +375,16 @@ $(document).ready(function () {
             })
         } else {
             $('#modalValidasi').modal('show')
-            $('#modalValidasi').find('#id_pengadaan').val(id)
-            $('#modalValidasi').find('#status_pengadaan').val(status)
+            $('#modalValidasi').find('#id_maintenance').val(id)
+            $('#modalValidasi').find('#status_perbaikan').val(status)
             $('#modalValidasi').find('#keterangan_grup').prop('hidden', true)
         }
     })
 
-    $('body').on('change', '#status_pengadaan', function() {
+    $('body').on('change', '#status_perbaikan', function() {
         $('#modalValidasi').find('#keterangan').removeClass('is-invalid')
         $('.error-keterangan').html('')
-        $('#modalValidasi').find('#status_pengadaan').removeClass('is-invalid')
+        $('#modalValidasi').find('#status_perbaikan').removeClass('is-invalid')
         $('.error-status').html('')
         let status = $(this).val()
         if(status != 'Ditolak') {
@@ -526,7 +403,7 @@ $(document).ready(function () {
         });
         $.ajax({
             type: "POST",
-            url: "/pengadaan/validasi",
+            url: "/perawatan/validasi",
             data: data,
             beforeSend: function () {
                 $('.btn-proses-validasi').attr('disable', 'disabled')
@@ -553,14 +430,13 @@ $(document).ready(function () {
     }
 
     $('body').on('click', '.btn-proses-validasi', function() {
-        let status = $('#status_pengadaan').val()
+        let status = $('#status_perbaikan').val()
         let keterangan = $('#keterangan').val()
-        let id = $('#modalValidasi').find('#id_pengadaan').val()
-        // alert(id)
+        let id = $('#id_maintenance').val()
         let data = {
             status: status,
             keterangan: keterangan,
-            id_pengadaan: id
+            id_maintenance: id
         }
 
         if(status == 'Ditolak') {
@@ -596,11 +472,11 @@ $(document).ready(function () {
         $('#modalStatusValidasi').find('#tableValidasi tfoot').empty()
         $.ajax({
             type: "GET",
-            url: "/pengadaan/detail-validasi/" + id,
+            url: "/perawatan/detail-validasi/" + id,
             dataType: "json",
             success: function (response) {
                 var keterangan = ''
-                var note = 'Buat pengadaan barang baru atau hubungi yang bersangkutan'
+                var note = 'Buat perbaikan barang baru atau hubungi yang bersangkutan'
                 $('#modalStatusValidasi').modal('show')
                 if(response.approve_kepala_sekolah == null && response.approve_wakil_sarpras == null) {
                     keterangan = 'Belum ada validasi'
@@ -687,11 +563,11 @@ $(document).ready(function () {
             if (result.value) {
                 var formData = new FormData();
                 var file = $('.swal2-file')[0].files[0];
-                formData.append('id_pengadaan', id);
+                formData.append('id_maintenance', id);
                 formData.append('nota', file);
                 formData.append('_token', $('meta[name="csrf-token"]').attr('content'));
                 $.ajax({
-                    url: '/pengadaan/unggah-nota',
+                    url: '/perawatan/unggah-nota',
                     type: 'POST',
                     data: formData,
                     contentType: false,

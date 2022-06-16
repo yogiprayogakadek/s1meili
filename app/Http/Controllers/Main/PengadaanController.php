@@ -7,6 +7,7 @@ use App\Http\Requests\PengadaanRequest;
 use App\Models\Barang;
 use App\Models\ItemPengadaan;
 use App\Models\Maintenance;
+use App\Models\Pegawai;
 use App\Models\Pengadaan;
 use App\Models\PengadaanHistori;
 use Illuminate\Http\Request;
@@ -24,9 +25,10 @@ class PengadaanController extends Controller
     public function render()
     {
         $data = Pengadaan::with('user')->get();
+        $pegawai = Pegawai::pluck('nama_pegawai', 'id_pegawai')->prepend('Pilih Pegawai', '');
 
         $view = [
-            'data' => view('main.pengadaan.render', compact('data'))->render()
+            'data' => view('main.pengadaan.render', compact('data', 'pegawai'))->render()
         ];
 
         return response()->json($view);
@@ -45,10 +47,12 @@ class PengadaanController extends Controller
 
     public function create()
     {
+        $pegawai = Pegawai::pluck('nama_pegawai', 'id_pegawai')->prepend('Pilih Pegawai', '');
         $barang = Barang::pluck('nama_barang', 'id_barang')->toArray();
         $view = [
             'data' => view('main.pengadaan.create')->with([
-                'barang' => $barang
+                'barang' => $barang,
+                'pegawai' => $pegawai
             ])->render()
         ];
 
@@ -67,6 +71,7 @@ class PengadaanController extends Controller
                     'nomor_laporan' => $request->nomor_laporan,
                     'biaya_pengadaan' => preg_replace('/[^0-9]/', '', $request->biaya),
                     'keterangan' => $request->keterangan,
+                    'id_pegawai' => $request->pemohon
                     // 'pemohon' => $request->pemohon,
                     // 'jabatan_pemohon' => $request->jabatan_pemohon,
                 ];
@@ -155,6 +160,7 @@ class PengadaanController extends Controller
                     'nomor_laporan' => $request->nomor_laporan,
                     'biaya_pengadaan' => preg_replace('/[^0-9]/', '', $request->biaya),
                     'keterangan' => $request->keterangan,
+                    'id_pegawai' => $request->pemohon
                     // 'pemohon' => $request->pemohon,
                     // 'jabatan_pemohon' => $request->jabatan_pemohon,
                 ];
@@ -247,6 +253,8 @@ class PengadaanController extends Controller
 
     public function itemPengadaan($id_pengadaan) {
         $itemPengadaan = ItemPengadaan::with('barang')->where('id_pengadaan', $id_pengadaan)->get();
+        $pengadaan = Pengadaan::find($id_pengadaan);
+        $penerima = json_decode($pengadaan->penerimaan, true);
         $data = [];
         foreach($itemPengadaan as $key => $item) {
             $data[] = [
@@ -258,8 +266,12 @@ class PengadaanController extends Controller
             ];
         }
 
-        // dd($html);
-        return response()->json($data);
+        return response()->json([
+            'user_login' => auth()->user()->role->nama,
+            'data' => $data,
+            'nama_penerima' => $penerima['nama_penerima'] ?? 'Belum diterima',
+            'tanggal_penerimaan' => $penerima['tanggal_penerimaan'] ?? '-',
+        ]);
     }
 
     public function delete($id)
@@ -437,6 +449,35 @@ class PengadaanController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Nota berhasil diunggah',
+                'title' => 'Berhasil'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                // 'message' => 'Data gagal tersimpan',
+                'message' => $e->getMessage(),
+                'title' => 'Gagal'
+            ]);
+        }
+    }
+
+    public function prosesPenerimaan(Request $request)
+    {
+        try {
+            $pengadaan = Pengadaan::find($request->id_pengadaan);
+
+            $penerimaan = [
+                'nama_penerima' => Pegawai::where('id_pegawai', $request->id_pegawai)->first()->nama_pegawai,
+                'tanggal_penerimaan' => $request->tanggal
+            ];
+
+            $pengadaan->update([
+                'penerimaan' => json_encode($penerimaan),
+            ]);
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Data berhasil diproses',
                 'title' => 'Berhasil'
             ]);
         } catch (\Exception $e) {

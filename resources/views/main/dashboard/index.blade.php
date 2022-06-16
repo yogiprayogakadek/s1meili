@@ -44,7 +44,8 @@
                         <select class="form-control" id="kategori">
                             <option value="">Pilih Kategori</option>
                             <option value="Pengadaan">Pengadaan</option>
-                            <option value="Perawatan dan Perbaikan">Perbaikan</option>
+                            <option value="Perbaikan">Perbaikan</option>
+                            <option value="Perawatan">Perawatan</option>
                             <option value="Kerusakan">Kerusakan</option>
                         </select>
                     </div>

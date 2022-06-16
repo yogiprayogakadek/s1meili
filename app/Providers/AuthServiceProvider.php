@@ -38,7 +38,7 @@ class AuthServiceProvider extends ServiceProvider
         });
 
         Gate::define('staff_administrasi', function ($user) {
-            return $user->role->nama === 'Staff Administrasi';
+            return $user->role->nama === 'Staf Administrasi';
         });
 
         Gate::define('bendahara', function ($user) {

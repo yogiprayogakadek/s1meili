@@ -2,6 +2,7 @@
 
 use App\Models\Maintenance;
 use App\Models\MaintenanceHistori;
+use App\Models\Pengadaan;
 use App\Models\PengadaanHistori;
 use Illuminate\Http\Request;
 
@@ -82,10 +83,14 @@ function subtractingDate($date1, $date2)
 
 function pengadaanNeedApproval()
 {
-    if(auth()->user()->role->nama == 'Kepala Sekolah') {
-        $total = PengadaanHistori::where('approve_kepala_sekolah', '!=', 'Diterima')->count();
-    } else {
-        $total = PengadaanHistori::where('approve_wakil_sarpras', '!=', 'Diterima')->count();
+    if(auth()->user()->role->nama === 'Kepala Sekolah') {
+        $total = PengadaanHistori::where('approve_kepala_sekolah', null)->count();
+    } elseif(auth()->user()->role->nama === 'Wakil Sarpras') {
+        $total = PengadaanHistori::where('approve_wakil_sarpras', null)->count();
+    } elseif(auth()->user()->role->nama === 'Staf Administrasi') {
+        $total = Pengadaan::withCount(['pengadaan_histori' => function ($query) {
+            $query->where('approve_kepala_sekolah', 'Diterima')->where('approve_wakil_sarpras', 'Diterima');
+        }])->where('penerimaan', null)->count();
     }
 
     return $total;

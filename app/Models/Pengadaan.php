@@ -27,4 +27,9 @@ class Pengadaan extends Model
     {
         return $this->hasOne(PengadaanHistori::class, 'id_pengadaan');
     }
+
+    public function pegawai()
+    {
+        return $this->belongsTo(Pegawai::class, 'id_pegawai');
+    }
 }
