@@ -14,7 +14,7 @@
             </div>
         </div>
         <div class="card-body">
-            <table class="table table-bordered text-nowrap border-bottom dataTable no-footer" role="grid" id="tableData">
+            <table class="table table-bordered text-nowrap border-bottom dataTable no-footer table-responsive" role="grid" id="tableData">
                 <thead>
                     <tr>
                         <th>No</th>

@@ -11,7 +11,7 @@
             </div>
             <div class="card-body">
                 {{-- <form id="formAdd"> --}}
-                <div class="row">
+                {{-- <div class="row">
                     <div class="col-6">
                         <div class="form-group">
                             <input type="hidden" value="{{$data->id_maintenance}}" name="id_maintenance">
@@ -27,6 +27,17 @@
                             <div class="invalid-feedback error-jabatan_pemohon"></div>
                         </div>
                     </div>
+                </div> --}}
+
+                <input type="hidden" value="{{$data->id_maintenance}}" name="id_maintenance">
+                <div class="form-group">
+                    <label for="pemohon">Nama Pemohon</label>
+                    <select name="pemohon" id="pemohon" class="form-control pemohon">
+                        @foreach ($pegawai as $key => $value)
+                        <option value="{{$key}}" {{$key == $data->id_pegawai ? 'selected' : ''}}>{{$value}}</option>
+                        @endforeach
+                    </select>
+                    <div class="invalid-feedback error-pemohon"></div>
                 </div>
 
                 <div class="form-group">

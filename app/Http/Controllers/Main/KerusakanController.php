@@ -107,10 +107,12 @@ class KerusakanController extends Controller
 
     public function edit($id)
     {
-        $data = Maintenance::find($id);
+        $data = Maintenance::with('pegawai')->find($id);
+        $pegawai = Pegawai::pluck('nama_pegawai', 'id_pegawai')->prepend('Pilih Pegawai', '');
         $view = [
             'data' => view('main.kerusakan.edit')->with([
                 'data' => $data,
+                'pegawai' => $pegawai,
                 'item_perbaikan' => json_decode($data->item_maintenance, true)
             ])->render()
         ];

@@ -56,7 +56,7 @@ class PerbaikanController extends Controller
                     'id_pegawai' => $request->pemohon,
                     // 'pemohon' => $request->pemohon,
                     // 'jabatan_pemohon' => $request->jabatan_pemohon,
-                    'kategori_perbaikan' => $this->kategori_maintenance,
+                    'kategori_maintenance' => $this->kategori_maintenance,
                     'biaya_maintenance' => preg_replace('/[^0-9]/', '', $request->biaya),
                 ];
 
@@ -110,9 +110,11 @@ class PerbaikanController extends Controller
     public function edit($id)
     {
         $data = Maintenance::find($id);
+        $pegawai = Pegawai::pluck('nama_pegawai', 'id_pegawai')->prepend('Pilih Pegawai', '');
         $view = [
             'data' => view('main.perbaikan.edit')->with([
                 'data' => $data,
+                'pegawai' => $pegawai,
                 'item_perbaikan' => json_decode($data->item_maintenance, true)
             ])->render()
         ];
@@ -123,6 +125,7 @@ class PerbaikanController extends Controller
     public function update(MaintenanceRequest $request)
     {
         try {
+            // dd($request->all());
             $perbaikan = Maintenance::find($request->id_maintenance);
             $item_perbaikan = array();
             DB::transaction(function () use ($request, $perbaikan, &$item_perbaikan) {

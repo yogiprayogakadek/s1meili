@@ -14,7 +14,7 @@
             <div class="">
                 <!-- CONTAINER OPEN -->
                 <div class="col col-login mx-auto mt-7">
-                    {{-- <div class="text-center"> <a href="{{route('main')}}"><img src="{{asset('assets/images/logo-white.png')}}" style="height: 130px"
+                    {{-- <div class="text-center"> <a href="{{route('main')}}"><img src="{{asset('assets/images/logo.jpeg')}}" style="height: 130px"
                                 class="header-brand-img" alt=""></a> </div> --}}
                 </div>
                 <div class="row">

@@ -11,22 +11,15 @@
             </div>
             <div class="card-body">
                 {{-- <form id="formAdd"> --}}
-                <div class="row">
-                    <div class="col-6">
-                        <div class="form-group">
-                            <input type="hidden" value="{{$data->id_maintenance}}" name="id_maintenance">
-                            <label for="pemohon">Nama Pemohon</label>
-                            <input type="text" class="form-control pemohon" name="pemohon" id="pemohon" placeholder="masukkan nama pemohon" value="{{$data->pemohon}}">
-                            <div class="invalid-feedback error-pemohon"></div>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="form-group">
-                            <label for="jabatan_pemohon">Jabatan Pemohon</label>
-                            <input type="text" class="form-control jabatan_pemohon" name="jabatan_pemohon" id="jabatan_pemohon" placeholder="masukkan jabatan pemohon" value="{{$data->jabatan_pemohon}}">
-                            <div class="invalid-feedback error-jabatan_pemohon"></div>
-                        </div>
-                    </div>
+                <input type="hidden" value="{{$data->id_maintenance}}" name="id_maintenance">
+                <div class="form-group">
+                    <label for="pemohon">Nama Pemohon</label>
+                    <select name="pemohon" id="pemohon" class="form-control pemohon">
+                        @foreach ($pegawai as $key => $value)
+                        <option value="{{$key}}" {{$key == $data->id_pegawai ? 'selected' : ''}}>{{$value}}</option>
+                        @endforeach
+                    </select>
+                    <div class="invalid-feedback error-pemohon"></div>
                 </div>
 
                 <div class="form-group">

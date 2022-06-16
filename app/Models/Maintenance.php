@@ -22,4 +22,9 @@ class Maintenance extends Model
     {
         return $this->hasOne('App\Models\MaintenanceHistori', 'id_maintenance', 'id_maintenance');
     }
+
+    public function pegawai()
+    {
+        return $this->belongsTo('App\Models\Pegawai', 'id_pegawai');
+    }
 }
