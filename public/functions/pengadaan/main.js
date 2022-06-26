@@ -63,6 +63,7 @@ $(document).ready(function () {
 
     $("body").on("keyup", '.harga-satuan', function (e) {
         var id_harga = $(this).data("harga");
+        // alert(id_harga);
         $("#"+ id_harga).val(convertToRupiah($(this).val(), "Rp. "))
     });
 
@@ -70,45 +71,54 @@ $(document).ready(function () {
         i++;
 
         var html = '<div class="card">' +
-            '<div class="card-header">' +
-                '<h5 class="card-title">Item Barang</h5>' +
-                '<div class="card-options">' +
-                    '<button class="btn btn-danger btn-delete-item"><i class="fa fa-trash"></i> Hapus</button>' +
+                '<div class="card-header">' +
+                    '<h5 class="card-title">Item Barang</h5>' +
+                    '<div class="card-options">' +
+                        '<button class="btn btn-danger btn-delete-item"><i class="fa fa-trash"></i> Hapus</button>' +
+                    '</div>' +
                 '</div>' +
-            '</div>' +
-            '<div class="card-body">' +
-                // '<div class="form-group">' +
-                //     '<label>Kode Barang</label>' +
-                //     '<input type="text" class="form-control kode'+i+'" name="kode['+i+']" id="kode'+i+'" placeholder="masukkan kode barang">' +
-                //     '<div class="invalid-feedback error-kode'+i+'"></div>' +
-                // '</div>' +
-                '<div class="form-group">' +
-                    '<label>Nama Barang</label>' +
-                    '<input type="text" class="form-control nama'+i+'" name="nama['+i+']" id="nama'+i+'" placeholder="masukkan nama barang">' +
-                    '<div class="invalid-feedback error-nama'+i+'"></div>' +
+                '<div class="card-body">' +
+                    // '<div class="form-group">' +
+                    //     '<label>Nama Barang</label>' +
+                    //     '<input type="text" class="form-control nama'+i+'" name="nama['+i+']" id="nama'+i+'" placeholder="masukkan nama barang">' +
+                    //     '<div class="invalid-feedback error-nama'+i+'"></div>' +
+                    // '</div>' +
+                    '<div class="form-group">' +
+                        '<label>Nama Barang</label>' +
+                        '<select name="nama['+i+']" id="nama'+i+'" class="form-control nama'+i+' nama-barang" data-id="'+i+'">' +
+                        // '<select class="form-control nama'+i+' nama-barang" name="nama['+i+']" id="nama'+i+'">' +
+                            
+                        '</select>' +
+                        '<div class="invalid-feedback error-nama'+i+'"></div>' +
+                    '</div>' +
+                    '<div class="form-group">' +
+                        '<label>Merek Barang</label>' +
+                        '<input type="text" class="form-control merek'+i+'" name="merek['+i+']" id="merek'+i+'" readonly>' +
+                        '<div class="invalid-feedback error-merek'+i+'"></div>' +
+                    '</div>' +
+                    '<div class="form-group">' +
+                        '<label>Spesifikasi Barang</label>' +
+                        '<textarea class="form-control spesifikasi'+i+'" name="spesifikasi['+i+']" id="spesifikasi'+i+'" readonly></textarea>' +
+                        '<div class="invalid-feedback error-spesifikasi'+i+'"></div>' +
+                    '</div>' +
+                    '<div class="form-group">' +
+                        '<label>Jumlah Barang</label>' +
+                        '<input type="number" class="form-control jumlah'+i+'" name="jumlah['+i+']" id="jumlah'+i+'" placeholder="masukkan jumlah barang">' +
+                        '<div class="invalid-feedback error-jumlah'+i+'"></div>' +
+                    '</div>' +
+                    '<div class="form-group">' +
+                        '<label>Harga Satuan</label>' +
+                        '<input type="text" class="form-control harga-satuan harga'+i+'" name="harga['+i+']" id="harga'+i+'" data-harga="harga'+i+'" placeholder="masukkan harga satuan">' +
+                        '<div class="invalid-feedback error-harga'+i+'"></div>' +
+                    '</div>' +
                 '</div>' +
-                '<div class="form-group">' +
-                    '<label>Merek Barang</label>' +
-                    '<input type="text" class="form-control merek'+i+'" name="merek['+i+']" id="merek'+i+'" placeholder="masukkan merek barang">' +
-                    '<div class="invalid-feedback error-merek'+i+'"></div>' +
-                '</div>' +
-                '<div class="form-group">' +
-                    '<label>Spesifikasi Barang</label>' +
-                    '<textarea class="form-control spesifikasi'+i+'" name="spesifikasi['+i+']" id="spesifikasi'+i+'" placeholder="masukkan spesifikasi barang"></textarea>' +
-                    '<div class="invalid-feedback error-spesifikasi'+i+'"></div>' +
-                '</div>' +
-                '<div class="form-group">' +
-                    '<label>Jumlah Barang</label>' +
-                    '<input type="number" class="form-control jumlah'+i+'" name="jumlah['+i+']" id="jumlah'+i+'" placeholder="masukkan jumlah barang">' +
-                    '<div class="invalid-feedback error-jumlah'+i+'"></div>' +
-                '</div>' +
-                '<div class="form-group">' +
-                    '<label>Harga Satuan</label>' +
-                    '<input type="text" class="form-control harga-satuan harga'+i+'" name="harga['+i+']" id="harga'+i+'" data-harga="harga'+i+'" placeholder="masukkan harga satuan">' +
-                    '<div class="invalid-feedback error-harga'+i+'"></div>' +
-                '</div>' +
-            '</div>' +
-        '</div>';
+            '</div>';
+
+        $.get("/barang/data-barang", function(response){
+            $.each(response, function(key, value){
+                $("#nama"+i).append('<option value="'+key+'">'+value+'</option>');
+            });
+        });
 
         $('#item-barang').append(html);
     })
@@ -729,4 +739,28 @@ $(document).ready(function () {
         $('#modalDetailNota').find('.detail-nota').html(image);
         $('#modalDetailNota').find('.btn-nota').attr('data-id', id);
     }); 
+
+    $('body').on('change', '.nama-barang', function () {
+        let div_id = $(this).data('id');
+        let id_barang = $(this).val();
+
+        let array = [
+            'merek',
+            'spesifikasi',
+        ]
+
+        if(id_barang != '') {
+            $.get('/barang/get-detail-barang/' + id_barang, function (response) {
+                $('#merek' + div_id).val(response.merek);
+                $('#spesifikasi' + div_id).val(response.merek);
+                // $.each(array, function (index, value) {
+                //     $('#' + value + div_id).val(response[value])
+                // }
+            })
+        } else {
+            $('#merek' + div_id).val('');
+            $('#spesifikasi' + div_id).val('');
+            // $('#' + div_id).html('');
+        }
+    })
 });

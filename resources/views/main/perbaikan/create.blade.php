@@ -59,25 +59,34 @@
             <div class="card">
                 <div class="card-header">Item Barang</div>
                 <div class="card-body">
-                    <div class="form-group">
+                    {{-- <div class="form-group">
                         <label for="nama">Nama Barang</label>
                         <input type="text" class="form-control nama1" name="nama[1]" id="nama1" placeholder="masukkan nama barang">
                         <div class="invalid-feedback error-nama1"></div>
+                    </div> --}}
+                    <div class="form-group">
+                        <label for="nama">Nama nama</label>
+                        <select name="nama[0]" id="nama0" class="form-control nama0 nama-barang" data-id="0">
+                            @foreach ($barang as $key => $value)
+                            <option value="{{$key}}">{{$value}}</option>
+                            @endforeach
+                        </select>
+                        <div class="invalid-feedback error-nama0"></div>
                     </div>
                     <div class="form-group">
                         <label for="spesifikasi">Spesifikasi Barang</label>
-                        <textarea class="form-control spesifikasi1" name="spesifikasi[1]" id="spesifikasi1" placeholder="masukkan spesifikasi barang"></textarea>
-                        <div class="invalid-feedback error-spesifikasi1"></div>
+                        <textarea class="form-control spesifikasi0" name="spesifikasi[0]" id="spesifikasi0" placeholder="masukkan spesifikasi barang"></textarea>
+                        <div class="invalid-feedback error-spesifikasi0"></div>
                     </div>
                     <div class="form-group">
                         <label for="uraian">Uraian Perbaikan Barang</label>
-                        <textarea class="form-control uraian1" name="uraian[1]" id="uraian1" placeholder="masukkan uraian barang"></textarea>
-                        <div class="invalid-feedback error-uraian1"></div>
+                        <textarea class="form-control uraian0" name="uraian[0]" id="uraian0" placeholder="masukkan uraian barang"></textarea>
+                        <div class="invalid-feedback error-uraian0"></div>
                     </div>
                     <div class="form-group">
                         <label for="keterangan">Keterangan Perbaikan</label>
-                        <textarea class="form-control keterangan1" name="keterangan[1]" id="keterangan1" placeholder="masukkan keterangan barang"></textarea>
-                        <div class="invalid-feedback error-keterangan1"></div>
+                        <textarea class="form-control keterangan0" name="keterangan[0]" id="keterangan0" placeholder="masukkan keterangan barang"></textarea>
+                        <div class="invalid-feedback error-keterangan0"></div>
                     </div>
                 </div>
             </div>

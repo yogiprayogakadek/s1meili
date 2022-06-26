@@ -40,6 +40,8 @@ Route::prefix('/')->namespace('Main')->middleware('auth')->group(function(){
         Route::post('/update', 'BarangController@update')->name('update');
         Route::get('/delete/{id}', 'BarangController@delete')->name('delete');
         Route::get('/print/{id}', 'BarangController@print')->name('print');
+        Route::get('/get-detail-barang/{id_barang}', 'PengadaanController@detailBarang')->name('detail-barang');
+        Route::get('/data-barang', 'PengadaanController@dataBarang')->name('data-barang');
     });
 
     Route::prefix('/pengadaan')->name('pengadaan.')->group(function(){
@@ -51,6 +53,8 @@ Route::prefix('/')->namespace('Main')->middleware('auth')->group(function(){
         Route::post('/update', 'PengadaanController@update')->name('update');
         Route::get('/delete/{id}', 'PengadaanController@delete')->name('delete');
         Route::get('/item-pengadaan/{id_pengadaan}', 'PengadaanController@itemPengadaan')->name('item-pengadaan');
+        // Route::get('/get-detail-barang/{id_barang}', 'PengadaanController@detailBarang')->name('detail-barang');
+        // Route::get('/data-barang', 'PengadaanController@dataBarang')->name('data-barang');
         Route::get('/print/{id}', 'PengadaanController@print')->name('print');
         Route::post('/validasi', 'PengadaanController@validasi')->name('validasi');
         Route::get('/detail-validasi/{id_pengadaan}', 'PengadaanController@detailValidasi')->name('detail-validasi');

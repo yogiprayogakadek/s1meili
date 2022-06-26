@@ -48,7 +48,7 @@ class PengadaanController extends Controller
     public function create()
     {
         $pegawai = Pegawai::pluck('nama_pegawai', 'id_pegawai')->prepend('Pilih Pegawai', '');
-        $barang = Barang::pluck('nama_barang', 'id_barang')->toArray();
+        $barang = Barang::pluck('nama_barang', 'id_barang')->prepend('Pilih Barang', '');
         $view = [
             'data' => view('main.pengadaan.create')->with([
                 'barang' => $barang,
@@ -59,17 +59,29 @@ class PengadaanController extends Controller
         return response()->json($view);
     }
 
+    public function detailBarang($id) {
+        $barang = Barang::find($id);
+        return response()->json($barang);
+    }
+
+    public function dataBarang()
+    {
+        $barang = Barang::pluck('nama_barang', 'id_barang')->prepend('Pilih Barang', 0);
+        return response()->json($barang);
+    }
+
     public function store(PengadaanRequest $request)
     {
         try {
             $response = [];
             DB::transaction(function () use ($request, &$response) {
+                $biaya = 0;
                 $dataPengadaan = [
                     'id_user' => auth()->user()->id_user,
                     'tanggal_pengadaan' => $request->tanggal_pengadaan,
                     // 'tanggal_penerimaan' => $request->tanggal_penerimaan,
                     'nomor_laporan' => $request->nomor_laporan,
-                    'biaya_pengadaan' => preg_replace('/[^0-9]/', '', $request->biaya),
+                    // 'biaya_pengadaan' => preg_replace('/[^0-9]/', '', $request->biaya),
                     'keterangan' => $request->keterangan,
                     'id_pegawai' => $request->pemohon
                     // 'pemohon' => $request->pemohon,
@@ -83,6 +95,11 @@ class PengadaanController extends Controller
                     $response['title'] = 'Gagal Menambahkan Pengadaan';
                 } 
                 else {
+                    // get biaya total pengadaan
+                    for($i = 0; $i < count($request->nama); $i++) {
+                        $biaya += preg_replace('/[^0-9]/', '', $request->harga[$i]) * $request->jumlah[$i];
+                    }
+                    $dataPengadaan['biaya_pengadaan'] = $biaya;
                     $pengadaan = Pengadaan::create($dataPengadaan);
 
                     // insert ke tabel pengadaan_histori
@@ -91,31 +108,32 @@ class PengadaanController extends Controller
                     ]);
 
                     for($i = 0; $i < count($request->nama); $i++) {
-                        $cek = Barang::where('nama_barang', $request->nama[$i])->first();
-                        $dataBarang[] = [
-                            'nama_barang' => $request->nama[$i],
-                            'merek' => $request->merek[$i],
-                            'kode_barang' => randomString(),
-                            'spesifikasi' => $request->spesifikasi[$i],
-                            // 'kode_barang' => $request->kode[$i],
-                        ];
+                        // $cek = Barang::where('nama_barang', $request->nama[$i])->first();
+                        // $dataBarang[] = [
+                        //     'nama_barang' => Barang::find($request->nama[$i])->nama_barang,
+                        //     // 'nama_barang' => $request->nama[$i],
+                        //     'merek' => $request->merek[$i],
+                        //     'kode_barang' => randomString(),
+                        //     'spesifikasi' => $request->spesifikasi[$i],
+                        //     // 'kode_barang' => $request->kode[$i],
+                        // ];
 
-                        if(!$cek) {
-                            $barang = Barang::create($dataBarang[$i]);
+                        // if(!$cek) {
+                        //     $barang = Barang::create($dataBarang[$i]);
                             ItemPengadaan::create([
                                 'id_pengadaan' => $pengadaan->id_pengadaan,
-                                'id_barang' => $barang->id_barang,
+                                'id_barang' => Barang::find($request->nama[$i])->id_barang,
                                 'harga_satuan' => preg_replace('/[^0-9]/', '', $request->harga[$i]),
                                 'jumlah_barang' => $request->jumlah[$i],
                             ]);
-                        } else {
-                            ItemPengadaan::create([
-                                'id_pengadaan' => $pengadaan->id_pengadaan,
-                                'id_barang' => $cek->id_barang,
-                                'harga_satuan' => preg_replace('/[^0-9]/', '', $request->harga[$i]),
-                                'jumlah_barang' => $request->jumlah[$i],
-                            ]);
-                        }
+                        // } else {
+                        //     ItemPengadaan::create([
+                        //         'id_pengadaan' => $pengadaan->id_pengadaan,
+                        //         'id_barang' => $cek->id_barang,
+                        //         'harga_satuan' => preg_replace('/[^0-9]/', '', $request->harga[$i]),
+                        //         'jumlah_barang' => $request->jumlah[$i],
+                        //     ]);
+                        // }
                     }
                 }
             });
@@ -140,9 +158,11 @@ class PengadaanController extends Controller
 
     public function edit($id)
     {
+        $pegawai = Pegawai::pluck('nama_pegawai', 'id_pegawai')->prepend('Pilih Pegawai', '');
+        $barang = Barang::pluck('nama_barang', 'id_barang')->prepend('Pilih Barang', '');
         $data = Pengadaan::with('item_pengadaan.barang')->find($id);
         $view = [
-            'data' => view('main.pengadaan.edit', compact('data'))->render()
+            'data' => view('main.pengadaan.edit', compact('data', 'pegawai', 'barang'))->render()
         ];
 
         return response()->json($view);
@@ -153,12 +173,13 @@ class PengadaanController extends Controller
         try {
             $pengadaan = Pengadaan::find($request->id_pengadaan);
             DB::transaction(function () use ($request, $pengadaan) {
+                $biaya = 0;
                 $dataPengadaan = [
                     'id_user' => auth()->user()->id_user,
                     'tanggal_pengadaan' => $request->tanggal_pengadaan,
                     // 'tanggal_penerimaan' => $request->tanggal_penerimaan,
                     'nomor_laporan' => $request->nomor_laporan,
-                    'biaya_pengadaan' => preg_replace('/[^0-9]/', '', $request->biaya),
+                    // 'biaya_pengadaan' => preg_replace('/[^0-9]/', '', $request->biaya),
                     'keterangan' => $request->keterangan,
                     'id_pegawai' => $request->pemohon
                     // 'pemohon' => $request->pemohon,
@@ -183,7 +204,10 @@ class PengadaanController extends Controller
                     }
                     $request->file('nota')->move($save_path, $filenametostore);
                 }
-
+                for($i = 0; $i < count($request->nama); $i++) {
+                    $biaya += preg_replace('/[^0-9]/', '', $request->harga[$i]) * $request->jumlah[$i];
+                }
+                $dataPengadaan['biaya_pengadaan'] = $biaya;
                 $pengadaan->update($dataPengadaan);
                 if($pengadaan->status_pengadaan == 'Diterima') {
                     // dd('masuk');
@@ -203,37 +227,44 @@ class PengadaanController extends Controller
 
                 // insert ke tabel item_pengadaan
                 for($i = 0; $i < count($request->nama); $i++) {
-                    $cek = Barang::where('nama_barang', $request->nama[$i])->first();
-                    $dataBarang[] = [
-                        'nama_barang' => $request->nama[$i],
-                        'merek' => $request->merek[$i],
-                        'kode_barang' => randomString(),
-                        'spesifikasi' => $request->spesifikasi[$i],
-                    ];
+                    // $cek = Barang::where('nama_barang', $request->nama[$i])->first();
+                    // $dataBarang[] = [
+                    //     'nama_barang' => $request->nama[$i],
+                    //     'merek' => $request->merek[$i],
+                    //     'kode_barang' => randomString(),
+                    //     'spesifikasi' => $request->spesifikasi[$i],
+                    // ];
 
-                    if(!$cek) {
-                        if($pengadaan->status_pengadaan == 'Diterima') {
-                            $dataBarang[$i]['total_barang'] = $request->jumlah[$i];
-                        }
-                        $barang = Barang::create($dataBarang[$i]);
-                        ItemPengadaan::create([
-                            'id_pengadaan' => $pengadaan->id_pengadaan,
-                            'id_barang' => $barang->id_barang,
-                            'harga_satuan' => preg_replace('/[^0-9]/', '', $request->harga[$i]),
-                            'jumlah_barang' => $request->jumlah[$i],
-                        ]);
-                    } else {
-                        $barang = Barang::where('id_barang', $cek->id_barang)->first();
-                        $barang->update([
-                            'total_barang' => $barang->total_barang + $request->jumlah[$i],
-                        ]);
-                        ItemPengadaan::create([
-                            'id_pengadaan' => $pengadaan->id_pengadaan,
-                            'id_barang' => $cek->id_barang,
-                            'harga_satuan' => preg_replace('/[^0-9]/', '', $request->harga[$i]),
-                            'jumlah_barang' => $request->jumlah[$i],
-                        ]);
-                    }
+                    ItemPengadaan::create([
+                        'id_pengadaan' => $pengadaan->id_pengadaan,
+                        'id_barang' => Barang::find($request->nama[$i])->id_barang,
+                        'harga_satuan' => preg_replace('/[^0-9]/', '', $request->harga[$i]),
+                        'jumlah_barang' => $request->jumlah[$i],
+                    ]);
+
+                    // if(!$cek) {
+                    //     if($pengadaan->status_pengadaan == 'Diterima') {
+                    //         $dataBarang[$i]['total_barang'] = $request->jumlah[$i];
+                    //     }
+                    //     $barang = Barang::create($dataBarang[$i]);
+                    //     ItemPengadaan::create([
+                    //         'id_pengadaan' => $pengadaan->id_pengadaan,
+                    //         'id_barang' => $barang->id_barang,
+                    //         'harga_satuan' => preg_replace('/[^0-9]/', '', $request->harga[$i]),
+                    //         'jumlah_barang' => $request->jumlah[$i],
+                    //     ]);
+                    // } else {
+                    //     $barang = Barang::where('id_barang', $cek->id_barang)->first();
+                    //     $barang->update([
+                    //         'total_barang' => $barang->total_barang + $request->jumlah[$i],
+                    //     ]);
+                    //     ItemPengadaan::create([
+                    //         'id_pengadaan' => $pengadaan->id_pengadaan,
+                    //         'id_barang' => $cek->id_barang,
+                    //         'harga_satuan' => preg_replace('/[^0-9]/', '', $request->harga[$i]),
+                    //         'jumlah_barang' => $request->jumlah[$i],
+                    //     ]);
+                    // }
                 }
             });
 

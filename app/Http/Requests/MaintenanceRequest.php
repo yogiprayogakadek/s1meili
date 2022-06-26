@@ -31,7 +31,7 @@ class MaintenanceRequest extends FormRequest
             'biaya' => 'required',
         ];
 
-        for($i = 1; $i <= count($this->input('nama')); $i++) {
+        for($i = 0; $i < count($this->input('nama')); $i++) {
             $rules['nama.' . $i] = 'required';
             $rules['spesifikasi.' . $i] = 'required';
             $rules['uraian.' . $i] = 'required';
@@ -60,7 +60,7 @@ class MaintenanceRequest extends FormRequest
             'biaya' => 'Biaya',
         ];
 
-        for($i = 1; $i <= count($this->input('nama')); $i++) {
+        for($i = 0; $i < count($this->input('nama')); $i++) {
             $attr['nama.' . $i] = 'Nama Barang';
             $attr['spesifikasi.' . $i] = 'Spesifikasi Barang';
             $attr['uraian.' . $i] = 'Uraian Barang';

@@ -19,7 +19,7 @@
                     <tr>
                         <th></th>
                         {{-- <th>No</th> --}}
-                        <th>User</th>
+                        <th>Nama Pemohon</th>
                         <th>Tanggal Pengadaan</th>
                         {{-- <th>Tanggal Penerimaan</th> --}}
                         <th>Nomor Laporan</th>
@@ -39,7 +39,7 @@
                             <i class="fa fa-plus-circle"></i>
                         </td>
                         {{-- <td>{{$loop->iteration}}</td> --}}
-                        <td>{{$data->user->nama}}</td>
+                        <td>{{$data->pegawai->nama_pegawai}}</td>
                         <td>{{$data->tanggal_pengadaan}}</td>
                         {{-- <td>{{$data->tanggal_penerimaan}}</td> --}}
                         <td>{{$data->nomor_laporan}}</td>
@@ -50,7 +50,7 @@
                             @endcannot
                             @can('bendahara')
                                 @if ($data->nota == null)
-                                <button class="btn btn-info btn-nota" data-id="{{$data->id_pengadaan}}">
+                                <button class="btn {{$data->status_pengadaan == 'Diterima' ? 'btn-info' : 'btn-disabled'}} btn-nota" data-id="{{$data->id_pengadaan}}" {{$data->status_pengadaan == 'Ditolak' ? 'disabled' : ''}}>
                                     <i class="fa fa-upload"></i> Unggah Data
                                 </button>
                                 @else

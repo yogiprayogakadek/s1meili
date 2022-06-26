@@ -46,7 +46,12 @@ function convertToRupiah(number, prefix) {
 
 $(document).ready(function () {
     getData();
-    var i = 1;
+    var i = 0;
+    
+    // function findData() {
+    //     return $('body').find('.test') == undefined ? 0 : $('body').find('.test').length
+    // }
+    // var test = findData();
 
     $('body').on('click', '.btn-add', function () {
         tambah();
@@ -57,13 +62,17 @@ $(document).ready(function () {
     });
 
     $('body').on('click', '.btn-data', function () {
-        i = 1;
+        i = 0;
         getData();
     });
 
     $('body').on('click', '.btn-add-item', function(){
         i++;
+        // test++;
 
+        var type = $(this).data('type');
+        // test = $('body').find('.test') == undefined ? 0 : $('body').find('.test').length;
+        console.log(i);
         var html = '<div class="card">' +
             '<div class="card-header">' +
                 '<h5 class="card-title">Item Barang</h5>' +
@@ -72,14 +81,22 @@ $(document).ready(function () {
                 '</div>' +
             '</div>' +
             '<div class="card-body">' +
+                // '<div class="form-group">' +
+                //     '<label>Nama Barang</label>' +
+                //     '<input type="text" class="form-control nama'+i+'" name="nama['+i+']" id="nama'+i+'" placeholder="masukkan nama barang">' +
+                //     '<div class="invalid-feedback error-nama'+i+'"></div>' +
+                // '</div>' +
                 '<div class="form-group">' +
-                    '<label>Nama Barang</label>' +
-                    '<input type="text" class="form-control nama'+i+'" name="nama['+i+']" id="nama'+i+'" placeholder="masukkan nama barang">' +
-                    '<div class="invalid-feedback error-nama'+i+'"></div>' +
-                '</div>' +
+                        '<label>Nama Barang</label>' +
+                        '<select name="nama['+i+']" id="nama'+i+'" class="form-control nama'+i+' nama-barang" data-id="'+i+'">' +
+                        // '<select class="form-control nama'+i+' nama-barang" name="nama['+i+']" id="nama'+i+'">' +
+                            
+                        '</select>' +
+                        '<div class="invalid-feedback error-nama'+i+'"></div>' +
+                    '</div>' +
                 '<div class="form-group">' +
                     '<label>Spesifikasi Barang</label>' +
-                    '<textarea class="form-control spesifikasi'+i+'" name="spesifikasi['+i+']" id="spesifikasi'+i+'" placeholder="masukkan spesifikasi barang"></textarea>' +
+                    '<textarea class="form-control spesifikasi'+i+'" name="spesifikasi['+i+']" id="spesifikasi'+i+'" readonly></textarea>' +
                     '<div class="invalid-feedback error-spesifikasi'+i+'"></div>' +
                 '</div>' +
                 '<div class="form-group">' +
@@ -94,6 +111,12 @@ $(document).ready(function () {
                 '</div>' +
             '</div>' +
         '</div>';
+
+        $.get("/barang/data-barang", function(response){
+            $.each(response, function(key, value){
+                $("#nama"+i).append('<option value="'+key+'">'+value+'</option>');
+            });
+        });
 
         $('#item-barang').append(html);
     })
@@ -169,6 +192,8 @@ $(document).ready(function () {
             dataType: "json",
             success: function (response) {
                 $(".render").html(response.data);
+                i = $('body').find('.test') == undefined ? 0 : $('body').find('.test').length-1
+                console.log(i)
             },
             error: function (error) {
                 console.log("Error", error);
@@ -201,9 +226,9 @@ $(document).ready(function () {
                 $('.btn-update').html('Simpan')
             },
             success: function (response) {
-                $('#formEdit').trigger('reset')
-                $(".invalid-feedback").html('')
-                getData();
+                // $('#formEdit').trigger('reset')
+                // $(".invalid-feedback").html('')
+                // getData();
                 Swal.fire(
                     response.title,
                     response.message,
@@ -605,4 +630,24 @@ $(document).ready(function () {
         $('#modalDetailNota').find('.detail-nota').html(image);
         $('#modalDetailNota').find('.btn-nota').attr('data-id', id);
     }); 
+
+    $('body').on('change', '.nama-barang', function () {
+        let div_id = $(this).data('id');
+        let id_barang = $(this).val();
+        console.log(div_id);
+        if(id_barang != '') {
+            $.get('/barang/get-detail-barang/' + id_barang, function (response) {
+                console.log(response);
+                // $('#merek' + div_id).val(response.merek);
+                $('#spesifikasi' + div_id).val(response.merek);
+                // $.each(array, function (index, value) {
+                //     $('#' + value + div_id).val(response[value])
+                // }
+            })
+        } else {
+            // $('#merek' + div_id).val('');
+            $('#spesifikasi' + div_id).val('');
+            // $('#' + div_id).html('');
+        }
+    })
 });

@@ -128,4 +128,15 @@ class BarangController extends Controller
             ]);
         }
     }
+
+    public function detailBarang($id) {
+        $barang = Barang::find($id);
+        return response()->json($barang);
+    }
+
+    public function dataBarang()
+    {
+        $barang = Barang::pluck('nama_barang', 'id_barang')->prepend('Pilih Barang', 0);
+        return response()->json($barang);
+    }
 }

@@ -53,11 +53,11 @@
                     <input type="date" class="form-control tanggal_penerimaan" name="tanggal_penerimaan" id="tanggal-penerimaan" placeholder="masukkan tanggal penerimaan barang">
                     <div class="invalid-feedback error-tanggal_penerimaan"></div>
                 </div> --}}
-                <div class="form-group">
+                {{-- <div class="form-group">
                     <label for="biaya">Biaya</label>
                     <input type="text" class="form-control biaya" name="biaya" id="biaya" placeholder="masukkan biaya">
                     <div class="invalid-feedback error-biaya"></div>
-                </div>
+                </div> --}}
                 {{-- <div class="form-group">
                     <label for="nota">Nota</label>
                     <input type="file" class="form-control nota" name="nota" id="nota" placeholder="masukkan nota">
@@ -83,18 +83,27 @@
                         <div class="invalid-feedback error-kode0"></div>
                     </div> --}}
                     <div class="form-group">
+                        <label for="nama">Nama nama</label>
+                        <select name="nama[0]" id="nama0" class="form-control nama0 nama-barang" data-id="0">
+                            @foreach ($barang as $key => $value)
+                            <option value="{{$key}}">{{$value}}</option>
+                            @endforeach
+                        </select>
+                        <div class="invalid-feedback error-nama0"></div>
+                    </div>
+                    {{-- <div class="form-group">
                         <label for="nama">Nama Barang</label>
                         <input type="text" class="form-control nama0" name="nama[0]" id="nama0" placeholder="masukkan nama barang">
                         <div class="invalid-feedback error-nama0"></div>
-                    </div>
+                    </div> --}}
                     <div class="form-group">
                         <label for="merek">Merek Barang</label>
-                        <input type="text" class="form-control merek0" name="merek[0]" id="merek0" placeholder="masukkan merek barang">
+                        <input type="text" class="form-control merek0" name="merek[0]" id="merek0" placeholder="masukkan merek barang" readonly>
                         <div class="invalid-feedback error-merek0"></div>
                     </div>
                     <div class="form-group">
                         <label for="spesifikasi">Spesifikasi Barang</label>
-                        <textarea class="form-control spesifikasi0" name="spesifikasi[0]" id="spesifikasi0" placeholder="masukkan spesifikasi barang"></textarea>
+                        <textarea class="form-control spesifikasi0" name="spesifikasi[0]" id="spesifikasi0" placeholder="masukkan spesifikasi barang" readonly></textarea>
                         <div class="invalid-feedback error-spesifikasi0"></div>
                     </div>
                     <div class="form-group">

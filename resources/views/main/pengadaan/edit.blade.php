@@ -10,7 +10,7 @@
                 </div>
             </div>
             <div class="card-body">
-                <div class="row">
+                {{-- <div class="row">
                     <div class="col-6">
                         <div class="form-group">
                             <label for="pemohon">Nama Pemohon</label>
@@ -25,6 +25,16 @@
                             <div class="invalid-feedback error-jabatan_pemohon"></div>
                         </div>
                     </div>
+                </div> --}}
+
+                <div class="form-group">
+                    <label for="pemohon">Nama Pemohon</label>
+                    <select name="pemohon" id="pemohon" class="form-control pemohon">
+                        @foreach ($pegawai as $key => $value)
+                        <option value="{{$key}}" {{$key == $data->id_pegawai ? 'selected' : ''}}>{{$value}}</option>
+                        @endforeach
+                    </select>
+                    <div class="invalid-feedback error-pemohon"></div>
                 </div>
                 <div class="form-group">
                     <input type="hidden" value="{{$data->id_pengadaan}}" name="id_pengadaan">
@@ -61,39 +71,43 @@
             </div>
         </div>
         <div id="item-barang">
-            @foreach ($data->item_pengadaan as $item)
-            {{-- {{$item}} --}}
+            @for ($i = 0; $i < count($data->item_pengadaan); $i++)
             <div class="card">
                 <div class="card-header">Item Barang</div>
                 <div class="card-body">
                     <div class="form-group">
                         <label for="nama">Nama Barang</label>
-                        <input type="text" class="form-control nama0" name="nama[0]" id="nama0" placeholder="masukkan nama barang" value="{{$item->barang->nama_barang}}">
+                        <select name="nama[{{$i}}]" id="nama{{$i}}" class="form-control nama{{$i}} nama-barang" data-id="{{$i}}">
+                            @foreach ($barang as $key => $value)
+                            <option value="{{$key}}" {{$data->item_pengadaan[$i]->id_barang == $key ? 'selected' : ''}}>{{$value}}</option>
+                            @endforeach
+                        </select>
                         <div class="invalid-feedback error-nama0"></div>
                     </div>
                     <div class="form-group">
                         <label for="merek">Merek Barang</label>
-                        <input type="text" class="form-control merek0" name="merek[0]" id="merek0" placeholder="masukkan merek barang" value="{{$item->barang->merek}}">
-                        <div class="invalid-feedback error-merek0"></div>
+                        <input type="text" class="form-control merek0" name="merek[{{$i}}]" id="merek{{$i}}" readonly value="{{$data->item_pengadaan[$i]->barang->merek}}">
+                        <div class="invalid-feedback error-merek{{$i}}"></div>
                     </div>
                     <div class="form-group">
                         <label for="spesifikasi">Spesifikasi Barang</label>
-                        <textarea class="form-control spesifikasi0" name="spesifikasi[0]" id="spesifikasi0" placeholder="masukkan spesifikasi barang">{{$item->barang->spesifikasi}}</textarea>
-                        <div class="invalid-feedback error-spesifikasi0"></div>
+                        <textarea class="form-control spesifikasi{{$i}}" name="spesifikasi[{{$i}}]" id="spesifikasi{{$i}}" readonly>{{$data->item_pengadaan[$i]->barang->spesifikasi}}</textarea>
+                        <div class="invalid-feedback error-spesifikasi{{$i}}"></div>
                     </div>
                     <div class="form-group">
                         <label for="jumlah">Jumlah Barang</label>
-                        <input type="number" class="form-control jumlah0" name="jumlah[0]" id="jumlah0" placeholder="masukkan jumlah barang" value="{{$item->jumlah_barang}}">
-                        <div class="invalid-feedback error-jumlah0"></div>
+                        <input type="number" class="form-control jumlah{{$i}}" name="jumlah[{{$i}}]" id="jumlah{{$i}}" placeholder="masukkan jumlah barang" value="{{$data->item_pengadaan[$i]->jumlah_barang}}">
+                        <div class="invalid-feedback error-jumlah{{$i}}"></div>
                     </div>
                     <div class="form-group">
                         <label for="harga">Harga Satuan</label>
-                        <input type="text" class="form-control harga-satuan harga0" name="harga[0]" id="harga0" placeholder="masukkan harga satuan barang" value="{{convertToRupiah($item->harga_satuan)}}">
-                        <div class="invalid-feedback error-harga0"></div>
+                        <input type="text" class="form-control harga-satuan harga{{$i}}" name="harga[{{$i}}]" id="harga{{$i}}" data-harga="harga{{$i}}" placeholder="masukkan harga satuan barang" value="{{convertToRupiah($data->item_pengadaan[$i]->harga_satuan)}}">
+                        <div class="invalid-feedback error-harga{{$i}}"></div>
                     </div>
                 </div>
             </div>
-            @endforeach
+            @endfor
+
         </div>
         <div class="form-group">
             <button class="btn btn-success btn-add-item col-2 mb-2" type="button">

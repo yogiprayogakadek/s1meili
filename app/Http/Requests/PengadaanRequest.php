@@ -27,7 +27,7 @@ class PengadaanRequest extends FormRequest
             'tanggal_pengadaan' => 'required',
             // 'tanggal_penerimaan' => 'required',
             'nomor_laporan' => 'required',
-            'biaya' => 'required',
+            // 'biaya' => 'required',
             // 'keterangan' => 'required',
             'pemohon' => 'required',
             // 'jabatan_pemohon' => 'required',
