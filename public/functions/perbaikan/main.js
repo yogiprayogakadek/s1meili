@@ -68,11 +68,6 @@ $(document).ready(function () {
 
     $('body').on('click', '.btn-add-item', function(){
         i++;
-        // test++;
-
-        var type = $(this).data('type');
-        // test = $('body').find('.test') == undefined ? 0 : $('body').find('.test').length;
-        console.log(i);
         var html = '<div class="card">' +
             '<div class="card-header">' +
                 '<h5 class="card-title">Item Barang</h5>' +
@@ -226,9 +221,9 @@ $(document).ready(function () {
                 $('.btn-update').html('Simpan')
             },
             success: function (response) {
-                // $('#formEdit').trigger('reset')
-                // $(".invalid-feedback").html('')
-                // getData();
+                $('#formEdit').trigger('reset')
+                $(".invalid-feedback").html('')
+                getData();
                 Swal.fire(
                     response.title,
                     response.message,

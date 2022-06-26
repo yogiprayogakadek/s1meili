@@ -47,7 +47,7 @@ function convertToRupiah(number, prefix) {
 
 $(document).ready(function () {
     getData();
-    var i = 1;
+    var i = 0;
 
     $("body").on("keyup", '#biaya', function (e) {
         $("#biaya").val(convertToRupiah($(this).val(), "Rp. "))
@@ -73,30 +73,64 @@ $(document).ready(function () {
                 '</div>' +
             '</div>' +
             '<div class="card-body">' +
+                // '<div class="form-group">' +
+                //     '<label>Nama Barang</label>' +
+                //     '<input type="text" class="form-control nama'+i+'" name="nama['+i+']" id="nama'+i+'" placeholder="masukkan nama barang">' +
+                //     '<div class="invalid-feedback error-nama'+i+'"></div>' +
+                // '</div>' +
                 '<div class="form-group">' +
-                    '<label>Nama Barang</label>' +
-                    '<input type="text" class="form-control nama'+i+'" name="nama['+i+']" id="nama'+i+'" placeholder="masukkan nama barang">' +
-                    '<div class="invalid-feedback error-nama'+i+'"></div>' +
-                '</div>' +
+                        '<label>Nama Barang</label>' +
+                        '<select name="nama['+i+']" id="nama'+i+'" class="form-control nama'+i+' nama-barang" data-id="'+i+'">' +
+                        // '<select class="form-control nama'+i+' nama-barang" name="nama['+i+']" id="nama'+i+'">' +
+                            
+                        '</select>' +
+                        '<div class="invalid-feedback error-nama'+i+'"></div>' +
+                    '</div>' +
                 '<div class="form-group">' +
                     '<label>Spesifikasi Barang</label>' +
-                    '<textarea class="form-control spesifikasi'+i+'" name="spesifikasi['+i+']" id="spesifikasi'+i+'" placeholder="masukkan spesifikasi barang"></textarea>' +
+                    '<textarea class="form-control spesifikasi'+i+'" name="spesifikasi['+i+']" id="spesifikasi'+i+'" readonly></textarea>' +
                     '<div class="invalid-feedback error-spesifikasi'+i+'"></div>' +
                 '</div>' +
                 '<div class="form-group">' +
-                    '<label>Uraian Perbaikan Barang</label>' +
-                    '<textarea class="form-control uraian'+i+'" name="uraian['+i+']" id="uraian'+i+'" placeholder="masukkan uraian perbaikan barang"></textarea>' +
+                    '<label>Uraian Kerusakan Barang</label>' +
+                    '<textarea class="form-control uraian'+i+'" name="uraian['+i+']" id="uraian'+i+'" placeholder="masukkan uraian kerusakan barang"></textarea>' +
                     '<div class="invalid-feedback error-uraian'+i+'"></div>' +
                 '</div>' +
                 '<div class="form-group">' +
-                    '<label>Keterangan Perbaikan</label>' +
-                    '<textarea class="form-control keterangan'+i+'" name="keterangan['+i+']" id="keterangan'+i+'" placeholder="masukkan keterangan perbaikan barang"></textarea>' +
+                    '<label>Keterangan Kerusakan</label>' +
+                    '<textarea class="form-control keterangan'+i+'" name="keterangan['+i+']" id="keterangan'+i+'" placeholder="masukkan keterangan kerusakan barang"></textarea>' +
                     '<div class="invalid-feedback error-keterangan'+i+'"></div>' +
                 '</div>' +
             '</div>' +
         '</div>';
 
+        $.get("/barang/data-barang", function(response){
+            $.each(response, function(key, value){
+                $("#nama"+i).append('<option value="'+key+'">'+value+'</option>');
+            });
+        });
+
         $('#item-barang').append(html);
+    })
+
+    $('body').on('change', '.nama-barang', function () {
+        let div_id = $(this).data('id');
+        let id_barang = $(this).val();
+        console.log(div_id);
+        if(id_barang != '') {
+            $.get('/barang/get-detail-barang/' + id_barang, function (response) {
+                console.log(response);
+                // $('#merek' + div_id).val(response.merek);
+                $('#spesifikasi' + div_id).val(response.merek);
+                // $.each(array, function (index, value) {
+                //     $('#' + value + div_id).val(response[value])
+                // }
+            })
+        } else {
+            // $('#merek' + div_id).val('');
+            $('#spesifikasi' + div_id).val('');
+            // $('#' + div_id).html('');
+        }
     })
 
     $('body').on('click', '.btn-delete-item', function(){
@@ -202,6 +236,7 @@ $(document).ready(function () {
                 $('.btn-update').html('Simpan')
             },
             success: function (response) {
+                // i = 0;
                 $('#formEdit').trigger('reset')
                 $(".invalid-feedback").html('')
                 getData();

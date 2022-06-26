@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Main;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\MaintenanceRequest;
+use App\Models\Barang;
 use App\Models\Maintenance;
 use App\Models\MaintenanceHistori;
 use App\Models\Pegawai;
@@ -32,10 +33,12 @@ class KerusakanController extends Controller
 
     public function create()
     {
+        $barang = Barang::pluck('nama_barang', 'id_barang')->prepend('Pilih Barang', '');
         $pegawai = Pegawai::pluck('nama_pegawai', 'id_pegawai')->prepend('Pilih Pegawai', '');
         $view = [
             'data' => view('main.kerusakan.create')->with([
-                'pegawai' => $pegawai
+                'pegawai' => $pegawai,
+                'barang' => $barang,
             ])->render()
         ];
 
@@ -65,9 +68,9 @@ class KerusakanController extends Controller
                     $response['title'] = 'Gagal Menambah Data';
                 } else {
                     $itemKerusakan = array();
-                    for($i = 1; $i <= count($request->nama); $i++) {
+                    for($i = 0; $i < count($request->nama); $i++) {
                         $itemKerusakan[] = [
-                            'id' => $i,
+                            'id' => $i+1,
                             'nama_barang' => $request->nama[$i],
                             'spesifikasi_barang' => $request->spesifikasi[$i],
                             'uraian' => $request->uraian[$i],
@@ -107,13 +110,15 @@ class KerusakanController extends Controller
 
     public function edit($id)
     {
-        $data = Maintenance::with('pegawai')->find($id);
+        $data = Maintenance::find($id);
+        $barang = Barang::pluck('nama_barang', 'id_barang')->prepend('Pilih Barang', '');
         $pegawai = Pegawai::pluck('nama_pegawai', 'id_pegawai')->prepend('Pilih Pegawai', '');
         $view = [
             'data' => view('main.kerusakan.edit')->with([
                 'data' => $data,
                 'pegawai' => $pegawai,
-                'item_perbaikan' => json_decode($data->item_maintenance, true)
+                'item_perbaikan' => json_decode($data->item_maintenance, true),
+                'barang' => $barang,
             ])->render()
         ];
 
@@ -136,9 +141,9 @@ class KerusakanController extends Controller
                     'biaya_maintenance' => preg_replace('/[^0-9]/', '', $request->biaya),
                 ];
 
-                for($i = 1; $i <= count($request->nama); $i++) {
+                for($i = 0; $i < count($request->nama); $i++) {
                     $item_perbaikan[] = [
-                        'id' => $i,
+                        'id' => $i+1,
                         'nama_barang' => $request->nama[$i],
                         'spesifikasi_barang' => $request->spesifikasi[$i],
                         'uraian' => $request->uraian[$i],

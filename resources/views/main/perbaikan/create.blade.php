@@ -65,7 +65,7 @@
                         <div class="invalid-feedback error-nama1"></div>
                     </div> --}}
                     <div class="form-group">
-                        <label for="nama">Nama nama</label>
+                        <label for="nama">Nama Barang</label>
                         <select name="nama[0]" id="nama0" class="form-control nama0 nama-barang" data-id="0">
                             @foreach ($barang as $key => $value)
                             <option value="{{$key}}">{{$value}}</option>
@@ -75,7 +75,7 @@
                     </div>
                     <div class="form-group">
                         <label for="spesifikasi">Spesifikasi Barang</label>
-                        <textarea class="form-control spesifikasi0" name="spesifikasi[0]" id="spesifikasi0" placeholder="masukkan spesifikasi barang"></textarea>
+                        <textarea class="form-control spesifikasi0" name="spesifikasi[0]" id="spesifikasi0" readonly></textarea>
                         <div class="invalid-feedback error-spesifikasi0"></div>
                     </div>
                     <div class="form-group">

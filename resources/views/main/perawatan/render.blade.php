@@ -19,7 +19,7 @@
                     <tr>
                         <th></th>
                         <th>User</th>
-                        <th>Tanggal Perbaikan</th>
+                        <th>Tanggal Pelaporan</th>
                         <th>Nomor Laporan</th>
                         <th>Biaya</th>
                         <th>Status Perawatan</th>
@@ -32,10 +32,10 @@
                 <tbody>
                     @foreach ($data as $data)
                     <tr>
-                        <td data-keterangan="{{$data->keterangan_perbaikan}}" data-pemohon="{{$data->pemohon}}" data-jabatan="{{$data->jabatan_pemohon}}" data-id="{{$data->id_maintenance}}">
+                        <td data-keterangan="{{$data->keterangan_perbaikan}}" data-pemohon="{{$data->pegawai->nama_pegawai}}" data-jabatan="{{$data->pegawai->jabatan}}" data-id="{{$data->id_maintenance}}">
                             <i class="fa fa-plus-circle"></i>
                         </td>
-                        <td>{{$data->user->nama}}</td>
+                        <td>{{$data->pegawai->nama_pegawai}}</td>
                         <td>{{$data->tanggal_maintenance}}</td>
                         <td>{{$data->nomor_laporan}}</td>
                         <td>{{convertToRupiah($data->biaya_maintenance)}}</td>
