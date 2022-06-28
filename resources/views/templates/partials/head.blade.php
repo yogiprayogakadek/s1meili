@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <!-- FAVICON -->
     <link rel="shortcut icon" type="image/x-icon" href="{{asset('assets/images/logo.jpeg')}}"> <!-- TITLE -->
-    <title>SIM Mahasiswa Magang</title> <!-- BOOTSTRAP CSS -->
+    <title>SIM Sarana dan Prasarana</title> <!-- BOOTSTRAP CSS -->
     <link id="style" href="{{asset('assets/css/bootstrap.min.css')}}" rel="stylesheet"> <!-- STYLE CSS -->
     <link href="{{asset('assets/css/style.css')}}" rel="stylesheet">
     <link href="{{asset('assets/css/dark-style.css')}}" rel="stylesheet">

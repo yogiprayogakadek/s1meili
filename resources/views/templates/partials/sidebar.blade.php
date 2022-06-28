@@ -41,12 +41,18 @@
                             @can('staff_administrasi')
                             <span class="badge bg-pink side-badge">{{pengadaanNeedApproval()}}</span>
                             @endcan
+                            @can('bendahara')
+                            <span class="badge bg-pink side-badge">{{pengadaanNeedApprovalBendahara()}}</span>
+                            @endcan
                     </a>
                     <a class="side-menu__item has-link {{Request::is('perbaikan') ? 'active' : '' }}" data-bs-toggle="slide"
                         href="{{route('perbaikan.index')}}"><i class="side-menu__icon fe fe-slack"></i><span
                             class="side-menu__label">Perbaikan Barang</span>
                             @can('validator')
-                            <span class="badge bg-pink side-badge">{{maintenanceNeedApproval('Perawatan dan Perbaikan')}}</span>
+                            <span class="badge bg-pink side-badge">{{maintenanceNeedApproval('Perbaikan')}}</span>
+                            @endcan
+                            @can('bendahara')
+                            <span class="badge bg-pink side-badge">{{maintenaceNeedApproveBendahara('Perbaikan')}}</span>
                             @endcan
                     </a>
                     <a class="side-menu__item has-link {{Request::is('kerusakan') ? 'active' : '' }}" data-bs-toggle="slide"
@@ -55,12 +61,18 @@
                             @can('validator')
                             <span class="badge bg-pink side-badge">{{maintenanceNeedApproval('Kerusakan')}}</span>
                             @endcan
+                            @can('bendahara')
+                            <span class="badge bg-pink side-badge">{{maintenaceNeedApproveBendahara('Kerusakan')}}</span>
+                            @endcan
                     </a>
                     <a class="side-menu__item has-link {{Request::is('perawatan') ? 'active' : '' }}" data-bs-toggle="slide"
                         href="{{route('perawatan.index')}}"><i class="side-menu__icon fe fe-settings"></i><span
                             class="side-menu__label">Perawatan Barang</span>
                             @can('validator')
                             <span class="badge bg-pink side-badge">{{maintenanceNeedApproval('Perawatan')}}</span>
+                            @endcan
+                            @can('bendahara')
+                            <span class="badge bg-pink side-badge">{{maintenaceNeedApproveBendahara('Perawatan')}}</span>
                             @endcan
                     </a>
                 </li>

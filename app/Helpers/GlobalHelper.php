@@ -96,19 +96,37 @@ function pengadaanNeedApproval()
     return $total;
 }
 
-function maintenanceNeedApproval($kategori)
+function pengadaanNeedApprovalBendahara()
 {
-    $data = Maintenance::where('kategori_maintenance', $kategori)->first();
-    $total = 0;
-    if ($data) {
-        if(auth()->user()->role->nama == 'Kepala Sekolah') {
-            $total = MaintenanceHistori::where('id_maintenance', $data->id_maintenance)->where('approve_kepala_sekolah', '!=', 'Diterima')->orWhere('approve_kepala_sekolah', null)->count();
-        } else {
-            $total = MaintenanceHistori::where('id_maintenance', $data->id_maintenance)->where('approve_wakil_sarpras', '!=', 'Diterima')->orWhere('approve_wakil_sarpras', null)->count();
-        }
-    } 
+    if(auth()->user()->role->nama === 'Bendahara') {
+        $total = Pengadaan::where('status_pengadaan', 'Diterima')->where('nota', null)->count();
+    }
 
     return $total;
+}
+
+function maintenanceNeedApproval($kategori)
+{
+    $data = Maintenance::where('kategori_maintenance', $kategori)->get();
+    $total = 0;
+
+    foreach ($data as $key => $value) {
+        // $total++;
+        if(auth()->user()->role->nama === 'Kepala Sekolah') {
+            // $total++;
+            $value->maintenance_histori()->where('approve_kepala_sekolah', null)->orWhere('approve_kepala_sekolah', '!=', 'Diterima')->count() > 0 ? $total++ : null;
+        } elseif(auth()->user()->role->nama === 'Wakil Sarpras') {
+            // $total++;
+            $value->maintenance_histori()->where('approve_wakil_sarpras', null)->orWhere('approve_wakil_sarpras', '!=', 'Diterima')->count() > 0 ? $total++ : null;
+        }
+    }
+    return $total;
+}
+
+function maintenaceNeedApproveBendahara($kategori)
+{
+    $data = Maintenance::where('kategori_maintenance', $kategori)->where('status_maintenance', 'Diterima')->where('nota', null)->count();
+    return $data;
 }
 
 function menu()
