@@ -75,7 +75,7 @@ class PerbaikanController extends Controller
                     for($i = 0; $i < count($request->nama); $i++) {
                         $itemPerbaikan[] = [
                             'id' => $i+1,
-                            'nama_barang' => $request->nama[$i],
+                            'nama_barang' => Barang::find($request->nama[$i])->nama_barang,
                             'spesifikasi_barang' => $request->spesifikasi[$i],
                             'uraian' => $request->uraian[$i],
                             'keterangan' => $request->keterangan[$i],
@@ -151,7 +151,7 @@ class PerbaikanController extends Controller
                 for($i = 0; $i < count($request->nama); $i++) {
                     $item_perbaikan[] = [
                         'id' => $i+1,
-                        'nama_barang' => $request->nama[$i],
+                        'nama_barang' => Barang::find($request->nama[$i])->nama_barang,
                         'spesifikasi_barang' => $request->spesifikasi[$i],
                         'uraian' => $request->uraian[$i],
                         'keterangan' => $request->keterangan[$i],

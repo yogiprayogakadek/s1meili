@@ -38,9 +38,9 @@
                             @can('validator')
                             <span class="badge bg-pink side-badge">{{pengadaanNeedApproval()}}</span>
                             @endcan
-                            @can('staff_administrasi')
+                            {{-- @can('staff_administrasi')
                             <span class="badge bg-pink side-badge">{{pengadaanNeedApproval()}}</span>
-                            @endcan
+                            @endcan --}}
                             @can('bendahara')
                             <span class="badge bg-pink side-badge">{{pengadaanNeedApprovalBendahara()}}</span>
                             @endcan
