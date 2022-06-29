@@ -63,6 +63,8 @@ class PerbaikanController extends Controller
                     'biaya_maintenance' => preg_replace('/[^0-9]/', '', $request->biaya),
                 ];
 
+                // dd($dataPerbaikan);
+
                 $cekPerbaikan = Maintenance::where('nomor_laporan', $request->nomor_laporan)->first();
                 if($cekPerbaikan) {
                     $response['status'] = 'error';
@@ -73,12 +75,14 @@ class PerbaikanController extends Controller
                     for($i = 0; $i < count($request->nama); $i++) {
                         $itemPerbaikan[] = [
                             'id' => $i+1,
-                            'id_barang' => $request->nama[$i],
+                            'nama_barang' => $request->nama[$i],
                             'spesifikasi_barang' => $request->spesifikasi[$i],
                             'uraian' => $request->uraian[$i],
                             'keterangan' => $request->keterangan[$i],
                         ];
                     }
+
+                    // dd($itemPerbaikan);
 
                     $dataPerbaikan['item_maintenance'] = json_encode($itemPerbaikan);
 
