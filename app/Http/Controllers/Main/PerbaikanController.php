@@ -217,7 +217,7 @@ class PerbaikanController extends Controller
         return response()->json([
             'user_login' => auth()->user()->role->nama,
             'data' => $data,
-            'biaya_perbaikan' => convertToRupiah($penerima['biaya_perbaikan']) ?? 'Belum diterima',
+            'biaya_perbaikan' => $penerima['biaya_perbaikan'] ?? 'Belum diterima',
             'tanggal_penyelesaian' => $penerima['tanggal_penyelesaian'] ?? '-',
             'uraian_perbaikan' => $penerima['uraian_perbaikan'] ?? '-',
         ]);
@@ -334,6 +334,7 @@ class PerbaikanController extends Controller
     {
         try {
             $data = Maintenance::where('id_maintenance', $request->id_maintenance)->first();
+            // dd($request->id_maintenance);
             if($request->hasFile('nota')) {
                 if($data->nota != null) {
                     unlink($data->nota);

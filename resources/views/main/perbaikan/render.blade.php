@@ -47,7 +47,7 @@
                             @endcannot
                             @can('bendahara')
                                 @if ($data->nota == null)
-                                <button class="btn {{$data->status_maintenance == 'Diterima' ? 'btn-info btn-nota' : 'btn-disabled'}}" data-id="{{$data->id_pengadaan}}" {{$data->status_pengadaan == 'Ditolak' ? 'disabled' : ''}}>
+                                <button class="btn {{$data->status_maintenance == 'Diterima' ? 'btn-info btn-nota' : 'btn-disabled'}}" data-id="{{$data->id_maintenance}}" {{$data->status_pengadaan == 'Ditolak' ? 'disabled' : ''}}>
                                     <i class="fa fa-upload"></i> Unggah Data
                                 </button>
                                 @else
