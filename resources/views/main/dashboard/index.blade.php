@@ -38,7 +38,7 @@
 
         <div class="card">
             <div class="card-header bg-info-transparent card-transparent">
-                <h3 class="card-title text-info chart-title">Chart Penjualan Produk</h3>
+                <h3 class="card-title text-info chart-title">Chart</h3>
                 <div class="card-options">
                     <div class="form-group">
                         <select class="form-control" id="kategori">

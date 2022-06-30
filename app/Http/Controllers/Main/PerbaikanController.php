@@ -25,9 +25,9 @@ class PerbaikanController extends Controller
     public function render()
     {
         $data = Maintenance::with('user')->where('kategori_maintenance', $this->kategori_maintenance)->get();
-
+        $pegawai = Pegawai::pluck('nama_pegawai', 'id_pegawai')->prepend('Pilih Pegawai', '');
         $view = [
-            'data' => view('main.perbaikan.render', compact('data'))->render()
+            'data' => view('main.perbaikan.render', compact('data', 'pegawai'))->render()
         ];
 
         return response()->json($view);
@@ -202,7 +202,7 @@ class PerbaikanController extends Controller
     {
         $perbaikan = Maintenance::find($id);
         $item_perbaikan = json_decode($perbaikan->item_maintenance, true);
-
+        $penerima = json_decode($perbaikan->penerimaan, true);
         $data = [];
         foreach($item_perbaikan as $key => $item) {
             $data[] = [
@@ -214,12 +214,21 @@ class PerbaikanController extends Controller
             ];
         }
 
-        return response()->json($data);
+        return response()->json([
+            'user_login' => auth()->user()->role->nama,
+            'data' => $data,
+            'nama_penerima' => $penerima['nama_penerima'] ?? 'Belum diterima',
+            'tanggal_penerimaan' => $penerima['tanggal_penerimaan'] ?? '-',
+            'uraian_perbaikan' => $penerima['uraian_perbaikan'] ?? '-',
+        ]);
+
+        // return response()->json($data);
     }
 
     public function validasi(Request $request)
     {
         try {
+            // dd($request->all());
             // DB::transaction(function () use ($request) {
                 $perbaikan = Maintenance::where('id_maintenance', $request->id_maintenance)->first();
                 $jabatan = Auth::user()->role->nama;
@@ -348,6 +357,36 @@ class PerbaikanController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Nota berhasil diunggah',
+                'title' => 'Berhasil'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                // 'message' => 'Data gagal tersimpan',
+                'message' => $e->getMessage(),
+                'title' => 'Gagal'
+            ]);
+        }
+    }
+
+    public function prosesPenerimaan(Request $request)
+    {
+        try {
+            $maintenance = Maintenance::find($request->id_maintenance);
+
+            $penerimaan = [
+                'nama_penerima' => Pegawai::where('id_pegawai', $request->id_pegawai)->first()->nama_pegawai,
+                'tanggal_penerimaan' => $request->tanggal,
+                'uraian_perbaikan' => $request->uraian,
+            ];
+
+            $maintenance->update([
+                'penerimaan' => json_encode($penerimaan),
+            ]);
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Data berhasil diproses',
                 'title' => 'Berhasil'
             ]);
         } catch (\Exception $e) {

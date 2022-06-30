@@ -32,7 +32,7 @@
                 <tbody>
                     @foreach ($data as $data)
                     <tr>
-                        <td data-keterangan="{{$data->keterangan_perbaikan}}" data-pemohon="{{$data->pegawai->nama_pegawai}}" data-jabatan="{{$data->pegawai->jabatan}}" data-id="{{$data->id_maintenance}}">
+                        <td data-keterangan="{{$data->keterangan_perbaikan}}" data-pemohon="{{$data->pegawai->nama_pegawai}}" data-jabatan="{{$data->pegawai->jabatan}}" data-id="{{$data->id_maintenance}}" data-status="{{$data->status_maintenance}}">
                             <i class="fa fa-plus-circle"></i>
                         </td>
                         <td>{{$data->pegawai->nama_pegawai}}</td>
@@ -88,6 +88,47 @@
         </div>
     </div>
 </div>
+
+<!-- Modal Penerimaan -->
+<div class="modal fade" id="modalPenerimaan" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Penerimaan Barang</h5>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal" aria-label="Close">
+                        <span class="fa fa-times"></span>
+                    </button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" name="id_maintenance" id="id_maintenance">
+                <div class="form-group">
+                    <label for="">Nama Pegawai</label>
+                    <select class="form-control" name="id_pegawai" id="id_pegawai">
+                        @foreach ($pegawai as $key => $value)
+                            <option value="{{$key}}">{{$value}}</option>
+                        @endforeach
+                    </select>
+                    <div class="invalid-feedback error-id_pegawai"></div>
+                </div>
+                <div class="form-group">
+                    <label for="">Tanggal Penerimaan</label>
+                    <input type="date" name="tanggal_penerimaan" id="tanggal_penerimaan" class="form-control">
+                    <div class="invalid-feedback error-tanggal_penerimaan"></div>
+                </div>
+                <div class="form-group">
+                    <label for="">Uraian Perbaikan</label>
+                    <textarea name="uraian_perbaikan" id="uraian_perbaikan" class="form-control" rows="7"></textarea>
+                    <div class="invalid-feedback error-uraian_perbaikan"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                <button type="button" class="btn btn-primary btn-proses-penerimaan">Simpan</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal Penerimaan -->
 
 <!-- Modal Validasi -->
 <div class="modal fade" id="modalValidasi" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">

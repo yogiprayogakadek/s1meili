@@ -321,6 +321,8 @@ $(document).ready(function () {
 
     $('body').on('click', '#tableData td:first-child', function () {
         var id_maintenance = $(this).data('id')
+        var status = $(this).data('status')
+        // alert(status)
         var table = $('#tableData').DataTable();
         var tr = $(this).closest('tr');
         var row = table.row( tr );
@@ -334,39 +336,68 @@ $(document).ready(function () {
             // Open row.
 
             var row_div = '<div class="row">' +
-                '<div class="col-md-2">' +
-                    'Nama Pemohon' +
+            '<div class="col-md-6">' +
+                '<div class="row">' +
+                    '<div class="col-md-4">' +
+                        'Nama Pemohon' +
+                    '</div>' +
+                    '<div class="col-md-8">' +
+                        ': ' + pemohon +
+                    '</div>' +
+                    '<div class="col-md-4 mt-2">' +
+                        'Jabatan Pemohon' +
+                    '</div>' +
+                    '<div class="col-md-8 mt-2">' +
+                        ': ' + jabatan_pemohon +
+                    '</div>' +
                 '</div>' +
-                '<div class="col-md-10">' +
-                    ': ' + pemohon +
+            '</div>' +
+            '<div class="col-md-6">' +
+                '<div class="row">' +
+                    '<div class="col-md-4">' +
+                        'Tanggal Penyelesaian' +
+                    '</div>' +
+                    '<div class="col-md-8 tanggal-penerimaan">: ' +
+                        '-' +
+                    '</div>' +
+                    '<div class="col-md-4">' +
+                        'Nama Penerima' +
+                    '</div>' +
+                    '<div class="col-md-8 nama-penerima">: ' +
+                        '-' +
+                    '</div>' +
+                    '<div class="col-md-4">' +
+                        'Uraian Perbaikan' +
+                    '</div>' +
+                    '<div class="col-md-8 uraian-perbaikan">: ' +
+                        '-' +
+                    '</div>' +
                 '</div>' +
-                '<div class="col-md-2 mt-2">' +
-                    'Jabatan Pemohon' +
-                '</div>' +
-                '<div class="col-md-10 mt-2">' +
-                    ': ' + jabatan_pemohon +
-                '</div>' +
-
-                '<div class="col-md-12 mt-2 text-center">' +
-                    '<h4><strong>Detail Item Perbaikan</strong></h4>' +
-                '</div>' +
+            '</div>' +
                 
-                '<table class="table table-stripped table-hover mt-2" id="tableItem">' +
-                    '<thead>' +
-                    '<tr>' +
-                        '<th>No</th>' +
-                        '<th>Nama Barang</th>' +
-                        '<th>Spesifikasi</th>' +
-                        '<th>Uraian Perbaikan</th>' +
-                        '<th>Keterangan</th>' +
-                    '</tr>' +
-                    '</thead>' +
-                    '<tbody id="item'+id_maintenance+'">' +
-                    '</tbody>' +
-                '</table>';
+            '<div class="col-md-12 mt-2 text-center">' +
+                '<h4><strong>Detail Item Perbaikan</strong></h4>' +
+            '</div>' +
+            '<table class="table table-stripped table-hover mt-2" id="tableItem">' +
+                '<thead>' +
+                '<tr>' +
+                    '<th>No</th>' +
+                    '<th>Nama Barang</th>' +
+                    '<th>Spesifikasi</th>' +
+                    '<th>Uraian Perbaikan</th>' +
+                    '<th>Keterangan</th>' +
+                '</tr>' +
+                '</thead>' +
+                '<tbody id="item'+id_maintenance+'">' +
+                '</tbody>' +
+            '</table>';
             '</div>';
             $.get('/perbaikan/item-perbaikan/'+id_maintenance, function(data) {
-                $.each(data, function(i, item) {
+                $('.nama-penerima').html(": " + data.nama_penerima + " <button type=button class='btn btn-primary btn-sm btn-edit-penerima' data-id='"+id_maintenance+"' data-status='"+status+"'>Edit</button>");
+                $('.tanggal-penerimaan').html(": " + data.tanggal_penerimaan);
+                $('.uraian-perbaikan').html(": " + data.uraian_perbaikan);
+                data.user_login != 'Staf Administrasi' ? $('.btn-edit-penerima').hide() : $('.btn-edit-penerima').show();
+                $.each(data.data, function(i, item) {
                     var tr_row = '<tr>' +
                         '<td>' + (i+1) + '</td>' +
                         '<td>' + item.nama_barang + '</td>' +
@@ -380,6 +411,70 @@ $(document).ready(function () {
             })
             row.child(row_div).show();
             tr.addClass('shown');
+        }
+    });
+
+    $('body').on('click', '.btn-edit-penerima', function(){
+        var id = $(this).data('id');
+        var status = $(this).data('status');
+        $('#modalPenerimaan').find('#id_maintenance').val(id);
+        if(status != 'Diterima'){
+            Swal.fire({
+                title: 'Peringatan',
+                text: 'Perbaikan ini belum divalidasi, tidak dapat mengubah penerimaan',
+                icon: 'warning',
+            })
+        } else {
+            $('#modalPenerimaan').modal('show');
+        }
+    });
+
+    $('body').on('click', '.btn-proses-penerimaan', function(){
+        var id = $('#id_maintenance').val();
+        var penerima = $('#id_pegawai').val();
+        var tanggal = $('#tanggal_penerimaan').val();
+        var uraian = $('#uraian_perbaikan').val();
+        if(penerima == '' || tanggal == ''){
+            $('#modalPenerimaan').modal('hide');
+            Swal.fire({
+                title: 'Peringatan',
+                text: 'Mohon untuk melengkapi data penerimaan',
+                icon: 'warning',
+            })
+        } else {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $.ajax({
+                url: '/perbaikan/proses-penerimaan',
+                type: 'POST',
+                data: {
+                    id_maintenance: id,
+                    id_pegawai: penerima,
+                    penerima: penerima,
+                    tanggal: tanggal,
+                    uraian: uraian
+                },
+                success: function(data){
+                    getData()
+                    $('#modalPenerimaan').modal('hide');
+                    Swal.fire({
+                        title: data.title,
+                        text: data.message,
+                        icon: data.status,
+                    });
+                },
+                error: function(data){
+                    $('#modalPenerimaan').modal('hide');
+                    Swal.fire({
+                        title: 'Peringatan',
+                        text: 'Terjadi kesalahan',
+                        icon: 'warning',
+                    });
+                }
+            });
         }
     });
 
@@ -452,7 +547,8 @@ $(document).ready(function () {
     $('body').on('click', '.btn-proses-validasi', function() {
         let status = $('#status_perbaikan').val()
         let keterangan = $('#keterangan').val()
-        let id = $('#id_maintenance').val()
+        let id = $('#modalValidasi').find('#id_maintenance').val()
+        // alert(id)
         let data = {
             status: status,
             keterangan: keterangan,

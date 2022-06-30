@@ -2,7 +2,7 @@
     <canvas id="myChart"></canvas>
 </div>
 <script>
-    $('body .chart-title').html('Chart Penjualan Produk {{$bulan}} {{$tahun}}');
+    $('body .chart-title').html('Chart {{$bulan}} {{$tahun}}');
 
     var labelTerlaris = [];
     var produkTerlaris = [];

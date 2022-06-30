@@ -82,6 +82,7 @@ Route::prefix('/')->namespace('Main')->middleware('auth')->group(function(){
         Route::post('/validasi', 'PerbaikanController@validasi')->name('validasi');
         Route::get('/detail-validasi/{id_maintenance}', 'PerbaikanController@detailValidasi')->name('detail-validasi');
         Route::post('/unggah-nota', 'PerbaikanController@unggahNota')->name('unggah-nota');
+        Route::post('/proses-penerimaan', 'PerbaikanController@prosesPenerimaan')->name('proses-penerimaan');
     });
 
     Route::prefix('/kerusakan')->name('kerusakan.')->group(function(){
