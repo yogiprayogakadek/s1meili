@@ -101,7 +101,7 @@
             </div>
             <div class="modal-body">
                 <input type="hidden" name="id_maintenance" id="id_maintenance">
-                <div class="form-group">
+                {{-- <div class="form-group">
                     <label for="">Nama Pegawai</label>
                     <select class="form-control" name="id_pegawai" id="id_pegawai">
                         @foreach ($pegawai as $key => $value)
@@ -109,9 +109,9 @@
                         @endforeach
                     </select>
                     <div class="invalid-feedback error-id_pegawai"></div>
-                </div>
+                </div> --}}
                 <div class="form-group">
-                    <label for="">Tanggal Penerimaan</label>
+                    <label for="">Tanggal Selesai Perbaikan</label>
                     <input type="date" name="tanggal_penerimaan" id="tanggal_penerimaan" class="form-control">
                     <div class="invalid-feedback error-tanggal_penerimaan"></div>
                 </div>
@@ -119,6 +119,11 @@
                     <label for="">Uraian Perbaikan</label>
                     <textarea name="uraian_perbaikan" id="uraian_perbaikan" class="form-control" rows="7"></textarea>
                     <div class="invalid-feedback error-uraian_perbaikan"></div>
+                </div>
+                <div class="form-group">
+                    <label for="">Biaya Perbaikan</label>
+                    <input type="text" name="biaya" id="biaya" class="form-control">
+                    <div class="invalid-feedback error-biaya"></div>
                 </div>
             </div>
             <div class="modal-footer">

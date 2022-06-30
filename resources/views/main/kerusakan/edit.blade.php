@@ -31,7 +31,7 @@
 
                 <input type="hidden" value="{{$data->id_maintenance}}" name="id_maintenance">
                 <div class="form-group">
-                    <label for="pemohon">Nama Pemohon</label>
+                    <label for="pemohon">Nama Pelapor</label>
                     <select name="pemohon" id="pemohon" class="form-control pemohon">
                         @foreach ($pegawai as $key => $value)
                         <option value="{{$key}}" {{$key == $data->id_pegawai ? 'selected' : ''}}>{{$value}}</option>

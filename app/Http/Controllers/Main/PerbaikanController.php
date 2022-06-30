@@ -217,8 +217,8 @@ class PerbaikanController extends Controller
         return response()->json([
             'user_login' => auth()->user()->role->nama,
             'data' => $data,
-            'nama_penerima' => $penerima['nama_penerima'] ?? 'Belum diterima',
-            'tanggal_penerimaan' => $penerima['tanggal_penerimaan'] ?? '-',
+            'biaya_perbaikan' => convertToRupiah($penerima['biaya_perbaikan']) ?? 'Belum diterima',
+            'tanggal_penyelesaian' => $penerima['tanggal_penyelesaian'] ?? '-',
             'uraian_perbaikan' => $penerima['uraian_perbaikan'] ?? '-',
         ]);
 
@@ -375,9 +375,10 @@ class PerbaikanController extends Controller
             $maintenance = Maintenance::find($request->id_maintenance);
 
             $penerimaan = [
-                'nama_penerima' => Pegawai::where('id_pegawai', $request->id_pegawai)->first()->nama_pegawai,
-                'tanggal_penerimaan' => $request->tanggal,
+                // 'nama_penerima' => Pegawai::where('id_pegawai', $request->id_pegawai)->first()->nama_pegawai,
+                'tanggal_penyelesaian' => $request->tanggal,
                 'uraian_perbaikan' => $request->uraian,
+                'biaya_perbaikan' => preg_replace('/[^0-9]/', '', $request->biaya),
             ];
 
             $maintenance->update([

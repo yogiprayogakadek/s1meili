@@ -354,6 +354,8 @@ $(document).ready(function () {
             '</div>' +
             '<div class="col-md-6">' +
                 '<div class="row">' +
+                    '<div class="col-md-4"></div>' +
+                    '<div class="col-md-8 div-btn-penerimaan"></div>' +
                     '<div class="col-md-4">' +
                         'Tanggal Penyelesaian' +
                     '</div>' +
@@ -361,7 +363,7 @@ $(document).ready(function () {
                         '-' +
                     '</div>' +
                     '<div class="col-md-4">' +
-                        'Nama Penerima' +
+                        'Biaya Perbaikan' +
                     '</div>' +
                     '<div class="col-md-8 nama-penerima">: ' +
                         '-' +
@@ -393,8 +395,9 @@ $(document).ready(function () {
             '</table>';
             '</div>';
             $.get('/perbaikan/item-perbaikan/'+id_maintenance, function(data) {
-                $('.nama-penerima').html(": " + data.nama_penerima + " <button type=button class='btn btn-primary btn-sm btn-edit-penerima' data-id='"+id_maintenance+"' data-status='"+status+"'>Edit</button>");
-                $('.tanggal-penerimaan').html(": " + data.tanggal_penerimaan);
+                $('.div-btn-penerimaan').html("<button type=button class='btn btn-primary btn-sm btn-edit-penerima' data-id='"+id_maintenance+"' data-status='"+status+"'>Edit</button>");
+                $('.nama-penerima').html(": " + data.biaya_perbaikan);
+                $('.tanggal-penerimaan').html(": " + data.tanggal_penyelesaian);
                 $('.uraian-perbaikan').html(": " + data.uraian_perbaikan);
                 data.user_login != 'Staf Administrasi' ? $('.btn-edit-penerima').hide() : $('.btn-edit-penerima').show();
                 $.each(data.data, function(i, item) {
@@ -452,8 +455,9 @@ $(document).ready(function () {
                 type: 'POST',
                 data: {
                     id_maintenance: id,
-                    id_pegawai: penerima,
-                    penerima: penerima,
+                    // id_pegawai: penerima,
+                    // penerima: penerima,
+                    biaya: $('#modalPenerimaan').find('#biaya').val(),
                     tanggal: tanggal,
                     uraian: uraian
                 },

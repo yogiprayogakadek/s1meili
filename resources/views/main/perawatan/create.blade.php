@@ -29,7 +29,7 @@
                 </div> --}}
 
                 <div class="form-group">
-                    <label for="pemohon">Nama Pemohon</label>
+                    <label for="pemohon">Nama Pelapor</label>
                     <select name="pemohon" id="pemohon" class="form-control pemohon">
                         @foreach ($pegawai as $key => $value)
                         <option value="{{$key}}">{{$value}}</option>
