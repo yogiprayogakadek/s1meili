@@ -3,14 +3,34 @@
         <div class="card-header">
             <div class="card-title">Data Perawatan Barang</div>
             <div class="card-options">
-                @can('manage_data')
-                <button class="btn btn-primary btn-add">
-                    <i class="fa fa-plus"></i> Tambah
-                </button>
-                @endcan
-                <button class="btn btn-success btn-print" style="margin-left: 2px">
-                    <i class="fa fa-print"></i> Cetak
-                </button>
+                <div class="form-group" style="margin-right: 2px">
+                    <input type="date" class="form-control" id="start_date" value="{{date('Y-m-01')}}">
+                </div>
+                <div class="form-group" style="margin-right: 3px">
+                    <input type="date" class="form-control" id="end_date" value="{{date("Y-m-t", strtotime(date('Y-m-01')))}}" min="{{date('Y-m-01')}}">
+                </div>
+                <div class="form-group" style="margin-right: 3px">
+                    <select name="status" id="status" class="form-control">
+                        <option value="Semua">Semua Status</option>
+                        <option value="Dibatalkan">Dibatalkan</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-info btn-lg" id="btn-search">
+                        <i class="fe fe-search"></i>
+                    </button>
+                    <button class="btn btn-success btn-lg btn-print">
+                        <i class="fe fe-printer"></i>
+                    </button>
+                    <button class="btn btn-primary btn-lg" id="btn-refresh">
+                        <i class="fe fe-refresh-cw"></i>
+                    </button>
+                    @can('manage_data')
+                    <button class="btn btn-primary btn-add btn-lg">
+                        <i class="fe fe-plus"></i>
+                    </button>
+                    @endcan
+                </div>
             </div>
         </div>
         <div class="card-body">

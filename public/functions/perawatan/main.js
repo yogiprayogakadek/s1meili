@@ -26,6 +26,23 @@ function tambah() {
     });
 }
 
+function filterData(start_date, end_date, status) {
+    $.ajax({
+        type: "get",
+        url: "/kerusakan/filter/"+start_date+"/"+end_date+"/"+status,
+        dataType: "json",
+        success: function (response) {
+            $(".render").html(response.data);
+            $('#start_date').val(start_date);
+            $('#end_date').val(end_date);
+            $('#status').val(status);
+        },
+        error: function (error) {
+            console.log("Error", error);
+        },
+    });
+}
+
 // convert to rupiah
 var rupiah = $("#biaya");
 function convertToRupiah(number, prefix) {
@@ -793,7 +810,19 @@ $(document).ready(function () {
                         '<td>' + response.tanggal_pembatalan + '</td>' +
                         '<td>' + response.keterangan + '</td>' +
                     '</tr>';
-                $('#modalStatusPembatalan').find('#tablePembatalan tbody').append(tbody)            }
+                $('#modalStatusPembatalan').find('#tablePembatalan tbody').append(tbody)}
         });
     });
+
+    $('body').on('click', '#btn-search', function(){
+        let start_date = $('#start_date').val();
+        let end_date = $('#end_date').val();
+        let status = $('#status').val();
+
+        filterData(start_date, end_date, status);
+    })
+
+    $('body').on('click', '#btn-refresh', function(){
+        getData();
+    })
 });

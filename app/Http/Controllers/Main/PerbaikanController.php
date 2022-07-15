@@ -33,6 +33,22 @@ class PerbaikanController extends Controller
         return response()->json($view);
     }
 
+    public function filter($start, $end, $status)
+    {
+        if($status == 'Semua') {
+            $data = Maintenance::with('user')->where('kategori_maintenance', 'Perbaikan')->whereBetween('tanggal_maintenance', [$start, $end])->get();
+        } else {
+            $data = Maintenance::with('user')->where('kategori_maintenance', 'Perbaikan')->whereBetween('tanggal_maintenance', [$start, $end])->where('status_maintenance', $status)->get();
+        }
+        $pegawai = Pegawai::pluck('nama_pegawai', 'id_pegawai')->prepend('Pilih Pegawai', '');
+
+        $view = [
+            'data' => view('main.perbaikan.render', compact('data', 'pegawai'))->render()
+        ];
+
+        return response()->json($view);
+    }
+
     public function create()
     {
         $barang = Barang::pluck('nama_barang', 'id_barang')->prepend('Pilih Barang', '');

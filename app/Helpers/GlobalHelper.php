@@ -107,7 +107,7 @@ function pengadaanNeedApprovalBendahara()
 
 function maintenanceNeedApproval($kategori)
 {
-    $data = Maintenance::where('kategori_maintenance', $kategori)->get();
+    $data = Maintenance::where('kategori_maintenance', $kategori)->where('status_maintenance', 'Ditolak')->get();
     $total = 0;
 
     foreach ($data as $key => $value) {
@@ -136,6 +136,33 @@ function menu()
     ];
 
     return $menu;
+}
+
+function kategoriPengeluaran()
+{
+    $menu = [
+        'Pengadaan', 'Perbaikan', 'Kerusakan', 'Perawatan'
+    ];
+
+    return $menu;
+}
+
+function totalPengeluaran($kategori)
+{
+    $total = 0;
+    if($kategori == 'Pengadaan') {
+        $data = Pengadaan::where('status_pengadaan', 'Diterima')->get();
+        foreach ($data as $key => $value) {
+            $total += $value->biaya_pengadaan;
+        }
+    } else {
+        $data = Maintenance::where('status_maintenance', 'Diterima')->get();
+        foreach ($data as $key => $value) {
+            $total += $value->biaya_maintenance;
+        }
+    }
+    
+    return convertToRupiah($total);
 }
 
 function RouteURL()

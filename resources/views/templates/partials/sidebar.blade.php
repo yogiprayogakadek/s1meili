@@ -58,9 +58,9 @@
                     <a class="side-menu__item has-link {{Request::is('kerusakan') ? 'active' : '' }}" data-bs-toggle="slide"
                         href="{{route('kerusakan.index')}}"><i class="side-menu__icon fe fe-settings"></i><span
                             class="side-menu__label">Kerusakan Barang</span>
-                            @can('validator')
+                            {{-- @can('validator')
                             <span class="badge bg-pink side-badge">{{maintenanceNeedApproval('Kerusakan')}}</span>
-                            @endcan
+                            @endcan --}}
                             @can('bendahara')
                             <span class="badge bg-pink side-badge">{{maintenaceNeedApproveBendahara('Kerusakan')}}</span>
                             @endcan
@@ -68,9 +68,9 @@
                     <a class="side-menu__item has-link {{Request::is('perawatan') ? 'active' : '' }}" data-bs-toggle="slide"
                         href="{{route('perawatan.index')}}"><i class="side-menu__icon fe fe-settings"></i><span
                             class="side-menu__label">Perawatan Barang</span>
-                            @can('validator')
+                            {{-- @can('validator')
                             <span class="badge bg-pink side-badge">{{maintenanceNeedApproval('Perawatan')}}</span>
-                            @endcan
+                            @endcan --}}
                             @can('bendahara')
                             <span class="badge bg-pink side-badge">{{maintenaceNeedApproveBendahara('Perawatan')}}</span>
                             @endcan

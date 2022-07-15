@@ -50,12 +50,11 @@ Route::prefix('/')->namespace('Main')->middleware('auth')->group(function(){
         Route::get('/create', 'PengadaanController@create')->name('create');
         Route::get('/edit/{id}', 'PengadaanController@edit')->name('edit');
         Route::get('/render', 'PengadaanController@render')->name('render');
+        Route::get('/filter/{start}/{end}/{status}', 'PengadaanController@filter')->name('filter');
         Route::post('/store', 'PengadaanController@store')->name('store');
         Route::post('/update', 'PengadaanController@update')->name('update');
         Route::get('/delete/{id}', 'PengadaanController@delete')->name('delete');
         Route::get('/item-pengadaan/{id_pengadaan}', 'PengadaanController@itemPengadaan')->name('item-pengadaan');
-        // Route::get('/get-detail-barang/{id_barang}', 'PengadaanController@detailBarang')->name('detail-barang');
-        // Route::get('/data-barang', 'PengadaanController@dataBarang')->name('data-barang');
         Route::get('/print/{id}', 'PengadaanController@print')->name('print');
         Route::post('/validasi', 'PengadaanController@validasi')->name('validasi');
         Route::get('/detail-validasi/{id_pengadaan}', 'PengadaanController@detailValidasi')->name('detail-validasi');
@@ -77,6 +76,7 @@ Route::prefix('/')->namespace('Main')->middleware('auth')->group(function(){
         Route::get('/create', 'PerbaikanController@create')->name('create');
         Route::get('/edit/{id}', 'PerbaikanController@edit')->name('edit');
         Route::get('/render', 'PerbaikanController@render')->name('render');
+        Route::get('/filter/{start}/{end}/{status}', 'PerbaikanController@filter')->name('filter');
         Route::post('/store', 'PerbaikanController@store')->name('store');
         Route::post('/update', 'PerbaikanController@update')->name('update');
         Route::get('/delete/{id}', 'PerbaikanController@delete')->name('delete');
@@ -95,6 +95,7 @@ Route::prefix('/')->namespace('Main')->middleware('auth')->group(function(){
         Route::get('/create', 'KerusakanController@create')->name('create');
         Route::get('/edit/{id}', 'KerusakanController@edit')->name('edit');
         Route::get('/render', 'KerusakanController@render')->name('render');
+        Route::get('/filter/{start}/{end}/{status}', 'KerusakanController@filter')->name('filter');
         Route::post('/store', 'KerusakanController@store')->name('store');
         Route::post('/update', 'KerusakanController@update')->name('update');
         Route::get('/delete/{id}', 'KerusakanController@delete')->name('delete');
@@ -112,6 +113,7 @@ Route::prefix('/')->namespace('Main')->middleware('auth')->group(function(){
         Route::get('/create', 'PerawatanController@create')->name('create');
         Route::get('/edit/{id}', 'PerawatanController@edit')->name('edit');
         Route::get('/render', 'PerawatanController@render')->name('render');
+        Route::get('/filter/{start}/{end}/{status}', 'PerawatanController@filter')->name('filter');
         Route::post('/store', 'PerawatanController@store')->name('store');
         Route::post('/update', 'PerawatanController@update')->name('update');
         Route::get('/delete/{id}', 'PerawatanController@delete')->name('delete');
