@@ -170,4 +170,28 @@ class PegawaiController extends Controller
             ]);
         }
     }
+
+    public function changeStatus(Request $request)
+    {
+        try {
+            $status = $request->status;
+            $id_pegawai = $request->id_pegawai;
+            $pegawai = Pegawai::find($id_pegawai);
+            $pegawai->update([
+                'status' => $status
+            ]);
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Status berhasil di ubah',
+                'title' => 'Berhasil'
+            ]);
+        } catch(\Exception $e){
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Status gagal di ubah',
+                'title' => 'Gagal'
+            ]);
+        }
+    }
 }

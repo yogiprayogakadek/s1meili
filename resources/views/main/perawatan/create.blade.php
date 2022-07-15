@@ -47,9 +47,9 @@
                     <input type="date" class="form-control tanggal_maintenance" name="tanggal_maintenance" id="tanggal-maintenance" placeholder="masukkan tanggal perbaikan barang">
                     <div class="invalid-feedback error-tanggal_maintenance"></div>
                 </div>
-                <div class="form-group">
+                <div class="form-group" hidden>
                     <label for="biaya">Biaya</label>
-                    <input type="text" class="form-control biaya" name="biaya" id="biaya" placeholder="masukkan biaya maintenance">
+                    <input type="text" class="form-control biaya" name="biaya" id="biaya" placeholder="masukkan biaya maintenance" value="0">
                     <div class="invalid-feedback error-biaya"></div>
                 </div>
                 {{-- </form> --}}

@@ -14,19 +14,19 @@
             </div>
         </div>
         <div class="card-body">
-            <table class="table table-bordered text-nowrap border-bottom dataTable no-footer table-responsive" role="grid" id="tableData">
+            <table class="table table-bordered text-nowrap border-bottom dataTable no-footer" role="grid" id="tableData">
                 <thead>
                     <tr>
                         <th></th>
                         <th>User</th>
                         <th>Tanggal Pelaporan</th>
                         <th>Nomor Laporan</th>
-                        <th>Biaya</th>
-                        <th>Status Perawatan</th>
+                        {{-- <th>Biaya</th> --}}
+                        {{-- <th>Status Perawatan</th> --}}
                         <th>Nota</th>
-                        @cannot('bendahara')
+                        @can('bendahara')
                         <th>Aksi</th>
-                        @endcannot
+                        @endcan
                     </tr>
                 </thead>
                 <tbody>
@@ -38,9 +38,9 @@
                         <td>{{$data->pegawai->nama_pegawai}}</td>
                         <td>{{$data->tanggal_maintenance}}</td>
                         <td>{{$data->nomor_laporan}}</td>
-                        <td>{{convertToRupiah($data->biaya_maintenance)}}</td>
+                        {{-- <td>{{convertToRupiah($data->biaya_maintenance)}}</td> --}}
                         {{-- <td>{{$data->status_perbaikan}}</td> --}}
-                        <td>{!!$data->maintenance_histori == null ? $data->status_maintenance : '<button class="btn btn-primary btn-detail-validasi" data-id="'.$data->id_maintenance.'"><i class="fa fa-eye"></i> Lihat Status</button>' !!}</td>
+                        {{-- <td>{!!$data->maintenance_histori == null ? $data->status_maintenance : '<button class="btn btn-primary btn-detail-validasi" data-id="'.$data->id_maintenance.'"><i class="fa fa-eye"></i> Lihat Status</button>' !!}</td> --}}
                         <td>
                             @cannot('bendahara')
                             {!!$data->nota == null ? '-' : '<a href="'.asset($data->nota).'" target="_blank">Lihat Nota</a>'!!}
@@ -51,7 +51,7 @@
                                     <i class="fa fa-upload"></i> Unggah Data
                                 </button>
                                 @else
-                                <button class="btn btn-success btn-detail-nota" data-id="{{$data->id_maintenance}}" data-nota="{{$data->nota}}">
+                                <button class="btn btn-success btn-detail-nota" data-id="{{$data->id_maintenance}}" data-nota="{{$data->nota}}" data-biaya="{{convertToRupiah($data->biaya_maintenance)}}">
                                     <i class="fa fa-eye"></i> Detail Data
                                 </button>
                                 @endif
@@ -59,15 +59,24 @@
                         </td>
                         @can('manage_data')
                         <td>
+                            @if ($data->status_maintenance != 'Dibatalkan')
                             <button class="btn btn-success btn-edit" data-id="{{$data->id_maintenance}}">
                                 <i class="fa fa-edit"></i> Edit
                             </button>
-                            <button class="btn btn-danger btn-delete" data-id="{{$data->id_maintenance}}">
-                                <i class="fa fa-trash"></i> Hapus
+                            <button class="btn btn-danger btn-batal" data-id="{{$data->id_maintenance}}">
+                                <i class="fa fa-trash"></i> Batal
                             </button>
+                            @else
+                            <button class="btn btn-info btn-detail-pembatalan" data-id="{{$data->id_maintenance}}">
+                                <i class="fa fa-eye"></i> Status Dibatalkan
+                            </button>
+                            @endif
+                            {{-- <button class="btn btn-danger btn-delete" data-id="{{$data->id_maintenance}}">
+                                <i class="fa fa-trash"></i> Hapus
+                            </button> --}}
                         </td>
                         @endcan
-                        @can('validator')
+                        {{-- @can('validator')
                         <td>
                             @can('kepala_sekolah')
                             <button class="btn btn-success btn-validasi" data-id="{{$data->id_maintenance}}" data-status="{{$data->status_maintenance}}" data-validasi="{{$data->maintenance_histori->approve_wakil_sarpras}}">
@@ -80,7 +89,7 @@
                             </button>
                             @endcan
                         </td>
-                        @endcan
+                        @endcan --}}
                     </tr>
                     @endforeach
                 </tbody>
@@ -88,6 +97,77 @@
         </div>
     </div>
 </div>
+
+<!-- Modal Pembatalan -->
+<div class="modal fade" id="modalPembatalan" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Pembatalan</h5>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal" aria-label="Close">
+                        <span class="fa fa-times"></span>
+                    </button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" name="id_maintenance" id="id_maintenance">
+                <div class="form-group">
+                    <label for="">Nama Pegawai</label>
+                    <select class="form-control" name="id_pegawai" id="id_pegawai">
+                        @foreach ($pegawai as $index => $val)
+                            <option value="{{$index}}">{{$val}}</option>
+                        @endforeach
+                    </select>
+                    <div class="invalid-feedback error-id_pegawai"></div>
+                </div>
+                <div class="form-group">
+                    <label for="">Tanggal Pembatalan</label>
+                    <input type="date" name="tanggal_pembatalan" id="tanggal_pembatalan" class="form-control">
+                    <div class="invalid-feedback error-tanggal_pembatalan"></div>
+                </div>
+                <div class="form-group">
+                    <label for="">Keterangan</label>
+                    <textarea class="form-control" name="keterangan" id="keterangan" rows="3"></textarea>
+                    <div class="invalid-feedback error-keterangan"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                <button type="button" class="btn btn-primary btn-proses-pembatalan">Simpan</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal Validasi -->
+
+{{-- Modal Status Pembatalan --}}
+<div class="modal fade" id="modalStatusPembatalan" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Status Pembatalan</h5>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal" aria-label="Close">
+                        <span class="fa fa-times"></span>
+                    </button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-borderless" id="tablePembatalan">
+                    <thead>
+                        <tr>
+                            <th>Nama Pembatalan</th>
+                            <th>Tanggal Pembatalan</th>
+                            <th>Keterangan</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Keluar</button>
+            </div>
+        </div>
+    </div>
+</div>
+{{-- Modal Status Validasi --}}
 
 <!-- Modal Validasi -->
 <div class="modal fade" id="modalValidasi" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">

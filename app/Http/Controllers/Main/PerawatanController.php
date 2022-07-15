@@ -23,9 +23,9 @@ class PerawatanController extends Controller
     public function render()
     {
         $data = Maintenance::with('user')->where('kategori_maintenance', $this->kategori_maintenance)->get();
-
+        $pegawai = Pegawai::pluck('nama_pegawai', 'id_pegawai')->prepend('Pilih Pegawai', '');
         $view = [
-            'data' => view('main.perawatan.render', compact('data'))->render()
+            'data' => view('main.perawatan.render', compact('data', 'pegawai'))->render()
         ];
 
         return response()->json($view);
@@ -318,6 +318,7 @@ class PerawatanController extends Controller
     {
         try {
             $data = Maintenance::where('id_maintenance', $request->id_maintenance)->first();
+            // dd($request->all());
             if($request->hasFile('nota')) {
                 if($data->nota != null) {
                     unlink($data->nota);
@@ -335,6 +336,7 @@ class PerawatanController extends Controller
                 $request->file('nota')->move($save_path, $filenametostore);
 
                 $data->update([
+                    'biaya_maintenance' => preg_replace('/[^0-9]/', '', $request->biaya),
                     'nota' => $save_path . $filenametostore
                 ]);
             }
@@ -351,6 +353,43 @@ class PerawatanController extends Controller
                 'title' => 'Gagal'
             ]);
         }
+    }
+
+    public function prosesPembatalan(Request $request)
+    {
+        try {
+            $maintenance = Maintenance::find($request->id_maintenance);
+
+            $pembatalan = [
+                'nama_pembatal' => Pegawai::where('id_pegawai', $request->id_pegawai)->first()->nama_pegawai,
+                'tanggal_pembatalan' => $request->tanggal,
+                'keterangan' => $request->keterangan
+            ];
+
+            $maintenance->update([
+                'status_maintenance' => 'Dibatalkan',
+                'pembatalan' => json_encode($pembatalan),
+            ]);
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Data berhasil diproses',
+                'title' => 'Berhasil'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                // 'message' => 'Data gagal tersimpan',
+                'message' => $e->getMessage(),
+                'title' => 'Gagal'
+            ]);
+        }
+    }
+
+    public function detailPembatalan($id_maintenance)
+    {
+        $data = Maintenance::where('id_maintenance', $id_maintenance)->first();
+        return response()->json(json_decode($data->pembatalan));
     }
 }
 

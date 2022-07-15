@@ -83,7 +83,7 @@
                         <div class="invalid-feedback error-kode0"></div>
                     </div> --}}
                     <div class="form-group">
-                        <label for="nama">Nama nama</label>
+                        <label for="nama">Nama</label>
                         <select name="nama[0]" id="nama0" class="form-control nama0 nama-barang" data-id="0">
                             @foreach ($barang as $key => $value)
                             <option value="{{$key}}">{{$value}}</option>
@@ -110,6 +110,11 @@
                         <label for="jumlah">Jumlah Barang</label>
                         <input type="number" class="form-control jumlah0" name="jumlah[0]" id="jumlah0" placeholder="masukkan jumlah barang">
                         <div class="invalid-feedback error-jumlah0"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="satuan">Satuan Barang</label>
+                        <input type="text" class="form-control satuan0" name="satuan[0]" id="satuan0" placeholder="masukkan satuan barang">
+                        <div class="invalid-feedback error-satuan0"></div>
                     </div>
                     <div class="form-group">
                         <label for="harga">Harga Satuan</label>

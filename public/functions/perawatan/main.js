@@ -567,36 +567,52 @@ $(document).ready(function () {
     function swalNota(id) {
         Swal.fire({
             title: 'Nota',
-            icon: 'info',
+            html: '<div class="form-group">' +
+                    '<input type="text" class="form-control" id="biaya" placeholder="Biaya">' +
+                '</div>' +
+                '<div class="form-group">' +
+                    '<input type="file" class="form-control" id="file" placeholder="File">' +
+                '</div>',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Unggah',
+            confirmButtonText: 'Simpan',
             cancelButtonText: 'Batal',
             showLoaderOnConfirm: true,
             allowOutsideClick: false,
             allowEscapeKey: false,
             allowEnterKey: false,
             reverseButtons: true,
-            input: 'file',
-            onBeforeOpen: () => {
-                $('.swal2-file').change(function(){
+            preConfirm: function() {
+                return new Promise(function(resolve) {
+                    if($('#biaya').val() == '' || $('#file').val() == '') {
+                        Swal.showValidationMessage('Isi semua field')
+
+                    } else {
+                        Swal.resetValidationMessage();
+                        resolve([
+                            $('#biaya').val(),
+                            $('#file').val()
+                        ])
+                    }
+                })
+            },
+            onBeforeOpen: function() {
+                $('#file').on('change', function() {
                     var reader = new FileReader();
                     reader.readAsDataURL(this.files[0]);
                 })
             },
-            inputAttributes: {
-                'accept': 'image/*',
-                'aria-label': 'Upload Nota'
+            onOpen: function() {
+                $('#biaya').focus()
             },
-            inputValidator: (value) => {
-                return !value && 'Nota tidak boleh kosong'
-            }
-        }).then((result) => {
-            if (result.value) {
-                var formData = new FormData();
-                var file = $('.swal2-file')[0].files[0];
+        }).then(function(result) {
+            if(result.value) {
+                var formData = new FormData()
+                var biaya = result.value[0]
+                var file = $('#file')[0].files[0]
                 formData.append('id_maintenance', id);
+                formData.append('biaya', biaya)
                 formData.append('nota', file);
                 formData.append('_token', $('meta[name="csrf-token"]').attr('content'));
                 $.ajax({
@@ -605,21 +621,90 @@ $(document).ready(function () {
                     data: formData,
                     contentType: false,
                     processData: false,
-                    cache: false,
-                    success: function (response) {
+                    success: function(response) {
+                        console.log(response)
                         getData();
                         Swal.fire(
                             response.title,
                             response.message,
                             response.status
                         );
-                    },
-                    error: function (error) {
-                        console.log("Error", error);
+                        // if(response.status == 'success') {
+                        //     Swal.fire({
+                        //         title: 'Berhasil',
+                        //         text: 'Nota berhasil ditambahkan',
+                        //         type: 'success'
+                        //     }).then(function() {
+                        //         location.reload()
+                        //     })
+                        // } else {
+                        //     Swal.fire({
+                        //         title: 'Gagal',
+                        //         text: 'Nota gagal ditambahkan',
+                        //         type: 'error'
+                        //     })
+                        // }
                     }
-                });
+                })
             }
-        });
+        })
+    // }
+
+        // Swal.fire({
+        //     title: 'Nota',
+        //     icon: 'info',
+        //     showCancelButton: true,
+        //     confirmButtonColor: '#3085d6',
+        //     cancelButtonColor: '#d33',
+        //     confirmButtonText: 'Unggah',
+        //     cancelButtonText: 'Batal',
+        //     showLoaderOnConfirm: true,
+        //     allowOutsideClick: false,
+        //     allowEscapeKey: false,
+        //     allowEnterKey: false,
+        //     reverseButtons: true,
+        //     input: 'file',
+        //     onBeforeOpen: () => {
+        //         $('.swal2-file').change(function(){
+        //             var reader = new FileReader();
+        //             reader.readAsDataURL(this.files[0]);
+        //         })
+        //     },
+        //     inputAttributes: {
+        //         'accept': 'image/*',
+        //         'aria-label': 'Upload Nota'
+        //     },
+        //     inputValidator: (value) => {
+        //         return !value && 'Nota tidak boleh kosong'
+        //     }
+        // }).then((result) => {
+        //     if (result.value) {
+        //         var formData = new FormData();
+        //         var file = $('.swal2-file')[0].files[0];
+        //         formData.append('id_maintenance', id);
+        //         formData.append('nota', file);
+        //         formData.append('_token', $('meta[name="csrf-token"]').attr('content'));
+        //         $.ajax({
+        //             url: '/perawatan/unggah-nota',
+        //             type: 'POST',
+        //             data: formData,
+        //             contentType: false,
+        //             processData: false,
+        //             cache: false,
+        //             success: function (response) {
+        //                 getData();
+        //                 Swal.fire(
+        //                     response.title,
+        //                     response.message,
+        //                     response.status
+        //                 );
+        //             },
+        //             error: function (error) {
+        //                 console.log("Error", error);
+        //             }
+        //         });
+        //     }
+        // });
     }
 
     $('body').on('click', '.btn-nota', function () {
@@ -631,11 +716,84 @@ $(document).ready(function () {
     $('body').on('click', '.btn-detail-nota', function () {
         var id = $(this).data('id');
 
-        var image = '<h4><strong>Detail Nota</strong></h4>';
+        var image = '<h4><strong>Detail Nota - Biaya '+ $(this).data('biaya') +'</strong></h4>';
         image += '<img src="' + $(this).data('nota') + '" class="img-fluid" alt="Responsive image">';
 
         $('#modalDetailNota').modal('show');
         $('#modalDetailNota').find('.detail-nota').html(image);
         $('#modalDetailNota').find('.btn-nota').attr('data-id', id);
     }); 
+
+    $('body').on('click', '.btn-batal', function(){
+        var id = $(this).data('id');
+        var status = $(this).data('status');
+        $('#modalPembatalan').find('#id_maintenance').val(id);
+        $('#modalPembatalan').modal('show');
+    });
+
+    $('body').on('click', '.btn-proses-pembatalan', function(){
+        var id = $('#id_maintenance').val();
+        var pegawai = $('#id_pegawai').val();
+        var tanggal = $('#tanggal_pembatalan').val();
+        var keterangan = $('#keterangan').val();
+        if(pegawai == '' || tanggal == '' || keterangan == '') {s
+            $('#modalPembatalan').modal('hide');
+            Swal.fire({
+                title: 'Peringatan',
+                text: 'Mohon untuk melengkapi data penerimaan',
+                icon: 'warning',
+            })
+        } else {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $.ajax({
+                url: '/perawatan/proses-pembatalan',
+                type: 'POST',
+                data: {
+                    id_maintenance: id,
+                    id_pegawai: pegawai,
+                    tanggal: tanggal,
+                    keterangan: keterangan,
+                },
+                success: function(data){
+                    getData()
+                    $('#modalPembatalan').modal('hide');
+                    Swal.fire({
+                        title: data.title,
+                        text: data.message,
+                        icon: data.status,
+                    });
+                },
+                error: function(data){
+                    $('#modalPembatalan').modal('hide');
+                    Swal.fire({
+                        title: 'Peringatan',
+                        text: 'Terjadi kesalahan',
+                        icon: 'warning',
+                    });
+                }
+            });
+        }
+    });
+
+    $('body').on('click', '.btn-detail-pembatalan', function() {
+        let id = $(this).data('id')
+        $('#modalStatusPembatalan').find('#tablePembatalan tbody').empty()
+        $('#modalStatusPembatalan').modal('show')
+        $.ajax({
+            type: "GET",
+            url: "/perawatan/detail-pembatalan/" + id,
+            dataType: "json",
+            success: function (response) {
+                var tbody = '<tr>' +
+                        '<td>' + response.nama_pembatal + '</td>' +
+                        '<td>' + response.tanggal_pembatalan + '</td>' +
+                        '<td>' + response.keterangan + '</td>' +
+                    '</tr>';
+                $('#modalStatusPembatalan').find('#tablePembatalan tbody').append(tbody)            }
+        });
+    });
 });

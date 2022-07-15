@@ -22,7 +22,7 @@ return new class extends Migration
             $table->foreignId('id_pegawai')->references('id_pegawai')->on('pegawai')->onDelete('cascade')->comment('pegawai yang mengajukan pengadaan');
             $table->date('tanggal_maintenance');
             $table->json('item_maintenance');
-            $table->enum('status_maintenance', ['Ditolak', 'Diproses', 'Diterima'])->default('Diproses');
+            $table->enum('status_maintenance', ['Ditolak', 'Diproses', 'Diterima', 'Dibatalkan'])->default('Diproses');
             $table->enum('kategori_maintenance', ['Perawatan', 'Kerusakan', 'Perbaikan']);
             $table->timestamps();
         });

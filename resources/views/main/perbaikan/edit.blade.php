@@ -106,7 +106,7 @@
                         <div class="invalid-feedback error-spesifikasi{{$i}}"></div>
                     </div>
                     <div class="form-group">
-                        <label for="uraian">Uraian Perbaikan Barang</label>
+                        <label for="uraian">Uraian Kerusakan Barang</label>
                         <textarea class="form-control uraian{{$i}}" name="uraian[{{$i}}]" id="uraian{{$i}}" placeholder="masukkan uraian barang">{{$item_perbaikan[$i]['uraian']}}</textarea>
                         <div class="invalid-feedback error-uraian{{$i}}"></div>
                     </div>

@@ -25,7 +25,7 @@ return new class extends Migration
             $table->integer('biaya_pengadaan');
             $table->text('keterangan')->nullable();
             $table->string('nota', 100)->nullable();
-            $table->enum('status_pengadaan', ['Ditolak', 'Diproses', 'Diterima'])->default('Diproses');
+            $table->enum('status_pengadaan', ['Ditolak', 'Diproses', 'Diterima', 'Dibatalkan'])->default('Diproses');
             $table->timestamps();
         });
     }

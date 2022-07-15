@@ -400,4 +400,41 @@ class PerbaikanController extends Controller
             ]);
         }
     }
+
+    public function prosesPembatalan(Request $request)
+    {
+        try {
+            $maintenance = Maintenance::find($request->id_maintenance);
+
+            $pembatalan = [
+                'nama_pembatal' => Pegawai::where('id_pegawai', $request->id_pegawai)->first()->nama_pegawai,
+                'tanggal_pembatalan' => $request->tanggal,
+                'keterangan' => $request->keterangan
+            ];
+
+            $maintenance->update([
+                'status_maintenance' => 'Dibatalkan',
+                'pembatalan' => json_encode($pembatalan),
+            ]);
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Data berhasil diproses',
+                'title' => 'Berhasil'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                // 'message' => 'Data gagal tersimpan',
+                'message' => $e->getMessage(),
+                'title' => 'Gagal'
+            ]);
+        }
+    }
+
+    public function detailPembatalan($id_maintenance)
+    {
+        $data = Maintenance::where('id_maintenance', $id_maintenance)->first();
+        return response()->json(json_decode($data->pembatalan));
+    }
 }

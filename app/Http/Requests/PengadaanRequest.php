@@ -39,6 +39,7 @@ class PengadaanRequest extends FormRequest
             $rules['merek.' . $i] = 'required';
             $rules['spesifikasi.' . $i] = 'required';
             $rules['harga.' . $i] = 'required';
+            $rules['satuan.' . $i] = 'required';
             // $rules['kode.' .$i] = 'required';
         }
 
@@ -79,6 +80,7 @@ class PengadaanRequest extends FormRequest
             $attr['merek.' . $i] = 'Merek Barang';
             $attr['spesifikasi.' . $i] = 'Spesifikasi Barang';
             $attr['harga.' . $i] = 'Harga Satuan';
+            $attr['satuan.' . $i] = 'Satuan Barang';
             // $attr['kode.' . $i] = 'Kode Barang';
         }
 

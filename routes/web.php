@@ -29,6 +29,7 @@ Route::prefix('/')->namespace('Main')->middleware('auth')->group(function(){
         Route::post('/update', 'PegawaiController@update')->name('update');
         Route::get('/delete/{id}', 'PegawaiController@delete')->name('delete');
         Route::get('/print/{id}', 'PegawaiController@print')->name('print');
+        Route::post('/change-status', 'PegawaiController@changeStatus')->name('change-status');
     });
 
     Route::prefix('/barang')->name('barang.')->group(function(){
@@ -60,6 +61,8 @@ Route::prefix('/')->namespace('Main')->middleware('auth')->group(function(){
         Route::get('/detail-validasi/{id_pengadaan}', 'PengadaanController@detailValidasi')->name('detail-validasi');
         Route::post('/unggah-nota', 'PengadaanController@unggahNota')->name('unggah-nota');
         Route::post('/proses-penerimaan', 'PengadaanController@prosesPenerimaan')->name('proses-penerimaan');
+        Route::post('/proses-pembatalan', 'PengadaanController@prosesPembatalan')->name('proses-pembatalan');
+        Route::get('/detail-pembatalan/{id_maintenance}', 'PengadaanController@detailPembatalan')->name('detail-pembatalan');
     });
 
     Route::prefix('/pengadaan-histori')->name('pengadaan-histori.')->group(function(){
@@ -83,6 +86,8 @@ Route::prefix('/')->namespace('Main')->middleware('auth')->group(function(){
         Route::get('/detail-validasi/{id_maintenance}', 'PerbaikanController@detailValidasi')->name('detail-validasi');
         Route::post('/unggah-nota', 'PerbaikanController@unggahNota')->name('unggah-nota');
         Route::post('/proses-penerimaan', 'PerbaikanController@prosesPenerimaan')->name('proses-penerimaan');
+        Route::post('/proses-pembatalan', 'PerbaikanController@prosesPembatalan')->name('proses-pembatalan');
+        Route::get('/detail-pembatalan/{id_maintenance}', 'PerbaikanController@detailPembatalan')->name('detail-pembatalan');
     });
 
     Route::prefix('/kerusakan')->name('kerusakan.')->group(function(){
@@ -98,6 +103,8 @@ Route::prefix('/')->namespace('Main')->middleware('auth')->group(function(){
         Route::post('/validasi', 'KerusakanController@validasi')->name('validasi');
         Route::get('/detail-validasi/{id_maintenance}', 'KerusakanController@detailValidasi')->name('detail-validasi');
         Route::post('/unggah-nota', 'KerusakanController@unggahNota')->name('unggah-nota');
+        Route::post('/proses-pembatalan', 'KerusakanController@prosesPembatalan')->name('proses-pembatalan');
+        Route::get('/detail-pembatalan/{id_maintenance}', 'KerusakanController@detailPembatalan')->name('detail-pembatalan');
     });
 
     Route::prefix('/perawatan')->name('perawatan.')->group(function(){
@@ -108,11 +115,13 @@ Route::prefix('/')->namespace('Main')->middleware('auth')->group(function(){
         Route::post('/store', 'PerawatanController@store')->name('store');
         Route::post('/update', 'PerawatanController@update')->name('update');
         Route::get('/delete/{id}', 'PerawatanController@delete')->name('delete');
-        Route::get('/item-kerusakan/{id_maintenance}', 'PerawatanController@itemKerusakan')->name('item-perawatan');
+        Route::get('/item-perawatan/{id_maintenance}', 'PerawatanController@itemPerawatan')->name('item-perawatan');
         Route::get('/print/{id}', 'PerawatanController@print')->name('print');
         Route::post('/validasi', 'PerawatanController@validasi')->name('validasi');
         Route::get('/detail-validasi/{id_maintenance}', 'PerawatanController@detailValidasi')->name('detail-validasi');
         Route::post('/unggah-nota', 'PerawatanController@unggahNota')->name('unggah-nota');
+        Route::post('/proses-pembatalan', 'PerawatanController@prosesPembatalan')->name('proses-pembatalan');
+        Route::get('/detail-pembatalan/{id_maintenance}', 'PerawatanController@detailPembatalan')->name('detail-pembatalan');
     });
 });
 

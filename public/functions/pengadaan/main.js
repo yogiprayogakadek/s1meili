@@ -405,6 +405,7 @@ $(document).ready(function () {
                         '<th>Nama Barang</th>' +
                         '<th>Harga Satuan Barang</th>' +
                         '<th>Jumlah Barang</th>' +
+                        '<th>Satuan Barang</th>' +
                         '<th>Total Harga</th>' +
                     '</tr>' +
                     '</thead>' +
@@ -423,6 +424,7 @@ $(document).ready(function () {
                         '<td>' + item.nama_barang + '</td>' +
                         '<td>' + item.harga_satuan + '</td>' +
                         '<td>' + item.jumlah_barang + '</td>' +
+                        '<td>' + item.satuan_barang + '</td>' +
                         '<td>' + item.total + '</td>' +
                     '</tr>';
                     $('#item'+id_pengadaan).append(tr_row);
@@ -763,4 +765,77 @@ $(document).ready(function () {
             // $('#' + div_id).html('');
         }
     })
+
+    $('body').on('click', '.btn-batal', function(){
+        var id = $(this).data('id');
+        var status = $(this).data('status');
+        $('#modalPembatalan').find('#id_pengadaan').val(id);
+        $('#modalPembatalan').modal('show');
+    });
+
+    $('body').on('click', '.btn-proses-pembatalan', function(){
+        var id = $('#id_pengadaan').val();
+        var pegawai = $('#id_pegawai').val();
+        var tanggal = $('#tanggal_pembatalan').val();
+        var keterangan = $('#keterangan').val();
+        if(pegawai == '' || tanggal == '' || keterangan == '') {s
+            $('#modalPembatalan').modal('hide');
+            Swal.fire({
+                title: 'Peringatan',
+                text: 'Mohon untuk melengkapi data penerimaan',
+                icon: 'warning',
+            })
+        } else {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $.ajax({
+                url: '/pengadaan/proses-pembatalan',
+                type: 'POST',
+                data: {
+                    id_pengadaan: id,
+                    id_pegawai: pegawai,
+                    tanggal: tanggal,
+                    keterangan: keterangan,
+                },
+                success: function(data){
+                    getData()
+                    $('#modalPembatalan').modal('hide');
+                    Swal.fire({
+                        title: data.title,
+                        text: data.message,
+                        icon: data.status,
+                    });
+                },
+                error: function(data){
+                    $('#modalPembatalan').modal('hide');
+                    Swal.fire({
+                        title: 'Peringatan',
+                        text: 'Terjadi kesalahan',
+                        icon: 'warning',
+                    });
+                }
+            });
+        }
+    });
+
+    $('body').on('click', '.btn-detail-pembatalan', function() {
+        let id = $(this).data('id')
+        $('#modalStatusPembatalan').find('#tablePembatalan tbody').empty()
+        $('#modalStatusPembatalan').modal('show')
+        $.ajax({
+            type: "GET",
+            url: "/pengadaan/detail-pembatalan/" + id,
+            dataType: "json",
+            success: function (response) {
+                var tbody = '<tr>' +
+                        '<td>' + response.nama_pembatal + '</td>' +
+                        '<td>' + response.tanggal_pembatalan + '</td>' +
+                        '<td>' + response.keterangan + '</td>' +
+                    '</tr>';
+                $('#modalStatusPembatalan').find('#tablePembatalan tbody').append(tbody)            }
+        });
+    });
 });

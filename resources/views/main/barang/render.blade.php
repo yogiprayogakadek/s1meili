@@ -44,9 +44,9 @@
                             <button class="btn btn-primary btn-edit" data-id="{{$data->id_barang}}">
                                 <i class="fa fa-edit"></i> Edit
                             </button>
-                            <button class="btn btn-danger btn-delete" data-id="{{$data->id_barang}}">
+                            {{-- <button class="btn btn-danger btn-delete" data-id="{{$data->id_barang}}">
                                 <i class="fa fa-trash"></i> Hapus
-                            </button>
+                            </button> --}}
                         </td>
                         @endcan
                     </tr>

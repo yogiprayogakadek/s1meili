@@ -125,6 +125,7 @@ class PengadaanController extends Controller
                                 'id_barang' => Barang::find($request->nama[$i])->id_barang,
                                 'harga_satuan' => preg_replace('/[^0-9]/', '', $request->harga[$i]),
                                 'jumlah_barang' => $request->jumlah[$i],
+                                'satuan_barang' => $request->satuan[$i],
                             ]);
                         // } else {
                         //     ItemPengadaan::create([
@@ -240,6 +241,7 @@ class PengadaanController extends Controller
                         'id_barang' => Barang::find($request->nama[$i])->id_barang,
                         'harga_satuan' => preg_replace('/[^0-9]/', '', $request->harga[$i]),
                         'jumlah_barang' => $request->jumlah[$i],
+                        'satuan_barang' => $request->satuan[$i],
                     ]);
 
                     // if(!$cek) {
@@ -293,6 +295,7 @@ class PengadaanController extends Controller
                 'nama_barang' => $item->barang->nama_barang,
                 'harga_satuan' => convertToRupiah($item->harga_satuan),
                 'jumlah_barang' => $item->jumlah_barang,
+                'satuan_barang' => $item->satuan_barang,
                 'total' => convertToRupiah($item->harga_satuan * $item->jumlah_barang)
             ];
         }
@@ -519,5 +522,42 @@ class PengadaanController extends Controller
                 'title' => 'Gagal'
             ]);
         }
+    }
+
+    public function prosesPembatalan(Request $request)
+    {
+        try {
+            $pengadaan = Pengadaan::find($request->id_pengadaan);
+
+            $pembatalan = [
+                'nama_pembatal' => Pegawai::where('id_pegawai', $request->id_pegawai)->first()->nama_pegawai,
+                'tanggal_pembatalan' => $request->tanggal,
+                'keterangan' => $request->keterangan
+            ];
+
+            $pengadaan->update([
+                'status_pengadaan' => 'Dibatalkan',
+                'pembatalan' => json_encode($pembatalan),
+            ]);
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Data berhasil diproses',
+                'title' => 'Berhasil'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                // 'message' => 'Data gagal tersimpan',
+                'message' => $e->getMessage(),
+                'title' => 'Gagal'
+            ]);
+        }
+    }
+
+    public function detailPembatalan($id)
+    {
+        $data = Pengadaan::where('id_pengadaan', $id)->first();
+        return response()->json(json_decode($data->pembatalan));
     }
 }

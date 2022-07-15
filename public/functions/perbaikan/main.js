@@ -369,7 +369,7 @@ $(document).ready(function () {
                         '-' +
                     '</div>' +
                     '<div class="col-md-4">' +
-                        'Uraian Perbaikan' +
+                        'Uraian Kerusakan' +
                     '</div>' +
                     '<div class="col-md-8 uraian-perbaikan">: ' +
                         '-' +
@@ -745,4 +745,77 @@ $(document).ready(function () {
             // $('#' + div_id).html('');
         }
     })
+
+    $('body').on('click', '.btn-batal', function(){
+        var id = $(this).data('id');
+        var status = $(this).data('status');
+        $('#modalPembatalan').find('#id_maintenance').val(id);
+        $('#modalPembatalan').modal('show');
+    });
+
+    $('body').on('click', '.btn-proses-pembatalan', function(){
+        var id = $('#id_maintenance').val();
+        var pegawai = $('#id_pegawai').val();
+        var tanggal = $('#tanggal_pembatalan').val();
+        var keterangan = $('#keterangan').val();
+        if(pegawai == '' || tanggal == '' || keterangan == '') {s
+            $('#modalPembatalan').modal('hide');
+            Swal.fire({
+                title: 'Peringatan',
+                text: 'Mohon untuk melengkapi data penerimaan',
+                icon: 'warning',
+            })
+        } else {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $.ajax({
+                url: '/perbaikan/proses-pembatalan',
+                type: 'POST',
+                data: {
+                    id_maintenance: id,
+                    id_pegawai: pegawai,
+                    tanggal: tanggal,
+                    keterangan: keterangan,
+                },
+                success: function(data){
+                    getData()
+                    $('#modalPembatalan').modal('hide');
+                    Swal.fire({
+                        title: data.title,
+                        text: data.message,
+                        icon: data.status,
+                    });
+                },
+                error: function(data){
+                    $('#modalPembatalan').modal('hide');
+                    Swal.fire({
+                        title: 'Peringatan',
+                        text: 'Terjadi kesalahan',
+                        icon: 'warning',
+                    });
+                }
+            });
+        }
+    });
+
+    $('body').on('click', '.btn-detail-pembatalan', function() {
+        let id = $(this).data('id')
+        $('#modalStatusPembatalan').find('#tablePembatalan tbody').empty()
+        $('#modalStatusPembatalan').modal('show')
+        $.ajax({
+            type: "GET",
+            url: "/perbaikan/detail-pembatalan/" + id,
+            dataType: "json",
+            success: function (response) {
+                var tbody = '<tr>' +
+                        '<td>' + response.nama_pembatal + '</td>' +
+                        '<td>' + response.tanggal_pembatalan + '</td>' +
+                        '<td>' + response.keterangan + '</td>' +
+                    '</tr>';
+                $('#modalStatusPembatalan').find('#tablePembatalan tbody').append(tbody)            }
+        });
+    });
 });

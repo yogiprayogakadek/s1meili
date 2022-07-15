@@ -100,6 +100,11 @@
                         <div class="invalid-feedback error-jumlah{{$i}}"></div>
                     </div>
                     <div class="form-group">
+                        <label for="satuan">Satuan Barang</label>
+                        <input type="text" class="form-control satuan{{$i}}" name="satuan[{{$i}}]" id="satuan{{$i}}" placeholder="masukkan satuan barang" value="{{$data->item_pengadaan[$i]->satuan_barang}}">
+                        <div class="invalid-feedback error-satuan{{$i}}"></div>
+                    </div>
+                    <div class="form-group">
                         <label for="harga">Harga Satuan</label>
                         <input type="text" class="form-control harga-satuan harga{{$i}}" name="harga[{{$i}}]" id="harga{{$i}}" data-harga="harga{{$i}}" placeholder="masukkan harga satuan barang" value="{{convertToRupiah($data->item_pengadaan[$i]->harga_satuan)}}">
                         <div class="invalid-feedback error-harga{{$i}}"></div>

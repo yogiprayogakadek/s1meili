@@ -231,4 +231,43 @@ $(document).ready(function () {
             }
         })
     });
+
+    // on change status
+    $('body').on('change', '#status', function() {
+        let idPegawai = $(this).data('id');
+        let currentStatus = $(this).data('status');
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        $.ajax({
+            type: "POST",
+            url: "/pegawai/change-status",
+            data: {
+                id_pegawai: idPegawai,
+                status: $(this).val()
+            },
+            success: function(response) {
+                if(response.status != 'success') {
+                    $('#status').val(currentStatus);
+                }
+                getData();
+                Swal.fire(
+                    response.title,
+                    response.message,
+                    response.status
+                );
+            },
+            error: function(response) {
+                Swal.fire(
+                    response.title,
+                    response.message,
+                    response.status
+                );
+            }
+        });
+    });
 });

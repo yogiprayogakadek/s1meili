@@ -34,7 +34,7 @@
                 </div>
                 <div class="form-group">
                     <label for="biaya">Biaya</label>
-                    <input type="text" class="form-control biaya" name="biaya" id="biaya" placeholder="masukkan biaya" value="{{convertToRupiah($data->biaya_maintenance)}}">
+                    <input type="hidden" class="form-control biaya" name="biaya" id="biaya" placeholder="masukkan biaya" value="{{convertToRupiah($data->biaya_maintenance)}}">
                     <div class="invalid-feedback error-biaya"></div>
                 </div>
                 {{-- </form> --}}

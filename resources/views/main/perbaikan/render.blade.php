@@ -40,7 +40,11 @@
                         <td>{{$data->nomor_laporan}}</td>
                         <td>{{convertToRupiah($data->biaya_maintenance)}}</td>
                         {{-- <td>{{$data->status_perbaikan}}</td> --}}
-                        <td>{!!$data->maintenance_histori == null ? $data->status_maintenance : '<button class="btn btn-primary btn-detail-validasi" data-id="'.$data->id_maintenance.'"><i class="fa fa-eye"></i> Lihat Status</button>' !!}</td>
+                        @if ($data->status_maintenance != 'Dibatalkan')
+                            <td>{!!$data->maintenance_histori == null ? $data->status_maintenance : '<button class="btn btn-primary btn-detail-validasi" data-id="'.$data->id_maintenance.'"><i class="fa fa-eye"></i> Lihat Status</button>' !!}</td>
+                        @else
+                            <td>{{$data->status_maintenance}}</td>
+                        @endif
                         <td>
                             @cannot('bendahara')
                             {!!$data->nota == null ? '-' : '<a href="'.asset($data->nota).'" target="_blank">Lihat Nota</a>'!!}
@@ -59,27 +63,44 @@
                         </td>
                         @can('manage_data')
                         <td>
+                            @if ($data->status_maintenance != 'Dibatalkan')
                             <button class="btn btn-success btn-edit" data-id="{{$data->id_maintenance}}">
                                 <i class="fa fa-edit"></i> Edit
                             </button>
-                            <button class="btn btn-danger btn-delete" data-id="{{$data->id_maintenance}}">
-                                <i class="fa fa-trash"></i> Hapus
+                            <button class="btn btn-danger btn-batal" data-id="{{$data->id_maintenance}}">
+                                <i class="fa fa-trash"></i> Batal
                             </button>
+                            @else
+                            <button class="btn btn-info btn-detail-pembatalan" data-id="{{$data->id_maintenance}}">
+                                <i class="fa fa-eye"></i> Status Dibatalkan
+                            </button>
+                            @endif
+                            {{-- <button class="btn btn-danger btn-delete" data-id="{{$data->id_maintenance}}">
+                                <i class="fa fa-trash"></i> Hapus
+                            </button> --}}
                         </td>
                         @endcan
                         @can('validator')
-                        <td>
-                            @can('kepala_sekolah')
-                            <button class="btn btn-success btn-validasi" data-id="{{$data->id_maintenance}}" data-status="{{$data->status_maintenance}}" data-validasi="{{$data->maintenance_histori->approve_wakil_sarpras}}">
-                                <i class="fa fa-check-circle-o"></i> Validasi
-                            </button>
-                            @endcan
-                            @can('wakil_sarpras')
-                            <button class="btn btn-success btn-validasi" data-id="{{$data->id_maintenance}}" data-status="{{$data->status_maintenance}}">
-                                <i class="fa fa-check-circle-o"></i> Validasi
-                            </button>
-                            @endcan
-                        </td>
+                            @if ($data->status_maintenance != 'Dibatalkan')
+                                <td>
+                                    @can('kepala_sekolah')
+                                    <button class="btn btn-success btn-validasi" data-id="{{$data->id_maintenance}}" data-status="{{$data->status_maintenance}}" data-validasi="{{$data->maintenance_histori->approve_wakil_sarpras}}">
+                                        <i class="fa fa-check-circle-o"></i> Validasi
+                                    </button>
+                                    @endcan
+                                    @can('wakil_sarpras')
+                                    <button class="btn btn-success btn-validasi" data-id="{{$data->id_maintenance}}" data-status="{{$data->status_maintenance}}">
+                                        <i class="fa fa-check-circle-o"></i> Validasi
+                                    </button>
+                                    @endcan
+                                </td>
+                            @else
+                                <td>
+                                    <button class="btn btn-info btn-detail-pembatalan" data-id="{{$data->id_maintenance}}">
+                                        <i class="fa fa-eye"></i> Status Dibatalkan
+                                    </button>
+                                </td>
+                            @endif
                         @endcan
                     </tr>
                     @endforeach
@@ -88,6 +109,77 @@
         </div>
     </div>
 </div>
+
+<!-- Modal Pembatalan -->
+<div class="modal fade" id="modalPembatalan" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Pembatalan</h5>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal" aria-label="Close">
+                        <span class="fa fa-times"></span>
+                    </button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" name="id_maintenance" id="id_maintenance">
+                <div class="form-group">
+                    <label for="">Nama Pegawai</label>
+                    <select class="form-control" name="id_pegawai" id="id_pegawai">
+                        @foreach ($pegawai as $index => $val)
+                            <option value="{{$index}}">{{$val}}</option>
+                        @endforeach
+                    </select>
+                    <div class="invalid-feedback error-id_pegawai"></div>
+                </div>
+                <div class="form-group">
+                    <label for="">Tanggal Pembatalan</label>
+                    <input type="date" name="tanggal_pembatalan" id="tanggal_pembatalan" class="form-control">
+                    <div class="invalid-feedback error-tanggal_pembatalan"></div>
+                </div>
+                <div class="form-group">
+                    <label for="">Keterangan</label>
+                    <textarea class="form-control" name="keterangan" id="keterangan" rows="3"></textarea>
+                    <div class="invalid-feedback error-keterangan"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                <button type="button" class="btn btn-primary btn-proses-pembatalan">Simpan</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal Validasi -->
+
+{{-- Modal Status Pembatalan --}}
+<div class="modal fade" id="modalStatusPembatalan" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Status Pembatalan</h5>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal" aria-label="Close">
+                        <span class="fa fa-times"></span>
+                    </button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-borderless" id="tablePembatalan">
+                    <thead>
+                        <tr>
+                            <th>Nama Pembatalan</th>
+                            <th>Tanggal Pembatalan</th>
+                            <th>Keterangan</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Keluar</button>
+            </div>
+        </div>
+    </div>
+</div>
+{{-- Modal Status Validasi --}}
 
 <!-- Modal Penerimaan -->
 <div class="modal fade" id="modalPenerimaan" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
