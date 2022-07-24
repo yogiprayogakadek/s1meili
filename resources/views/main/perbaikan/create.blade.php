@@ -2,7 +2,7 @@
     <form id="formAdd">
         <div class="card">
             <div class="card-header">
-                <div class="card-title">Data Pengadaan</div>
+                <div class="card-title">Tambah Data Perbaikan</div>
                 <div class="card-options">
                     <button class="btn btn-info btn-data" type="button">
                         <i class="fa fa-eye"></i> Data
@@ -42,7 +42,7 @@
                     <div class="invalid-feedback error-nomor_laporan"></div>
                 </div>
                 <div class="form-group">
-                    <label for="tanggal-maintenance">Tanggal Perbaikan</label>
+                    <label for="tanggal-maintenance">Tanggal Pengajuan</label>
                     <input type="date" class="form-control tanggal_maintenance" name="tanggal_maintenance" id="tanggal-maintenance" placeholder="masukkan tanggal perbaikan barang">
                     <div class="invalid-feedback error-tanggal_maintenance"></div>
                 </div>

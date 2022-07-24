@@ -1,7 +1,7 @@
 <div class="col-12">
     <div class="card">
         <div class="card-header">
-            <div class="card-title">Ubah Kategori</div>
+            <div class="card-title">Ubah Data Barang</div>
             <div class="card-options">
                 <button class="btn btn-info btn-data">
                     <i class="fa fa-eye"></i> Data

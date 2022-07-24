@@ -29,7 +29,7 @@ function tambah() {
 function filterData(start_date, end_date, status) {
     $.ajax({
         type: "get",
-        url: "/pengadaan/filter/"+start_date+"/"+end_date+"/"+status,
+        url: "/perbaikan/filter/"+start_date+"/"+end_date+"/"+status,
         dataType: "json",
         success: function (response) {
             $(".render").html(response.data);
@@ -112,7 +112,7 @@ $(document).ready(function () {
                     '<div class="invalid-feedback error-spesifikasi'+i+'"></div>' +
                 '</div>' +
                 '<div class="form-group">' +
-                    '<label>Uraian Perbaikan Barang</label>' +
+                    '<label>Uraian Kerusakan Barang</label>' +
                     '<textarea class="form-control uraian'+i+'" name="uraian['+i+']" id="uraian'+i+'" placeholder="masukkan uraian perbaikan barang"></textarea>' +
                     '<div class="invalid-feedback error-uraian'+i+'"></div>' +
                 '</div>' +
@@ -450,18 +450,18 @@ $(document).ready(function () {
     });
 
     $('body').on('click', '.btn-proses-penerimaan', function(){
-        var id = $('#id_maintenance').val();
-        var penerima = $('#id_pegawai').val();
-        var tanggal = $('#tanggal_penerimaan').val();
-        var uraian = $('#uraian_perbaikan').val();
-        if(penerima == '' || tanggal == ''){
-            $('#modalPenerimaan').modal('hide');
-            Swal.fire({
-                title: 'Peringatan',
-                text: 'Mohon untuk melengkapi data penerimaan',
-                icon: 'warning',
-            })
-        } else {
+        var id = $('#modalPenerimaan').find('#id_maintenance').val();
+        var tanggal = $('#modalPenerimaan').find('#tanggal_penerimaan').val();
+        var uraian = $('#modalPenerimaan').find('#uraian_perbaikan').val();
+        // console.log(id);
+        // if(penerima == '' || tanggal == ''){
+        //     $('#modalPenerimaan').modal('hide');
+        //     Swal.fire({
+        //         title: 'Peringatan',
+        //         text: 'Mohon untuk melengkapi data penerimaan',
+        //         icon: 'warning',
+        //     })
+        // } else {
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -488,15 +488,16 @@ $(document).ready(function () {
                     });
                 },
                 error: function(data){
-                    $('#modalPenerimaan').modal('hide');
-                    Swal.fire({
-                        title: 'Peringatan',
-                        text: 'Terjadi kesalahan',
-                        icon: 'warning',
-                    });
+                    console.log(data);
+                    // $('#modalPenerimaan').modal('hide');
+                    // Swal.fire({
+                    //     title: 'Peringatan',
+                    //     text: 'Terjadi kesalahan',
+                    //     icon: 'warning',
+                    // });
                 }
             });
-        }
+        // }
     });
 
     $('body').on('click', '.btn-validasi', function() {

@@ -2,7 +2,7 @@
     <form id="formAdd">
         <div class="card">
             <div class="card-header">
-                <div class="card-title">Data Pengadaan</div>
+                <div class="card-title">Tambah Data Pengadaan</div>
                 <div class="card-options">
                     <button class="btn btn-info btn-data" type="button">
                         <i class="fa fa-eye"></i> Data

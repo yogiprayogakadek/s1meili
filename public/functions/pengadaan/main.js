@@ -124,6 +124,11 @@ $(document).ready(function () {
                         '<div class="invalid-feedback error-jumlah'+i+'"></div>' +
                     '</div>' +
                     '<div class="form-group">' +
+                        '<label>Satuan Barang</label>' +
+                        '<input type="text" class="form-control satuan'+i+'" name="satuan['+i+']" id="satuan'+i+'" placeholder="masukkan satuan barang">' +
+                        '<div class="invalid-feedback error-satuan'+i+'"></div>' +
+                    '</div>' +
+                    '<div class="form-group">' +
                         '<label>Harga Satuan</label>' +
                         '<input type="text" class="form-control harga-satuan harga'+i+'" name="harga['+i+']" id="harga'+i+'" data-harga="harga'+i+'" placeholder="masukkan harga satuan">' +
                         '<div class="invalid-feedback error-harga'+i+'"></div>' +
@@ -469,9 +474,9 @@ $(document).ready(function () {
     });
 
     $('body').on('click', '.btn-proses-penerimaan', function(){
-        var id = $('#id_pengadaan').val();
-        var penerima = $('#id_pegawai').val();
-        var tanggal = $('#tanggal_penerimaan').val();
+        var id = $('#modalPenerimaan').find('#id_pengadaan').val();
+        var penerima = $('#modalPenerimaan').find('#id_pegawai').val();
+        var tanggal = $('#modalPenerimaan').find('#tanggal_penerimaan').val();
         if(penerima == '' || tanggal == ''){
             $('#modalPenerimaan').modal('hide');
             Swal.fire({

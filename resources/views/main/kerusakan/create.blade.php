@@ -2,7 +2,7 @@
     <form id="formAdd">
         <div class="card">
             <div class="card-header">
-                <div class="card-title">Data Kerusakan</div>
+                <div class="card-title">Tambah Data Kerusakan</div>
                 <div class="card-options">
                     <button class="btn btn-info btn-data" type="button">
                         <i class="fa fa-eye"></i> Data
@@ -77,7 +77,7 @@
                     </div>
                     <div class="form-group">
                         <label for="uraian">Uraian Kerusakan Barang</label>
-                        <textarea class="form-control uraian0" name="uraian[0]" id="uraian0" placeholder="masukkan uraian barang"></textarea>
+                        <textarea class="form-control uraian0" name="uraian[0]" id="uraian0" placeholder="masukkan uraian kerusakan barang"></textarea>
                         <div class="invalid-feedback error-uraian0"></div>
                     </div>
                     <div class="form-group">

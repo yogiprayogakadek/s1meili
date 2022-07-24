@@ -4,18 +4,21 @@
             <div class="card-title">Data Perawatan Barang</div>
             <div class="card-options">
                 <div class="form-group" style="margin-right: 2px">
+                    <label for="">Tanggal Awal</label>
                     <input type="date" class="form-control" id="start_date" value="{{date('Y-m-01')}}">
                 </div>
                 <div class="form-group" style="margin-right: 3px">
+                    <label for="">Tanggal Akhir</label>
                     <input type="date" class="form-control" id="end_date" value="{{date("Y-m-t", strtotime(date('Y-m-01')))}}" min="{{date('Y-m-01')}}">
                 </div>
                 <div class="form-group" style="margin-right: 3px">
+                    <label for="">Status</label>
                     <select name="status" id="status" class="form-control">
                         <option value="Semua">Semua Status</option>
                         <option value="Dibatalkan">Dibatalkan</option>
                     </select>
                 </div>
-                <div class="form-group">
+                <div class="form-group" style="margin-top: 29px">
                     <button class="btn btn-info btn-lg" id="btn-search">
                         <i class="fe fe-search"></i>
                     </button>
@@ -42,9 +45,12 @@
                         <th>Tanggal Pelaporan</th>
                         <th>Nomor Laporan</th>
                         {{-- <th>Biaya</th> --}}
-                        {{-- <th>Status Perawatan</th> --}}
+                        <th>Status Perawatan</th>
                         <th>Nota</th>
-                        @can('bendahara')
+                        {{-- @can('bendahara')
+                        <th>Aksi</th>
+                        @endcan --}}
+                        @can('manage_data')
                         <th>Aksi</th>
                         @endcan
                     </tr>
@@ -59,7 +65,16 @@
                         <td>{{$data->tanggal_maintenance}}</td>
                         <td>{{$data->nomor_laporan}}</td>
                         {{-- <td>{{convertToRupiah($data->biaya_maintenance)}}</td> --}}
-                        {{-- <td>{{$data->status_perbaikan}}</td> --}}
+                        <td>
+                            @if ($data->status_maintenance != 'Dibatalkan')
+                                {{$data->status_maintenance}}
+                            @else
+                                {{$data->status_maintenance}} <br><br>
+                                <span>Dibatalkan oleh: {{json_decode($data->pembatalan, true)['nama_pembatal']}}</span><br>
+                                <span>Tanggal Pembatalan: {{json_decode($data->pembatalan, true)['tanggal_pembatalan']}}</span><br>
+                                <span>Keterangan: {{json_decode($data->pembatalan, true)['keterangan']}}</span>
+                            @endif
+                        </td>
                         {{-- <td>{!!$data->maintenance_histori == null ? $data->status_maintenance : '<button class="btn btn-primary btn-detail-validasi" data-id="'.$data->id_maintenance.'"><i class="fa fa-eye"></i> Lihat Status</button>' !!}</td> --}}
                         <td>
                             @cannot('bendahara')
@@ -302,4 +317,14 @@
             [5, 10, 15, 20, "All"]
         ],
     });
+
+    // $(document).ready(function () {
+    //     $('#datepicker').datepicker(
+    //         {
+    //         autoclose: true,
+    //         format: 'dd/mm/yyyy',
+    //         todayHighlight: true,
+    //     }
+    //     );
+    // });
 </script>

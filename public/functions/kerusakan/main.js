@@ -381,7 +381,7 @@ $(document).ready(function () {
                 '</div>' +
 
                 '<div class="col-md-12 mt-2 text-center">' +
-                    '<h4><strong>Detail Item Perbaikan</strong></h4>' +
+                    '<h4><strong>Detail Item Kerusakan</strong></h4>' +
                 '</div>' +
                 
                 '<table class="table table-stripped table-hover mt-2" id="tableItem">' +

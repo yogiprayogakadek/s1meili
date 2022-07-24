@@ -27,13 +27,16 @@ class DashboardController extends Controller
                 ->groupBy('pengadaan.tanggal_pengadaan')
                 ->get();
         } else {
+            // dd($request->all());
             $data = DB::table('maintenances')
                 ->select('maintenances.id_maintenance', 'maintenances.tanggal_maintenance as tanggal', DB::raw('JSON_LENGTH(maintenances.item_maintenance) as jumlah'))
                 ->where('maintenances.kategori_maintenance', '=', $request->kategori)
-                ->where('status_maintenance', '=', 'Diterima')
+                ->where('status_maintenance', '!=', 'Dibatalkan')
+                // ->where('status_maintenance', '=', 'Diterima')
                 ->whereMonth('tanggal_maintenance', '=', $request->bulan)
                 ->whereYear('tanggal_maintenance', '=', $request->tahun)
                 ->get();
+                // dd($data);
         }
 
         // dd($data);

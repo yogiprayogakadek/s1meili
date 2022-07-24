@@ -41,7 +41,7 @@ class PerawatanController extends Controller
         $pegawai = Pegawai::pluck('nama_pegawai', 'id_pegawai')->prepend('Pilih Pegawai', '');
 
         $view = [
-            'data' => view('main.kerusakan.render', compact('data', 'pegawai'))->render()
+            'data' => view('main.perawatan.render', compact('data', 'pegawai'))->render()
         ];
 
         return response()->json($view);

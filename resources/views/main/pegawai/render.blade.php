@@ -27,6 +27,9 @@
                         <th>Alamat</th>
                         <th>Jenis Kelamin</th>
                         <th>Foto</th>
+                        @cannot('manage_data')
+                        <th>Status</th>
+                        @endcannot
                         @can('manage_data') 
                         <th>Status</th>
                         <th>Aksi</th>
@@ -46,6 +49,9 @@
                         <td>{{$data->alamat}}</td>
                         <td>{{$data->jenis_kelamin}}</td>
                         <td><img src="{{asset($data->foto)}}" width="100px"></td>
+                        @cannot('manage_data')
+                            <td>{{$data->status == 1 ? 'Aktif' : 'Tidak Aktif'}}</td>
+                        @endcannot
                         @can('manage_data')     
                         <td>
                             <select name="status" id="status" class="form-control" data-id="{{$data->id_pegawai}}" data-status="{{$data->status}}">

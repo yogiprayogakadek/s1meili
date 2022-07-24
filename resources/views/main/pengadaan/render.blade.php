@@ -1,20 +1,18 @@
 <div class="col-12">
     <div class="card">
         <div class="card-header">
-            @cannot('bendahara')
-            <div class="card-title">Data Barang</div>
-            @endcannot
-            @can('bendahara')
-            <div class="card-title">Data Perbaikan</div>
-            @endcan
+            <div class="card-title">Data Pengadaan Barang</div>
             <div class="card-options">
                 <div class="form-group" style="margin-right: 2px">
+                    <label for="">Tanggal Awal</label>
                     <input type="date" class="form-control" id="start_date" value="{{date('Y-m-01')}}">
                 </div>
                 <div class="form-group" style="margin-right: 3px">
+                    <label for="">Tanggal Akhir</label>
                     <input type="date" class="form-control" id="end_date" value="{{date("Y-m-t", strtotime(date('Y-m-01')))}}" min="{{date('Y-m-01')}}">
                 </div>
                 <div class="form-group" style="margin-right: 3px">
+                    <label for="">Status</label>
                     <select name="status" id="status" class="form-control">
                         <option value="Semua">Semua Status</option>
                         <option value="Diproses">Diproses</option>
@@ -23,7 +21,7 @@
                         <option value="Dibatalkan">Dibatalkan</option>
                     </select>
                 </div>
-                <div class="form-group">
+                <div class="form-group" style="margin-top: 29px">
                     <button class="btn btn-info btn-lg" id="btn-search">
                         <i class="fe fe-search"></i>
                     </button>
@@ -92,7 +90,17 @@
                         @if ($data->status_pengadaan != 'Dibatalkan')
                             <td>{!!$data->pengadaan_histori == null ? $data->status_pengadaan : '<button class="btn btn-primary btn-detail-validasi" data-id="'.$data->id_pengadaan.'"><i class="fa fa-eye"></i> Lihat Status</button>' !!}</td>
                         @else
-                            <td>{{$data->status_pengadaan}}</td>
+                            {{-- <td>{{$data->status_pengadaan}}</td> --}}
+                            <td>
+                                @if ($data->status_pengadaan != 'Dibatalkan')
+                                    {{$data->status_pengadaan}}
+                                @else
+                                    {{$data->status_pengadaan}} <br><br>
+                                    <span>Dibatalkan oleh: {{json_decode($data->pembatalan, true)['nama_pembatal']}}</span><br>
+                                    <span>Tanggal Pembatalan: {{json_decode($data->pembatalan, true)['tanggal_pembatalan']}}</span><br>
+                                    <span>Keterangan: {{json_decode($data->pembatalan, true)['keterangan']}}</span>
+                                @endif
+                            </td>
                         @endif
                         @can('manage_data')
                         @if ($data->status_pengadaan != 'Dibatalkan')

@@ -2,7 +2,7 @@
     <form id="formEdit">
         <div class="card">
             <div class="card-header">
-                <div class="card-title">Data Kerusakan</div>
+                <div class="card-title">Ubah Data Kerusakan</div>
                 <div class="card-options">
                     <button class="btn btn-info btn-data" type="button">
                         <i class="fa fa-eye"></i> Data
@@ -51,7 +51,7 @@
                     <input type="date" class="form-control tanggal_maintenance" name="tanggal_maintenance" id="tanggal-maintenance" placeholder="masukkan tanggal perbaikan barang" value="{{$data->tanggal_maintenance}}">
                     <div class="invalid-feedback error-tanggal_maintenance"></div>
                 </div>
-                <div class="form-group">
+                <div class="form-group" hidden>
                     <label for="biaya">Biaya</label>
                     <input type="hidden" class="form-control biaya" name="biaya" id="biaya" placeholder="masukkan biaya" value="{{convertToRupiah($data->biaya_maintenance)}}">
                     <div class="invalid-feedback error-biaya"></div>
@@ -68,7 +68,7 @@
                         <label for="nama">Nama Barang</label>
                         <select name="nama[{{$i}}]" id="nama{{$i}}" class="form-control nama{{$i}} nama-barang" data-id="{{$i}}">
                             @foreach ($barang as $key => $value)
-                            <option value="{{$key}}" {{$item_perbaikan[$i]['nama_barang'] == $key ? 'selected' : ''}}>{{$value}}</option>
+                            <option value="{{$key}}" {{$item_perbaikan[$i]['nama_barang'] == $value ? 'selected' : ''}}>{{$value}}</option>
                             @endforeach
                         </select>
                         <div class="invalid-feedback error-nama{{$i}}"></div>
@@ -79,12 +79,12 @@
                         <div class="invalid-feedback error-spesifikasi{{$i}}"></div>
                     </div>
                     <div class="form-group">
-                        <label for="uraian">Uraian Perbaikan Barang</label>
-                        <textarea class="form-control uraian{{$i}}" name="uraian[{{$i}}]" id="uraian{{$i}}" placeholder="masukkan uraian barang">{{$item_perbaikan[$i]['uraian']}}</textarea>
+                        <label for="uraian">Uraian Kerusakan Barang</label>
+                        <textarea class="form-control uraian{{$i}}" name="uraian[{{$i}}]" id="uraian{{$i}}" placeholder="masukkan uraian kerusakan barang">{{$item_perbaikan[$i]['uraian']}}</textarea>
                         <div class="invalid-feedback error-uraian{{$i}}"></div>
                     </div>
                     <div class="form-group">
-                        <label for="keterangan">Keterangan Perbaikan</label>
+                        <label for="keterangan">Keterangan Kerusakan</label>
                         <textarea class="form-control keterangan{{$i}}" name="keterangan[{{$i}}]" id="keterangan{{$i}}" placeholder="masukkan keterangan barang">{{$item_perbaikan[$i]['keterangan']}}</textarea>
                         <div class="invalid-feedback error-keterangan{{$i}}"></div>
                     </div>

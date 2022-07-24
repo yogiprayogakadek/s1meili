@@ -2,7 +2,7 @@
     <form id="formAdd">
         <div class="card">
             <div class="card-header">
-                <div class="card-title">Data Perawatan</div>
+                <div class="card-title">Tambah Data Perawatan</div>
                 <div class="card-options">
                     <button class="btn btn-info btn-data" type="button">
                         <i class="fa fa-eye"></i> Data
@@ -81,12 +81,12 @@
                     </div>
                     <div class="form-group">
                         <label for="uraian">Uraian Perawatan Barang</label>
-                        <textarea class="form-control uraian0" name="uraian[0]" id="uraian0" placeholder="masukkan uraian barang"></textarea>
+                        <textarea class="form-control uraian0" name="uraian[0]" id="uraian0" placeholder="masukkan uraian perawatan barang"></textarea>
                         <div class="invalid-feedback error-uraian0"></div>
                     </div>
                     <div class="form-group">
                         <label for="keterangan">Keterangan Perawatan</label>
-                        <textarea class="form-control keterangan0" name="keterangan[0]" id="keterangan0" placeholder="masukkan keterangan barang"></textarea>
+                        <textarea class="form-control keterangan0" name="keterangan[0]" id="keterangan0" placeholder="masukkan keterangan perawatan barang"></textarea>
                         <div class="invalid-feedback error-keterangan0"></div>
                     </div>
                 </div>

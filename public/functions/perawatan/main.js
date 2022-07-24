@@ -29,7 +29,7 @@ function tambah() {
 function filterData(start_date, end_date, status) {
     $.ajax({
         type: "get",
-        url: "/kerusakan/filter/"+start_date+"/"+end_date+"/"+status,
+        url: "/perawatan/filter/"+start_date+"/"+end_date+"/"+status,
         dataType: "json",
         success: function (response) {
             $(".render").html(response.data);
@@ -107,13 +107,13 @@ $(document).ready(function () {
                     '<div class="invalid-feedback error-spesifikasi'+i+'"></div>' +
                 '</div>' +
                 '<div class="form-group">' +
-                    '<label>Uraian Perbaikan Barang</label>' +
-                    '<textarea class="form-control uraian'+i+'" name="uraian['+i+']" id="uraian'+i+'" placeholder="masukkan uraian perbaikan barang"></textarea>' +
+                    '<label>Uraian Perawatan Barang</label>' +
+                    '<textarea class="form-control uraian'+i+'" name="uraian['+i+']" id="uraian'+i+'" placeholder="masukkan uraian perawatan barang"></textarea>' +
                     '<div class="invalid-feedback error-uraian'+i+'"></div>' +
                 '</div>' +
                 '<div class="form-group">' +
-                    '<label>Keterangan Perbaikan</label>' +
-                    '<textarea class="form-control keterangan'+i+'" name="keterangan['+i+']" id="keterangan'+i+'" placeholder="masukkan keterangan perbaikan barang"></textarea>' +
+                    '<label>Keterangan Perawatan</label>' +
+                    '<textarea class="form-control keterangan'+i+'" name="keterangan['+i+']" id="keterangan'+i+'" placeholder="masukkan keterangan perawatan barang"></textarea>' +
                     '<div class="invalid-feedback error-keterangan'+i+'"></div>' +
                 '</div>' +
             '</div>' +
@@ -378,7 +378,7 @@ $(document).ready(function () {
                 '</div>' +
 
                 '<div class="col-md-12 mt-2 text-center">' +
-                    '<h4><strong>Detail Item Perbaikan</strong></h4>' +
+                    '<h4><strong>Detail Item Perawatan</strong></h4>' +
                 '</div>' +
                 
                 '<table class="table table-stripped table-hover mt-2" id="tableItem">' +

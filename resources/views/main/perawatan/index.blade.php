@@ -5,6 +5,7 @@
 @section('sub-pwd', 'Data')
 @push('css')
 <meta name="csrf-token" content="{{ csrf_token() }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datepicker/1.0.10/datepicker.min.css">
 @endpush
 
 @section('content')
@@ -15,4 +16,5 @@
 
 @push('script')
     <script src="{{asset('functions/perawatan/main.js')}}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/datepicker/1.0.10/datepicker.min.js"></script>
 @endpush

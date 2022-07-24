@@ -107,7 +107,7 @@ function pengadaanNeedApprovalBendahara()
 
 function maintenanceNeedApproval($kategori)
 {
-    $data = Maintenance::where('kategori_maintenance', $kategori)->where('status_maintenance', 'Ditolak')->get();
+    $data = Maintenance::where('kategori_maintenance', $kategori)->where('status_maintenance', 'Diproses')->get();
     $total = 0;
 
     foreach ($data as $key => $value) {
@@ -132,7 +132,7 @@ function maintenaceNeedApproveBendahara($kategori)
 function menu()
 {
     $menu = [
-        'Barang', 'Pengadaan', 'Perbaikan', 'Kerusakan'
+        'Barang', 'Pengadaan', 'Perbaikan', 'Kerusakan', 'Perawatan'
     ];
 
     return $menu;
@@ -171,7 +171,8 @@ function RouteURL()
         0 => 'barang.index', 
         1 => 'pengadaan.index', 
         2 => 'perbaikan.index', 
-        3 => 'kerusakan.index'
+        3 => 'kerusakan.index',
+        4 => 'perawatan.index'
     ];
 
     return $url;
@@ -181,7 +182,10 @@ function totalData($model)
 {
     $a = 'App\Models\\' . $model;
     if($model == 'Perbaikan'){
-        $total = Maintenance::where('kategori_maintenance', 'Perawatan dan Perbaikan')->count();
+        $total = Maintenance::where('kategori_maintenance', 'Perbaikan')->count();
+    }
+    elseif($model == 'Perawatan'){
+        $total = Maintenance::where('kategori_maintenance', 'Perawatan')->count();
     }
     elseif($model == 'Kerusakan'){
         $total = Maintenance::where('kategori_maintenance', 'Kerusakan')->count();
