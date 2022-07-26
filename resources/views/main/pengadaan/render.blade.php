@@ -96,9 +96,11 @@
                                     {{$data->status_pengadaan}}
                                 @else
                                     {{$data->status_pengadaan}} <br><br>
+                                    @can('bendahara')
                                     <span>Dibatalkan oleh: {{json_decode($data->pembatalan, true)['nama_pembatal']}}</span><br>
                                     <span>Tanggal Pembatalan: {{json_decode($data->pembatalan, true)['tanggal_pembatalan']}}</span><br>
                                     <span>Keterangan: {{json_decode($data->pembatalan, true)['keterangan']}}</span>
+                                    @endcan
                                 @endif
                             </td>
                         @endif

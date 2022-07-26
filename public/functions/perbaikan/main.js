@@ -61,6 +61,13 @@ function convertToRupiah(number, prefix) {
     return prefix == undefined ? rupiah : rupiah ? "Rp. " + rupiah : "";
 }
 
+function toRupiah(angka) {
+    var rupiah = '';
+    var angkarev = angka.toString().split('').reverse().join('');
+    for(var i = 0; i < angkarev.length; i++) if(i%3 == 0) rupiah += angkarev.substr(i,3)+'.';
+    return 'Rp'+rupiah.split('',rupiah.length-1).reverse().join('');
+}
+
 $(document).ready(function () {
     getData();
     var i = 0;
@@ -376,19 +383,19 @@ $(document).ready(function () {
                     '<div class="col-md-4">' +
                         'Tanggal Penyelesaian' +
                     '</div>' +
-                    '<div class="col-md-8 tanggal-penerimaan">: ' +
+                    '<div class="col-md-8 tanggal-penerimaan'+id_maintenance+'">: ' +
                         '-' +
                     '</div>' +
                     '<div class="col-md-4">' +
                         'Biaya Perbaikan' +
                     '</div>' +
-                    '<div class="col-md-8 nama-penerima">: ' +
+                    '<div class="col-md-8 nama-penerima'+id_maintenance+'">: ' +
                         '-' +
                     '</div>' +
                     '<div class="col-md-4">' +
                         'Uraian Kerusakan' +
                     '</div>' +
-                    '<div class="col-md-8 uraian-perbaikan">: ' +
+                    '<div class="col-md-8 uraian-perbaikan'+id_maintenance+'">: ' +
                         '-' +
                     '</div>' +
                 '</div>' +
@@ -413,9 +420,9 @@ $(document).ready(function () {
             '</div>';
             $.get('/perbaikan/item-perbaikan/'+id_maintenance, function(data) {
                 $('.div-btn-penerimaan').html("<button type=button class='btn btn-primary btn-sm btn-edit-penerima' data-id='"+id_maintenance+"' data-status='"+status+"'>Edit</button>");
-                $('.nama-penerima').html(": " + data.biaya_perbaikan);
-                $('.tanggal-penerimaan').html(": " + data.tanggal_penyelesaian);
-                $('.uraian-perbaikan').html(": " + data.uraian_perbaikan);
+                $('.nama-penerima'+id_maintenance).html(": " + (data.biaya_perbaikan != 'Belum diterima' ? toRupiah(data.biaya_perbaikan) : 'Belum diterima'));
+                $('.tanggal-penerimaan'+id_maintenance).html(": " + data.tanggal_penyelesaian);
+                $('.uraian-perbaikan'+id_maintenance).html(": " + data.uraian_perbaikan);
                 data.user_login != 'Staf Administrasi' ? $('.btn-edit-penerima').hide() : $('.btn-edit-penerima').show();
                 $.each(data.data, function(i, item) {
                     var tr_row = '<tr>' +

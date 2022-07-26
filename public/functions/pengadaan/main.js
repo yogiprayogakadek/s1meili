@@ -404,13 +404,13 @@ $(document).ready(function () {
                         '<div class="col-md-4">' +
                             'Tanggal Penerimaan' +
                         '</div>' +
-                        '<div class="col-md-8 tanggal-penerimaan">: ' +
+                        '<div class="col-md-8 tanggal-penerimaan'+id_pengadaan+'">: ' +
                             '-' +
                         '</div>' +
                         '<div class="col-md-4">' +
                             'Nama Penerima' +
                         '</div>' +
-                        '<div class="col-md-8 nama-penerima">: ' +
+                        '<div class="col-md-8 nama-penerima'+id_pengadaan+'">: ' +
                             '-' +
                         '</div>' +
                     '</div>' +
@@ -437,8 +437,8 @@ $(document).ready(function () {
             '</div>';
             $.get('/pengadaan/item-pengadaan/'+id_pengadaan, function(data) {
                 // console.log(data)
-                $('.nama-penerima').html(": " + data.nama_penerima + " <button type=button class='btn btn-primary btn-sm btn-edit-penerima' data-id='"+id_pengadaan+"' data-status='"+status+"'>Edit</button>");
-                $('.tanggal-penerimaan').html(": " + data.tanggal_penerimaan);
+                $('.nama-penerima'+id_pengadaan).html(": " + data.nama_penerima + " <button type=button class='btn btn-primary btn-sm btn-edit-penerima' data-id='"+id_pengadaan+"' data-status='"+status+"'>Edit</button>");
+                $('.tanggal-penerimaan'+id_pengadaan).html(": " + data.tanggal_penerimaan);
                 data.user_login != 'Staf Administrasi' ? $('.btn-edit-penerima').hide() : $('.btn-edit-penerima').show();
                 $.each(data.data, function(i, item) {
                     var tr_row = '<tr>' +

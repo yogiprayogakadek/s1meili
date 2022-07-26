@@ -11,7 +11,7 @@
                     <label for="">Tanggal Akhir</label>
                     <input type="date" class="form-control" id="end_date" value="{{date("Y-m-t", strtotime(date('Y-m-01')))}}" min="{{date('Y-m-01')}}">
                 </div>
-                <div class="form-group" style="margin-right: 3px">
+                <div class="form-group" style="margin-right: 3px" hidden>
                     <label for="">Status</label>
                     <select name="status" id="status" class="form-control">
                         <option value="Semua">Semua Status</option>
@@ -45,7 +45,7 @@
                         <th>Tanggal Pelaporan</th>
                         <th>Nomor Laporan</th>
                         {{-- <th>Biaya</th> --}}
-                        <th>Status Perawatan</th>
+                        {{-- <th>Status Perawatan</th> --}}
                         <th>Nota</th>
                         {{-- @can('bendahara')
                         <th>Aksi</th>
@@ -65,7 +65,7 @@
                         <td>{{$data->tanggal_maintenance}}</td>
                         <td>{{$data->nomor_laporan}}</td>
                         {{-- <td>{{convertToRupiah($data->biaya_maintenance)}}</td> --}}
-                        <td>
+                        {{-- <td>
                             @if ($data->status_maintenance != 'Dibatalkan')
                                 {{$data->status_maintenance}}
                             @else
@@ -73,7 +73,7 @@
                                 <span>Dibatalkan oleh: {{json_decode($data->pembatalan, true)['nama_pembatal']}}</span><br>
                                 <span>Tanggal Pembatalan: {{json_decode($data->pembatalan, true)['tanggal_pembatalan']}}</span><br>
                                 <span>Keterangan: {{json_decode($data->pembatalan, true)['keterangan']}}</span>
-                            @endif
+                            @endif --}}
                         </td>
                         {{-- <td>{!!$data->maintenance_histori == null ? $data->status_maintenance : '<button class="btn btn-primary btn-detail-validasi" data-id="'.$data->id_maintenance.'"><i class="fa fa-eye"></i> Lihat Status</button>' !!}</td> --}}
                         <td>
@@ -94,7 +94,10 @@
                         </td>
                         @can('manage_data')
                         <td>
-                            @if ($data->status_maintenance != 'Dibatalkan')
+                            <button class="btn btn-success btn-edit" data-id="{{$data->id_maintenance}}">
+                                <i class="fa fa-edit"></i> Edit
+                            </button>
+                            {{-- @if ($data->status_maintenance != 'Dibatalkan')
                             <button class="btn btn-success btn-edit" data-id="{{$data->id_maintenance}}">
                                 <i class="fa fa-edit"></i> Edit
                             </button>
@@ -105,7 +108,7 @@
                             <button class="btn btn-info btn-detail-pembatalan" data-id="{{$data->id_maintenance}}">
                                 <i class="fa fa-eye"></i> Status Dibatalkan
                             </button>
-                            @endif
+                            @endif --}}
                             {{-- <button class="btn btn-danger btn-delete" data-id="{{$data->id_maintenance}}">
                                 <i class="fa fa-trash"></i> Hapus
                             </button> --}}

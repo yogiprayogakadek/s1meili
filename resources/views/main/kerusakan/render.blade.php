@@ -11,7 +11,7 @@
                     <label for="">Tanggal Akhir</label>
                     <input type="date" class="form-control" id="end_date" value="{{date("Y-m-t", strtotime(date('Y-m-01')))}}" min="{{date('Y-m-01')}}">
                 </div>
-                <div class="form-group" style="margin-right: 3px">
+                <div class="form-group" style="margin-right: 3px" hidden>
                     <label for="">Status</label>
                     <select name="status" id="status" class="form-control">
                         <option value="Semua">Semua Status</option>

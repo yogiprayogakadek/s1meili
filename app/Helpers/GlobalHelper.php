@@ -141,7 +141,8 @@ function menu()
 function kategoriPengeluaran()
 {
     $menu = [
-        'Pengadaan', 'Perbaikan', 'Kerusakan', 'Perawatan'
+        // 'Pengadaan', 'Perbaikan', 'Kerusakan', 'Perawatan'
+        'Pengadaan', 'Perbaikan', 'Perawatan'
     ];
 
     return $menu;
@@ -156,7 +157,7 @@ function totalPengeluaran($kategori)
             $total += $value->biaya_pengadaan;
         }
     } else {
-        $data = Maintenance::where('status_maintenance', 'Diterima')->get();
+        $data = Maintenance::where('status_maintenance', 'Diterima')->where('kategori_maintenance', '!=', 'Kerusakan')->get();
         foreach ($data as $key => $value) {
             $total += $value->biaya_maintenance;
         }
