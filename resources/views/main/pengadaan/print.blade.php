@@ -10,12 +10,12 @@
 <div class="row printableArea">
     <div class="col-md-12">
         <h3 style="text-align: center">
-            <b>Laporan Data Kategori</b>
+            <b>Laporan Data Pengadaan</b>
         </h3>
         <div class="pull-right text-end">
             <address>
                 <p class="m-t-30">
-                    <img src="{{asset('assets/images/logo-decor.png')}}" height="100">
+                    <img src="{{asset('assets/images/logo.jpeg')}}" height="100">
                 </p>
                 <p class="m-t-30">
                     <b>Dicetak oleh :</b>
@@ -35,15 +35,35 @@
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>Nama Kategori</th>
+                            <th>Nama Pemohon</th>
+                            <th>Tanggal Pengadaan</th>
+                            <th>Nomor Laporan</th>
+                            <th>Biaya Pengadaan</th>
+                            {{-- <th>Keterangan</th> --}}
+                            <th>Status Pengadaan</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($data as $data)
-                        <tr>
-                            <td>{{$loop->iteration}}</td>
-                            <td>{{$data->nama_kategori}}</td>
-                        </tr>
+                            <tr>
+                                <td>{{$loop->iteration}}</td>
+                                <td>{{$data->pegawai->nama_pegawai}}</td>
+                                <td>{{$data->tanggal_pengadaan}}</td>
+                                <td>{{$data->nomor_laporan}}</td>
+                                <td>{{convertToRupiah($data->biaya_pengadaan)}}</td>
+                                @if ($data->status_pengadaan != 'Dibatalkan')
+                                    <td>{{$data->status_pengadaan}}</td>
+                                @else
+                                    {{-- <td>{{$data->status_pengadaan}}</td> --}}
+                                    <td>
+                                        {{$data->status_pengadaan}} <br><br>
+                                        <span>Dibatalkan oleh: {{json_decode($data->pembatalan, true)['nama_pembatal']}}</span><br>
+                                        <span>Tanggal Pembatalan: {{json_decode($data->pembatalan, true)['tanggal_pembatalan']}}</span><br>
+                                        <span>Keterangan: {{json_decode($data->pembatalan, true)['keterangan']}}</span>
+                                        
+                                    </td>
+                                @endif
+                            </tr>
                         @endforeach
                     </tbody>
                 </table>

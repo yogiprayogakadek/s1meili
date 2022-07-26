@@ -25,6 +25,16 @@ class PegawaiController extends Controller
         return response()->json($view);
     }
 
+    public function print()
+    {
+        $data = Pegawai::all();
+        $view = [
+            'data' => view('main.pegawai.print', compact('data'))->render()
+        ];
+
+        return response()->json($view);
+    }
+
     public function create()
     {
         $view = [

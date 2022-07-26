@@ -203,7 +203,7 @@ $(document).ready(function () {
 
     $('body').on('click', '.btn-print', function () {
         Swal.fire({
-            title: 'Cetak data kategori?',
+            title: 'Cetak data pegawai?',
             text: "Laporan akan dicetak",
             icon: 'success',
             showCancelButton: true,

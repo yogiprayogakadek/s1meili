@@ -286,7 +286,7 @@ $(document).ready(function () {
 
     $('body').on('click', '.btn-print', function () {
         Swal.fire({
-            title: 'Cetak data kategori?',
+            title: 'Cetak data barang?',
             text: "Laporan akan dicetak",
             icon: 'success',
             showCancelButton: true,

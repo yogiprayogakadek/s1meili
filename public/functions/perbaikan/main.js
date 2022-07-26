@@ -314,7 +314,7 @@ $(document).ready(function () {
 
     $('body').on('click', '.btn-print', function () {
         Swal.fire({
-            title: 'Cetak data kategori?',
+            title: 'Cetak data perbaikan?',
             text: "Laporan akan dicetak",
             icon: 'success',
             showCancelButton: true,
@@ -332,7 +332,7 @@ $(document).ready(function () {
                 };
                 $.ajax({
                     type: "GET",
-                    url: "/perbaikan/print/",
+                    url: "/perbaikan/print/"+$('#start_date').val()+"/"+$('#end_date').val()+"/"+$('#status').val(),
                     dataType: "json",
                     success: function (response) {
                         document.title= 'Laporan - ' + new Date().toJSON().slice(0,10).replace(/-/g,'/')

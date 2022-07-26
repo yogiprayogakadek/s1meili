@@ -53,12 +53,19 @@ class PengadaanController extends Controller
 
 
     
-    public function print()
+    public function print($start, $end, $status)
     {
-        $data = Pengadaan::with('user')->get();
+        if($status == 'Semua') {
+            $data = Pengadaan::with('user')->whereBetween('tanggal_pengadaan', [$start, $end])->get();
+        } else {
+            $data = Pengadaan::with('user')->whereBetween('tanggal_pengadaan', [$start, $end])->where('status_pengadaan', $status)->get();
+        }
+        // $data = Pengadaan::with('user')->get();
+        $pegawai = Pegawai::pluck('nama_pegawai', 'id_pegawai')->prepend('Pilih Pegawai', '');
+
 
         $view = [
-            'data' => view('main.pengadaan.print', compact('data'))->render()
+            'data' => view('main.pengadaan.print', compact('data', 'pegawai'))->render()
         ];
 
         return response()->json($view);

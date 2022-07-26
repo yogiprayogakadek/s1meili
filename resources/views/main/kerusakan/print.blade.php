@@ -10,12 +10,12 @@
 <div class="row printableArea">
     <div class="col-md-12">
         <h3 style="text-align: center">
-            <b>Laporan Data Kategori</b>
+            <b>Laporan Data Kerusakan</b>
         </h3>
         <div class="pull-right text-end">
             <address>
                 <p class="m-t-30">
-                    <img src="{{asset('assets/images/logo-decor.png')}}" height="100">
+                    <img src="{{asset('assets/images/logo.jpeg')}}" height="100">
                 </p>
                 <p class="m-t-30">
                     <b>Dicetak oleh :</b>
@@ -35,14 +35,18 @@
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>Nama Kategori</th>
+                            <th>Nama Pemohon</th>
+                            <th>Tanggal Pelaporan</th>
+                            <th>Nomor Laporan</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($data as $data)
                         <tr>
                             <td>{{$loop->iteration}}</td>
-                            <td>{{$data->nama_kategori}}</td>
+                            <td>{{$data->pegawai->nama_pegawai}}</td>
+                            <td>{{$data->tanggal_maintenance}}</td>
+                            <td>{{$data->nomor_laporan}}</td>
                         </tr>
                         @endforeach
                     </tbody>

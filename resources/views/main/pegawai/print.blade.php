@@ -10,12 +10,12 @@
 <div class="row printableArea">
     <div class="col-md-12">
         <h3 style="text-align: center">
-            <b>Laporan Data Kategori</b>
+            <b>Laporan Data Pegawai</b>
         </h3>
         <div class="pull-right text-end">
             <address>
                 <p class="m-t-30">
-                    <img src="{{asset('assets/images/logo-decor.png')}}" height="100">
+                    <img src="{{asset('assets/images/logo.jpeg')}}" height="100">
                 </p>
                 <p class="m-t-30">
                     <b>Dicetak oleh :</b>
@@ -35,15 +35,29 @@
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>Nama Kategori</th>
+                            <th>NIP</th>
+                            <th>Nama</th>
+                            <th>Jabatan</th>
+                            <th>Ruangan</th>
+                            <th>TTL</th>
+                            <th>No. Telp</th>
+                            <th>Alamat</th>
+                            <th>Jenis Kelamin</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($data as $data)
-                        <tr>
-                            <td>{{$loop->iteration}}</td>
-                            <td>{{$data->nama_kategori}}</td>
-                        </tr>
+                            <tr>
+                                <td>{{$loop->iteration}}</td>
+                                <td>{{$data->nip}}</td>
+                                <td>{{$data->nama_pegawai}}</td>
+                                <td>{{$data->jabatan}}</td>
+                                <td>{{$data->ruangan}}</td>
+                                <td>{{$data->tempat_lahir}}, {{convertDate($data->tanggal_lahir)}}</td>
+                                <td>{{$data->no_telp}}</td>
+                                <td>{{$data->alamat}}</td>
+                                <td>{{$data->jenis_kelamin}}</td>
+                            </tr>
                         @endforeach
                     </tbody>
                 </table>
