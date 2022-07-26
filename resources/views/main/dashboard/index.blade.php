@@ -68,11 +68,19 @@
                 <div class="card-options">
                     <div class="form-group">
                         <select class="form-control" id="kategori">
+                            @can('bendahara')
+                            <option value="">Pilih Kategori</option>
+                            @foreach (kategoriPengeluaran() as $key => $kategori)
+                            <option value="{{$kategori}}">{{$kategori}}</option>
+                            @endforeach
+                            @endcan
+                            @cannot('bendahara')
                             <option value="">Pilih Kategori</option>
                             <option value="Pengadaan">Pengadaan</option>
                             <option value="Perbaikan">Perbaikan</option>
                             <option value="Perawatan">Perawatan</option>
                             <option value="Kerusakan">Kerusakan</option>
+                            @endcannot
                         </select>
                     </div>
                     <div class="form-group" style="margin-left: 4px">
