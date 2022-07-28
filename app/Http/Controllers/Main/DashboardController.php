@@ -41,25 +41,27 @@ class DashboardController extends Controller
         } else {
             if($request->kategori == 'Pengadaan') {
                 $data = DB::table('pengadaan')
-                    ->select('pengadaan.id_pengadaan', 'pengadaan.tanggal_pengadaan as tanggal', DB::raw('SUM(pengadaan.biaya_pengadaan) as jumlah'))
+                    ->select('pengadaan.id_pengadaan', 'pengadaan.tanggal_pengadaan as tanggal', 'pengadaan.biaya_pengadaan as jumlah')
                     ->where('pengadaan.status_pengadaan', '=', 'Diterima')
                     ->whereMonth('pengadaan.tanggal_pengadaan', '=', $request->bulan)
                     ->whereYear('pengadaan.tanggal_pengadaan', '=', $request->tahun)
                     ->get();
             } elseif($request->kategori == 'Perawatan') {
                 $data = DB::table('maintenances')
-                    ->select('maintenances.id_maintenance', 'maintenances.tanggal_maintenance as tanggal', DB::raw('SUM(maintenances.biaya_maintenance) as jumlah'))
+                    ->select('maintenances.id_maintenance', 'maintenances.tanggal_maintenance as tanggal', 'maintenances.biaya_maintenance as jumlah')
                     ->where('maintenances.kategori_maintenance', '=', $request->kategori)
                     ->whereMonth('tanggal_maintenance', '=', $request->bulan)
                     ->whereYear('tanggal_maintenance', '=', $request->tahun)
+                    // ->groupBy('maintenances.tanggal_maintenance')
                     ->get();
             } else {
                 $data = DB::table('maintenances')
-                    ->select('maintenances.id_maintenance', 'maintenances.tanggal_maintenance as tanggal', DB::raw('SUM(maintenances.biaya_maintenance) as jumlah'))
+                    ->select('maintenances.id_maintenance', 'maintenances.tanggal_maintenance as tanggal', 'maintenances.biaya_maintenance as jumlah')
                     ->where('maintenances.kategori_maintenance', '=', $request->kategori)
                     ->where('status_maintenance', '!=', 'Dibatalkan')
                     ->whereMonth('tanggal_maintenance', '=', $request->bulan)
                     ->whereYear('tanggal_maintenance', '=', $request->tahun)
+                    // ->groupBy('maintenances.tanggal_maintenance')
                     ->get();
             }
         }
